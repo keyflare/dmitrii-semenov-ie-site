@@ -45,7 +45,7 @@ export function validateProducts(products: Product[]): string[] {
       errors.push(`Published product ${product.slug} is missing platforms`);
     }
 
-    if (!lastUpdatedPattern.test(product.lastUpdated)) {
+    if (!isValidLastUpdated(product.lastUpdated)) {
       errors.push(
         `Published product ${product.slug} has invalid lastUpdated: ${product.lastUpdated}`,
       );
@@ -56,7 +56,7 @@ export function validateProducts(products: Product[]): string[] {
         continue;
       }
 
-      if (!isValidUrl(storeLink)) {
+      if (!isValidHttpsUrl(storeLink)) {
         errors.push(
           `Published product ${product.slug} has invalid ${platform} storeLink: ${storeLink}`,
         );
@@ -67,10 +67,19 @@ export function validateProducts(products: Product[]): string[] {
   return errors;
 }
 
-function isValidUrl(value: string): boolean {
+function isValidLastUpdated(value: string): boolean {
+  if (!lastUpdatedPattern.test(value)) {
+    return false;
+  }
+
+  const date = new Date(`${value}T00:00:00.000Z`);
+
+  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+}
+
+function isValidHttpsUrl(value: string): boolean {
   try {
-    new URL(value);
-    return true;
+    return new URL(value).protocol === "https:";
   } catch {
     return false;
   }

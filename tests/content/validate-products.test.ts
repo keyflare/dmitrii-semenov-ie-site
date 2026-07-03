@@ -61,6 +61,30 @@ describe("validateProducts", () => {
     );
   });
 
+  test("rejects impossible lastUpdated dates", () => {
+    const productWithImpossibleLastUpdated: Product = {
+      ...baseProduct,
+      lastUpdated: "2026-99-99",
+    };
+
+    expect(validateProducts([productWithImpossibleLastUpdated])).toContain(
+      "Published product sample has invalid lastUpdated: 2026-99-99",
+    );
+  });
+
+  test("rejects unsafe store URLs", () => {
+    const productWithUnsafeStoreUrl: Product = {
+      ...baseProduct,
+      storeLinks: {
+        ios: "javascript:alert(1)",
+      },
+    };
+
+    expect(validateProducts([productWithUnsafeStoreUrl])).toContain(
+      "Published product sample has invalid ios storeLink: javascript:alert(1)",
+    );
+  });
+
   test("allows fixture products to stay out of public validation", () => {
     const fixtureProduct: Product = {
       ...baseProduct,
