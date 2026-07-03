@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getPrerenderPaths } from "../../app/content/products/registry";
+import { findPublishedProduct, getPrerenderPaths } from "../../app/content/products/registry";
 
 describe("product route paths", () => {
   test("includes static public routes", () => {
@@ -11,5 +11,9 @@ describe("product route paths", () => {
   test("does not prerender fixture product routes", () => {
     expect(getPrerenderPaths()).not.toContain("/products/fixture-product");
     expect(getPrerenderPaths()).not.toContain("/products/fixture-product/privacy");
+  });
+
+  test("does not expose fixture products through the public lookup", () => {
+    expect(findPublishedProduct("fixture-product")).toBeUndefined();
   });
 });

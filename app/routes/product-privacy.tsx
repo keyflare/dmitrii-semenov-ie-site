@@ -1,11 +1,11 @@
 import type { Route } from "./+types/product-privacy";
 import { PageHeader } from "~/components/PageHeader";
-import { findRoutableProduct } from "~/content/products/registry";
+import { findPublishedProduct } from "~/content/products/registry";
 import { getPrivacySections } from "~/content/products/privacyBlocks";
 import { siteConfig } from "~/content/site";
 
 export const meta: Route.MetaFunction = ({ params }) => {
-  const product = findRoutableProduct(params.slug);
+  const product = findPublishedProduct(params.slug);
 
   return [
     {
@@ -21,7 +21,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export default function ProductPrivacyRoute({ params }: Route.ComponentProps) {
-  const product = findRoutableProduct(params.slug);
+  const product = findPublishedProduct(params.slug);
 
   if (!product) {
     throw new Response("Product not found", { status: 404 });

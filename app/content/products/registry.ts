@@ -29,6 +29,10 @@ export function getPublishedProducts() {
   return products.filter((product) => product.status === "published");
 }
 
+export function findPublishedProduct(slug: string) {
+  return getPublishedProducts().find((product) => product.slug === slug);
+}
+
 export function getRoutableProducts() {
   return products.filter(
     (product) => product.status === "published" || product.status === "fixture",

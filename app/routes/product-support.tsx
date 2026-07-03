@@ -1,11 +1,11 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/product-support";
 import { PageHeader } from "~/components/PageHeader";
-import { findRoutableProduct } from "~/content/products/registry";
+import { findPublishedProduct } from "~/content/products/registry";
 import { siteConfig } from "~/content/site";
 
 export const meta: Route.MetaFunction = ({ params }) => {
-  const product = findRoutableProduct(params.slug);
+  const product = findPublishedProduct(params.slug);
 
   return [
     {
@@ -18,7 +18,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export default function ProductSupportRoute({ params }: Route.ComponentProps) {
-  const product = findRoutableProduct(params.slug);
+  const product = findPublishedProduct(params.slug);
 
   if (!product) {
     throw new Response("Product not found", { status: 404 });
