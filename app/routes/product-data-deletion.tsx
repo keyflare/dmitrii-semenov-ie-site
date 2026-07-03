@@ -19,12 +19,18 @@ export const meta: Route.MetaFunction = ({ params }) => {
   ];
 };
 
-export default function ProductDataDeletionRoute({ params }: Route.ComponentProps) {
-  const product = findPublishedProduct(params.slug);
+export function getProductDataDeletionProduct(slug: string) {
+  const product = findPublishedProduct(slug);
 
   if (!product || !product.privacyProfile.requiresDataDeletionPage) {
     throw new Response("Data deletion page not found", { status: 404 });
   }
+
+  return product;
+}
+
+export default function ProductDataDeletionRoute({ params }: Route.ComponentProps) {
+  const product = getProductDataDeletionProduct(params.slug);
 
   return (
     <>

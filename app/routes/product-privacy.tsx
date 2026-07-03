@@ -20,12 +20,18 @@ export const meta: Route.MetaFunction = ({ params }) => {
   ];
 };
 
-export default function ProductPrivacyRoute({ params }: Route.ComponentProps) {
-  const product = findPublishedProduct(params.slug);
+export function getProductPrivacyProduct(slug: string) {
+  const product = findPublishedProduct(slug);
 
   if (!product) {
     throw new Response("Product not found", { status: 404 });
   }
+
+  return product;
+}
+
+export default function ProductPrivacyRoute({ params }: Route.ComponentProps) {
+  const product = getProductPrivacyProduct(params.slug);
 
   const sections = getPrivacySections(product);
 

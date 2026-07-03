@@ -17,12 +17,18 @@ export const meta: Route.MetaFunction = ({ params }) => {
   ];
 };
 
-export default function ProductOverviewRoute({ params }: Route.ComponentProps) {
-  const product = findPublishedProduct(params.slug);
+export function getProductOverviewProduct(slug: string) {
+  const product = findPublishedProduct(slug);
 
   if (!product) {
     throw new Response("Product not found", { status: 404 });
   }
+
+  return product;
+}
+
+export default function ProductOverviewRoute({ params }: Route.ComponentProps) {
+  const product = getProductOverviewProduct(params.slug);
 
   return (
     <>
