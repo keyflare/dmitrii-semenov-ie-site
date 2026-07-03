@@ -1,18 +1,21 @@
-export function meta() {
-  return [
-    { title: "Keyflare Studio" },
-    {
-      name: "description",
-      content: "Static product hub for Keyflare Studio.",
-    },
-  ];
-}
+import type { MetaFunction } from "react-router";
+import { PageHeader } from "~/components/PageHeader";
+import { siteConfig } from "~/content/site";
 
-export default function Home() {
+export const meta: MetaFunction = () => [
+  { title: `${siteConfig.brandName} - Software Products` },
+  {
+    name: "description",
+    content: "Official product hub for Keyflare Studio apps and software.",
+  },
+];
+
+export default function HomeRoute() {
   return (
-    <main>
-      <h1>Keyflare Studio</h1>
-      <p>Static product hub for Keyflare Studio.</p>
-    </main>
+    <PageHeader
+      eyebrow="Product studio"
+      title={siteConfig.brandName}
+      description="Independent software products for mobile and desktop platforms."
+    />
   );
 }

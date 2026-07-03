@@ -1,3 +1,3 @@
 export function getPrerenderPaths() {
-  return ["/"];
+  return ["/", "/products", "/about", "/contact", "/legal", "/legal/privacy"];
 }
