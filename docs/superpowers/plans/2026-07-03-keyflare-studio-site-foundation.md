@@ -111,6 +111,10 @@ Responsibilities:
 - Create: `react-router.config.ts`
 - Modify: `README.md`
 
+Implementation note: Task 1 now includes minimal bootstrap stubs for `app/`, `scripts/`,
+and `tests/` so exposed npm scripts remain runnable between tasks. Later tasks should
+expand or replace those existing files instead of assuming they are absent.
+
 - [ ] **Step 1: Verify the implementation branch**
 
 Run:
