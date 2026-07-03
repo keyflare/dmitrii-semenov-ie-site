@@ -13,7 +13,7 @@
 ## Development And Deployment Model
 
 - `main` is the production branch.
-- Feature work happens on short-lived branches such as `codex/site-foundation`.
+- Feature work happens on short-lived branches. This implementation branch is `codex/start-project`.
 - Pull requests and feature branches run validation, typecheck, lint, tests, build, and route checks.
 - Pushes to `main` run the same checks and then deploy the static build artifact to GitHub Pages.
 - GitHub Pages should be configured to use **GitHub Actions** as its publishing source.
@@ -32,6 +32,7 @@ eslint.config.js
 tsconfig.json
 vite.config.ts
 react-router.config.ts
+public/CNAME
 public/app-ads.txt
 
 app/root.tsx
@@ -78,6 +79,8 @@ docs/superpowers/plans/2026-07-03-keyflare-studio-site-foundation.md
 
 Responsibilities:
 
+- `public/CNAME`: current GitHub Pages custom domain file, moved from the repository root and preserved exactly.
+- `public/app-ads.txt`: current AdMob app-ads file, moved from the repository root and preserved exactly.
 - `app/content/site.ts`: site-wide brand, operator, domain, and contact config.
 - `app/content/products/types.ts`: product registry TypeScript types.
 - `app/content/products/registry.ts`: product registry, including a non-public fixture product.
@@ -95,6 +98,9 @@ Responsibilities:
 ### Task 1: Create Feature Branch And Tooling Skeleton
 
 **Files:**
+- Delete: `index.html`
+- Move: `CNAME` to `public/CNAME`
+- Move: `app-ads.txt` to `public/app-ads.txt`
 - Create: `package.json`
 - Create: `.gitignore`
 - Create: `.prettierrc`
@@ -104,15 +110,15 @@ Responsibilities:
 - Create: `react-router.config.ts`
 - Modify: `README.md`
 
-- [ ] **Step 1: Create the implementation branch**
+- [ ] **Step 1: Verify the implementation branch**
 
 Run:
 
 ```bash
-git switch -c codex/site-foundation
+git status --short --branch
 ```
 
-Expected: Git reports that it switched to `codex/site-foundation`.
+Expected: Output begins with `## codex/start-project`.
 
 - [ ] **Step 2: Install runtime and development dependencies**
 
@@ -294,7 +300,34 @@ npm run preview
 GitHub Pages deployment runs from GitHub Actions after checks pass on `main`.
 ````
 
-- [ ] **Step 11: Run formatting**
+- [ ] **Step 11: Move existing public root files into the static public directory**
+
+Run:
+
+```bash
+mkdir -p public
+git mv CNAME public/CNAME
+git mv app-ads.txt public/app-ads.txt
+```
+
+Expected:
+
+```text
+public/CNAME contains www.dmitrii-semenov-ie.studio
+public/app-ads.txt contains google.com, pub-9754850090036735, DIRECT, f08c47fec0942fa0
+```
+
+- [ ] **Step 12: Remove the old static placeholder page**
+
+Run:
+
+```bash
+git rm index.html
+```
+
+Expected: The old root `index.html` placeholder is removed because React Router will own the generated HTML output.
+
+- [ ] **Step 13: Run formatting**
 
 Run:
 
@@ -304,12 +337,12 @@ npm run format
 
 Expected: Prettier formats the new files.
 
-- [ ] **Step 12: Commit tooling skeleton**
+- [ ] **Step 14: Commit tooling skeleton**
 
 Run:
 
 ```bash
-git add package.json package-lock.json .gitignore .prettierrc eslint.config.js tsconfig.json vite.config.ts react-router.config.ts README.md
+git add package.json package-lock.json .gitignore .prettierrc eslint.config.js tsconfig.json vite.config.ts react-router.config.ts README.md public/CNAME public/app-ads.txt index.html
 git commit -m "chore: add React Router tooling"
 ```
 
@@ -344,7 +377,7 @@ export const siteConfig = {
   brandName: "Keyflare Studio",
   legalOperator: "Dmitrii Semenov, Individual Entrepreneur, Armenia",
   defaultLocale: "en",
-  canonicalOrigin: "https://keyflare.studio",
+  canonicalOrigin: "https://www.dmitrii-semenov-ie.studio",
   businessEmail: "semdm.am@gmail.com",
   supportEmail: "semdm.am@gmail.com",
 } as const;
@@ -1475,7 +1508,8 @@ Expected: Commit succeeds.
 - Create: `scripts/generate-static-metadata.ts`
 - Create: `scripts/check-routes.ts`
 - Create: `tests/scripts/static-metadata.test.ts`
-- Create: `public/app-ads.txt`
+- Modify: `public/app-ads.txt`
+- Inspect: `public/CNAME`
 
 - [ ] **Step 1: Write metadata tests**
 
@@ -1487,16 +1521,22 @@ import { buildRobotsTxt, buildSitemapXml } from "../../scripts/generate-static-m
 
 describe("static metadata generation", () => {
   test("robots.txt points to sitemap", () => {
-    expect(buildRobotsTxt("https://keyflare.studio")).toContain(
-      "Sitemap: https://keyflare.studio/sitemap.xml",
+    expect(buildRobotsTxt("https://www.dmitrii-semenov-ie.studio")).toContain(
+      "Sitemap: https://www.dmitrii-semenov-ie.studio/sitemap.xml",
     );
   });
 
   test("sitemap includes core public routes", () => {
-    const xml = buildSitemapXml("https://keyflare.studio", ["/", "/products", "/legal/privacy"]);
-    expect(xml).toContain("<loc>https://keyflare.studio/</loc>");
-    expect(xml).toContain("<loc>https://keyflare.studio/products/</loc>");
-    expect(xml).toContain("<loc>https://keyflare.studio/legal/privacy/</loc>");
+    const xml = buildSitemapXml("https://www.dmitrii-semenov-ie.studio", [
+      "/",
+      "/products",
+      "/legal/privacy",
+    ]);
+    expect(xml).toContain("<loc>https://www.dmitrii-semenov-ie.studio/</loc>");
+    expect(xml).toContain("<loc>https://www.dmitrii-semenov-ie.studio/products/</loc>");
+    expect(xml).toContain(
+      "<loc>https://www.dmitrii-semenov-ie.studio/legal/privacy/</loc>",
+    );
   });
 });
 ```
@@ -1560,14 +1600,16 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 }
 ```
 
-- [ ] **Step 4: Add root app-ads file**
+- [ ] **Step 4: Verify preserved custom domain and app-ads files**
 
-Create `public/app-ads.txt`:
+Run:
 
-```text
-# app-ads.txt for Keyflare Studio.
-# Replace this comment with authorized seller records before enabling AdMob for published products.
+```bash
+test "$(cat public/CNAME)" = "www.dmitrii-semenov-ie.studio"
+test "$(cat public/app-ads.txt)" = "google.com, pub-9754850090036735, DIRECT, f08c47fec0942fa0"
 ```
+
+Expected: Both commands exit successfully. Preserve the real AdMob seller record in `public/app-ads.txt`.
 
 - [ ] **Step 5: Add route output checker**
 
@@ -1591,6 +1633,7 @@ const requiredFiles = [
   ...getPrerenderPaths().map(outputPathForRoute),
   join("build", "client", "robots.txt"),
   join("build", "client", "sitemap.xml"),
+  join("build", "client", "CNAME"),
   join("build", "client", "app-ads.txt"),
 ];
 
@@ -1821,6 +1864,7 @@ Open the preview URL and verify:
 - `/legal/` renders legal information.
 - `/legal/privacy/` renders website privacy information.
 - `/app-ads.txt` renders the root AdMob file.
+- `/CNAME` is present in the build output and contains `www.dmitrii-semenov-ie.studio`.
 - `/sitemap.xml` renders generated sitemap XML.
 - `/robots.txt` renders generated robots text.
 
@@ -1841,14 +1885,14 @@ Expected: No unstaged or uncommitted changes remain.
 If using a PR, push the branch:
 
 ```bash
-git push -u origin codex/site-foundation
+git push -u origin codex/start-project
 ```
 
 If merging locally after checks pass:
 
 ```bash
 git switch main
-git merge --ff-only codex/site-foundation
+git merge --ff-only codex/start-project
 ```
 
 Expected: `main` contains the site foundation commits. The deploy workflow publishes after the push to `main`.
