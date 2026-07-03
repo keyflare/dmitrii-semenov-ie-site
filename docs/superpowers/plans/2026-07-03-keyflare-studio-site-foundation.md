@@ -98,6 +98,7 @@ Responsibilities:
 ### Task 1: Create Feature Branch And Tooling Skeleton
 
 **Files:**
+
 - Delete: `index.html`
 - Move: `CNAME` to `public/CNAME`
 - Move: `app-ads.txt` to `public/app-ads.txt`
@@ -353,6 +354,7 @@ Expected: Commit succeeds.
 ### Task 2: Add Site Config, Root Layout, And Static Routes
 
 **Files:**
+
 - Create: `app/content/site.ts`
 - Create: `app/root.tsx`
 - Create: `app/routes.ts`
@@ -822,6 +824,7 @@ Expected: Commit succeeds.
 ### Task 3: Add Product Registry And Validation
 
 **Files:**
+
 - Create: `app/content/products/types.ts`
 - Create: `app/content/products/registry.ts`
 - Create: `app/content/products/validate.ts`
@@ -983,7 +986,9 @@ export function validateProducts(products: Product[]) {
     }
 
     if (!datePattern.test(product.lastUpdated)) {
-      errors.push(`Published product ${product.slug} has invalid lastUpdated: ${product.lastUpdated}`);
+      errors.push(
+        `Published product ${product.slug} has invalid lastUpdated: ${product.lastUpdated}`,
+      );
     }
 
     for (const [platform, url] of Object.entries(product.storeLinks)) {
@@ -1032,7 +1037,9 @@ export function getPublishedProducts() {
 }
 
 export function getRoutableProducts() {
-  return products.filter((product) => product.status === "published" || product.status === "fixture");
+  return products.filter(
+    (product) => product.status === "published" || product.status === "fixture",
+  );
 }
 
 export function findRoutableProduct(slug: string) {
@@ -1104,6 +1111,7 @@ Expected: Commit succeeds.
 ### Task 4: Add Product Catalog And Product Routes
 
 **Files:**
+
 - Create: `app/components/ProductCard.tsx`
 - Create: `app/components/ProductCard.module.css`
 - Create: `app/content/products/privacyBlocks.ts`
@@ -1368,7 +1376,10 @@ export const meta: MetaFunction = ({ params }) => {
         ? `${product.name} Privacy Policy - Keyflare Studio`
         : "Privacy Policy - Keyflare Studio",
     },
-    { name: "description", content: product ? `Privacy policy for ${product.name}.` : "Privacy policy." },
+    {
+      name: "description",
+      content: product ? `Privacy policy for ${product.name}.` : "Privacy policy.",
+    },
   ];
 };
 
@@ -1451,7 +1462,10 @@ export const meta: MetaFunction = ({ params }) => {
         ? `${product.name} Data Deletion - Keyflare Studio`
         : "Data Deletion - Keyflare Studio",
     },
-    { name: "description", content: product ? `Data deletion for ${product.name}.` : "Data deletion." },
+    {
+      name: "description",
+      content: product ? `Data deletion for ${product.name}.` : "Data deletion.",
+    },
   ];
 };
 
@@ -1505,6 +1519,7 @@ Expected: Commit succeeds.
 ### Task 5: Add Static Metadata Generation And Route Output Checks
 
 **Files:**
+
 - Create: `scripts/generate-static-metadata.ts`
 - Create: `scripts/check-routes.ts`
 - Create: `tests/scripts/static-metadata.test.ts`
@@ -1534,9 +1549,7 @@ describe("static metadata generation", () => {
     ]);
     expect(xml).toContain("<loc>https://www.dmitrii-semenov-ie.studio/</loc>");
     expect(xml).toContain("<loc>https://www.dmitrii-semenov-ie.studio/products/</loc>");
-    expect(xml).toContain(
-      "<loc>https://www.dmitrii-semenov-ie.studio/legal/privacy/</loc>",
-    );
+    expect(xml).toContain("<loc>https://www.dmitrii-semenov-ie.studio/legal/privacy/</loc>");
   });
 });
 ```
@@ -1582,7 +1595,13 @@ export function buildSitemapXml(origin: string, paths: string[]) {
     .map((url) => `  <url><loc>${url}</loc></url>`)
     .join("\n");
 
-  return [`<?xml version="1.0" encoding="UTF-8"?>`, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`, urls, `</urlset>`, ""].join("\n");
+  return [
+    `<?xml version="1.0" encoding="UTF-8"?>`,
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
+    urls,
+    `</urlset>`,
+    "",
+  ].join("\n");
 }
 
 export function writeStaticMetadata() {
@@ -1688,6 +1707,7 @@ Expected: Commit succeeds.
 ### Task 6: Add CI Checks And GitHub Pages Deployment
 
 **Files:**
+
 - Create: `.github/workflows/checks.yml`
 - Create: `.github/workflows/deploy-pages.yml`
 - Modify: `README.md`
@@ -1833,6 +1853,7 @@ Expected: Commit succeeds.
 ### Task 7: Final Local Verification And Merge Preparation
 
 **Files:**
+
 - Inspect: all files changed by Tasks 1-6.
 
 - [ ] **Step 1: Run the full local release check**

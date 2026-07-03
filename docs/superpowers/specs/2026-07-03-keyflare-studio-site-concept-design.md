@@ -346,4 +346,3 @@ These decisions are intentionally left for later phases:
 - Exact product registry file layout.
 - Exact styling and visual direction.
 - Whether to add localized content after the English-first version is stable.
-
