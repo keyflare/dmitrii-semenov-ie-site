@@ -174,7 +174,9 @@ describe("visual components", () => {
     const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
 
     expect(globalCss).toContain("vertical-align: baseline;");
-    expect(globalCss).toContain("font-size: clamp(2.4rem, 6.25vw, 5rem);");
+    expect(globalCss).toContain("--home-title-font-size: clamp(2.4rem, 6.25vw, 5rem);");
+    expect(globalCss).toContain("--page-header-eyebrow-drop: var(--home-title-font-size);");
+    expect(globalCss).toContain("font-size: var(--home-title-font-size);");
     expect(globalCss).toContain("gap: calc(var(--space-8) / 3);");
     expect(globalCss).toContain("@media (min-width: 1400px)");
     expect(globalCss).toContain("grid-template-columns: minmax(0, 0.735fr) minmax(26rem, 0.58fr);");
@@ -186,6 +188,8 @@ describe("visual components", () => {
     expect(globalCss).toContain(".home-poster-title-token");
     expect(globalCss).toContain("white-space: nowrap;");
     expect(globalCss).toContain("@media (max-width: 1100px)");
+    expect(globalCss).toContain("--home-title-font-size: clamp(1.7rem, 9vw, 2.4rem);");
+    expect(globalCss).not.toContain("--page-header-eyebrow-drop: 0.875rem;");
     expect(globalCss).not.toContain("drop-shadow(0.3rem 0.3rem 0 rgb(21 17 28 / 14%))");
     expect(pageHeaderCss).toContain("gap: var(--space-1);");
     expect(pageHeaderCss).toContain(".titleLockup");
