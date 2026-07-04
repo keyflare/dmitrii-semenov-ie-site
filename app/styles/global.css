@@ -64,6 +64,8 @@ svg {
 }
 
 .home-hero {
+  --page-header-eyebrow-drop: clamp(2.25rem, 7vw, 5rem);
+
   display: grid;
   align-content: center;
   justify-items: start;

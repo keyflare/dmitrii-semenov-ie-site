@@ -149,7 +149,10 @@ describe("visual components", () => {
     expect(html).toContain("home-title-second-line");
     expect(html).toContain("home-title-studio-word");
     expect(html).toContain("home-title-logo");
+    expect(html).toContain("titleLockup");
     expect(html).toContain("eyebrowEnd");
+    expect(html).toContain("BY DMITRII SEMENOV");
+    expect(html).not.toContain("Independent software studio");
     expect(html).toContain("home-poster-title-token");
     expect(html).toContain("Apps /</span>");
     expect(html).toContain("Games /</span>");
@@ -181,6 +184,10 @@ describe("visual components", () => {
     expect(globalCss).toContain("@media (max-width: 1100px)");
     expect(globalCss).not.toContain("drop-shadow(0.3rem 0.3rem 0 rgb(21 17 28 / 14%))");
     expect(pageHeaderCss).toContain("gap: var(--space-1);");
+    expect(pageHeaderCss).toContain(".titleLockup");
+    expect(pageHeaderCss).toContain("width: max-content;");
+    expect(pageHeaderCss).toContain("max-width: 100%;");
+    expect(pageHeaderCss).toContain("transform: translateY(var(--page-header-eyebrow-drop, 0));");
     expect(pageHeaderCss).toContain(".poster .description");
     expect(pageHeaderCss).toContain("margin-top: var(--space-1);");
   });
