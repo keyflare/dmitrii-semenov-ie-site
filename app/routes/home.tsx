@@ -2,6 +2,7 @@ import type { MetaFunction } from "react-router";
 import { Link } from "react-router";
 import { PageHeader } from "~/components/PageHeader";
 import { ProductCard } from "~/components/ProductCard";
+import { StudioLogo } from "~/components/StudioLogo";
 import { getPublishedProducts } from "~/content/products/registry";
 import { siteConfig } from "~/content/site";
 
@@ -21,8 +22,22 @@ export default function HomeRoute() {
       <section className="home-hero" aria-labelledby="home-title">
         <PageHeader
           eyebrow="Independent software studio"
+          eyebrowAlign="end"
           id="home-title"
-          title={siteConfig.brandName}
+          title={
+            <>
+              <span className="home-title-keyflare-line">
+                <span className="home-title-keyflare-stem">
+                  <StudioLogo asset="rectangular" className="home-title-logo" />
+                  Keyflar
+                </span>
+              </span>
+              <span className="home-title-second-line">
+                <span className="home-title-keyflare-tail">e</span>
+                <span className="home-title-studio-word">Studio</span>
+              </span>
+            </>
+          }
           description="Tiny apps, loud ideas. Mobile games, tools, and software products with a bright studio pulse."
         />
         <div className="home-actions">

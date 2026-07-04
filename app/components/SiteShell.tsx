@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { siteConfig } from "~/content/site";
+import { StudioLogo } from "./StudioLogo";
 import styles from "./SiteShell.module.css";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
@@ -8,7 +9,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <header className={styles.header}>
         <div className={`${styles.inner} ${styles.nav}`}>
           <Link className={styles.brand} to="/" aria-label={`${siteConfig.brandName} home`}>
-            <span className={styles.brandMark}>K</span>
+            <StudioLogo className={styles.brandLogo} variant="framed" />
             <span>{siteConfig.brandName}</span>
           </Link>
           <nav className={styles.links} aria-label="Main navigation">

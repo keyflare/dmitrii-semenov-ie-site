@@ -2,7 +2,7 @@
   position: relative;
   isolation: isolate;
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-1);
   max-width: 58rem;
 }
 
@@ -35,6 +35,15 @@
   text-transform: uppercase;
 }
 
+.eyebrowStart {
+  justify-self: start;
+}
+
+.eyebrowEnd {
+  justify-self: end;
+  text-align: right;
+}
+
 .title {
   margin: 0;
   font-family: var(--font-display);
@@ -58,4 +67,8 @@
   color: var(--color-muted);
   font-size: clamp(1rem, 2vw, 1.25rem);
   line-height: 1.58;
+}
+
+.poster .description {
+  margin-top: var(--space-1);
 }

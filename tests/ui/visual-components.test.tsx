@@ -1,4 +1,5 @@
 import { createElement } from "react";
+import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { createRoutesStub, MemoryRouter } from "react-router";
 import { describe, expect, test } from "vitest";
@@ -40,6 +41,17 @@ function renderWithRouter(element: React.ReactElement) {
 }
 
 describe("visual components", () => {
+  test("SiteShell uses the studio logo asset in the header brand", async () => {
+    const { SiteShell } = await import("../../app/components/SiteShell");
+    const html = renderWithRouter(
+      createElement(SiteShell, null, createElement("p", null, "Shell content")),
+    );
+
+    expect(html).toContain('src="/brand/keyflare-studio-logo.svg"');
+    expect(html).toContain('alt=""');
+    expect(html).not.toContain(">K</span>");
+  });
+
   test("ProductLinks renders overview, policy, support, data deletion, and store links", () => {
     const html = renderWithRouter(createElement(ProductLinks, { product }));
 
@@ -130,10 +142,40 @@ describe("visual components", () => {
     const Stub = createRoutesStub([{ path: "/", Component: HomeRoute }]);
     const html = renderToStaticMarkup(createElement(Stub));
 
+    expect(html).toContain('src="/brand/keyflare-studio-logo-rect.svg"');
+    expect(html).toContain("home-title-keyflare-line");
+    expect(html).toContain("home-title-keyflare-stem");
+    expect(html).toContain("home-title-keyflare-tail");
+    expect(html).toContain("home-title-second-line");
+    expect(html).toContain("home-title-studio-word");
+    expect(html).toContain("home-title-logo");
+    expect(html).toContain("eyebrowEnd");
+    expect(html).not.toContain("home-title-studio-line");
+    expect(html).not.toContain("home-title-lockup");
+    expect(html).not.toContain("home-studio-logo");
     expect(html).toContain("Launch board");
     expect(html).toContain("Palette Master");
     expect(html).toContain('href="/products/palette-master/"');
     expect(html).not.toContain("Published products appear here with store-safe links.");
+  });
+
+  test("Home title logo behaves like a baseline-aligned inline symbol", () => {
+    const globalCss = readFileSync("app/styles/global.css", "utf8");
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
+
+    expect(globalCss).toContain("vertical-align: baseline;");
+    expect(globalCss).toContain("font-size: clamp(2.4rem, 6.25vw, 5rem);");
+    expect(globalCss).toContain("gap: calc(var(--space-8) / 3);");
+    expect(globalCss).toContain("@media (min-width: 1400px)");
+    expect(globalCss).toContain("grid-template-columns: minmax(0, 0.735fr) minmax(26rem, 0.58fr);");
+    expect(globalCss).toContain("align-items: flex-end;");
+    expect(globalCss).toContain("gap: 0;");
+    expect(globalCss).toContain("justify-content: space-between;");
+    expect(globalCss).toContain("overflow-wrap: anywhere;");
+    expect(globalCss).not.toContain("drop-shadow(0.3rem 0.3rem 0 rgb(21 17 28 / 14%))");
+    expect(pageHeaderCss).toContain("gap: var(--space-1);");
+    expect(pageHeaderCss).toContain(".poster .description");
+    expect(pageHeaderCss).toContain("margin-top: var(--space-1);");
   });
 
   test("DocumentPage renders a calm document wrapper", () => {
