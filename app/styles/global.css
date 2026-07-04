@@ -126,20 +126,6 @@ svg {
   margin-top: var(--space-8);
 }
 
-.home-actions a {
-  padding: 0.8rem 1rem;
-  border: 2px solid var(--color-ink);
-  border-radius: var(--radius-sm);
-  color: var(--color-ink);
-  background: var(--color-paper-soft);
-  box-shadow: var(--shadow-poster);
-  text-decoration: none;
-}
-
-.home-actions a:first-child {
-  background: var(--gradient-chromatic);
-}
-
 .home-poster {
   position: relative;
   display: grid;

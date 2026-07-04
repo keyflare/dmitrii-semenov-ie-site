@@ -106,6 +106,8 @@ describe("visual components", () => {
     const { ProductCard } = await import("../../app/components/ProductCard");
     const html = renderWithRouter(createElement(ProductCard, { product }));
 
+    expect(html).toContain("posterButton");
+    expect(html).toContain("compact");
     expect(html).toContain("Visual Test Product");
     expect(html).toContain("mobile-app");
     expect(html).toContain("ios / android");
@@ -146,6 +148,9 @@ describe("visual components", () => {
     const Stub = createRoutesStub([{ path: "/", Component: HomeRoute }]);
     const html = renderToStaticMarkup(createElement(Stub));
 
+    expect(html).toContain("posterButton");
+    expect(html).toContain("hero");
+    expect(html).toContain("primary");
     expect(html).toContain('src="/brand/keyflare-studio-logo-rect.svg"');
     expect(html).toContain("home-title-keyflare-line");
     expect(html).toContain("home-title-keyflare-stem");
@@ -209,6 +214,17 @@ describe("visual components", () => {
     expect(siteShellCss).toContain("transform: translateY(-0.12rem);");
     expect(siteShellCss).toContain("font-size: 1.275rem;");
     expect(siteShellCss).not.toContain("text-transform: uppercase;");
+  });
+
+  test("PosterButton provides the shared pressed hover treatment", () => {
+    const posterButtonCss = readFileSync("app/components/PosterButton.module.css", "utf8");
+
+    expect(posterButtonCss).toContain(".posterButton");
+    expect(posterButtonCss).toContain(".hero");
+    expect(posterButtonCss).toContain(".compact");
+    expect(posterButtonCss).toContain(".interactive:hover");
+    expect(posterButtonCss).toContain("transform: translate(0.08rem, 0.08rem);");
+    expect(posterButtonCss).toContain("box-shadow: var(--poster-button-hover-shadow);");
   });
 
   test("DocumentPage renders a calm document wrapper", () => {

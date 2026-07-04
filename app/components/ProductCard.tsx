@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import type { Product, ProductPlatform } from "~/content/products/types";
+import { PosterButton } from "./PosterButton";
 import styles from "./ProductCard.module.css";
 
 const platformLabels: Record<ProductPlatform, string> = {
@@ -70,34 +71,40 @@ export function ProductCard({ product }: { product: Product }) {
           <p className={styles.description}>{product.shortDescription}</p>
           <div className={styles.meta}>{product.platforms.join(" / ")}</div>
           <nav className={styles.actions} aria-label={`${product.name} quick links`}>
-            <a className={styles.primaryAction} href={feedbackUrl}>
+            <PosterButton href={feedbackUrl} size="compact" tone="primary">
               Send feedback
-            </a>
-            <Link to={`/products/${product.slug}/privacy/`}>Privacy</Link>
-            <Link to={`/products/${product.slug}/support/`}>Support</Link>
+            </PosterButton>
+            <PosterButton to={`/products/${product.slug}/privacy/`} size="compact">
+              Privacy
+            </PosterButton>
+            <PosterButton to={`/products/${product.slug}/support/`} size="compact">
+              Support
+            </PosterButton>
             {product.privacyProfile.requiresDataDeletionPage ? (
-              <Link to={`/products/${product.slug}/data-deletion/`}>Data deletion</Link>
+              <PosterButton to={`/products/${product.slug}/data-deletion/`} size="compact">
+                Data deletion
+              </PosterButton>
             ) : null}
             {storeLinks.map(([platform, href]) => (
-              <a
+              <PosterButton
                 key={platform}
                 className={storeIcons[platform] ? styles.storeAction : undefined}
                 href={href}
-                rel="noreferrer"
+                size="compact"
                 target="_blank"
               >
                 {renderPlatformActionLabel(platform)}
-              </a>
+              </PosterButton>
             ))}
             {comingSoonPlatforms.map((platform) => (
-              <span
+              <PosterButton
                 key={platform}
-                className={`${styles.comingSoon} ${
-                  storeIcons[platform] ? styles.storeAction : ""
-                }`.trim()}
+                className={storeIcons[platform] ? styles.storeAction : undefined}
+                size="compact"
+                tone="disabled"
               >
                 {renderPlatformActionLabel(platform, " coming soon")}
-              </span>
+              </PosterButton>
             ))}
           </nav>
         </div>

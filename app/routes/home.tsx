@@ -1,6 +1,6 @@
 import type { MetaFunction } from "react-router";
-import { Link } from "react-router";
 import { PageHeader } from "~/components/PageHeader";
+import { PosterButton } from "~/components/PosterButton";
 import { ProductCard } from "~/components/ProductCard";
 import { StudioLogo } from "~/components/StudioLogo";
 import { getPublishedProducts } from "~/content/products/registry";
@@ -41,8 +41,12 @@ export default function HomeRoute() {
           description="Tiny apps, loud ideas. Mobile games, tools, and software products with a bright studio pulse."
         />
         <div className="home-actions">
-          <Link to="/products/">View products</Link>
-          <Link to="/contact/">Contact studio</Link>
+          <PosterButton to="/products/" size="hero" tone="primary">
+            View products
+          </PosterButton>
+          <PosterButton to="/contact/" size="hero">
+            Contact studio
+          </PosterButton>
         </div>
       </section>
       <section className="home-poster" aria-label="Studio product signals">
