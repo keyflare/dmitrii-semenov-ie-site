@@ -231,6 +231,7 @@ svg {
 @media (max-width: 1100px) {
   .home-layout {
     grid-template-columns: 1fr;
+    row-gap: var(--space-8);
   }
 
   .home-hero {

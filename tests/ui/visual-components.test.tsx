@@ -188,6 +188,7 @@ describe("visual components", () => {
     expect(globalCss).toContain(".home-poster-title-token");
     expect(globalCss).toContain("white-space: nowrap;");
     expect(globalCss).toContain("@media (max-width: 1100px)");
+    expect(globalCss).toContain("row-gap: var(--space-8);");
     expect(globalCss).toContain("--home-title-font-size: clamp(1.7rem, 9vw, 2.4rem);");
     expect(globalCss).not.toContain("--page-header-eyebrow-drop: 0.875rem;");
     expect(globalCss).not.toContain("drop-shadow(0.3rem 0.3rem 0 rgb(21 17 28 / 14%))");
