@@ -198,3 +198,39 @@ svg {
   line-height: 0.95;
   text-transform: uppercase;
 }
+
+.product-overview {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.product-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.65fr);
+  gap: var(--space-6);
+  align-items: end;
+  padding: var(--space-6);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-md);
+  background: var(--color-paper-soft);
+  box-shadow: var(--shadow-poster);
+}
+
+.product-panel h2 {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.product-panel p {
+  margin: var(--space-2) 0;
+  color: var(--color-muted);
+}
+
+@media (max-width: 760px) {
+  .product-panel {
+    grid-template-columns: 1fr;
+  }
+}
