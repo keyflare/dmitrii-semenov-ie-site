@@ -1,5 +1,6 @@
 .header {
   position: relative;
+  isolation: isolate;
   display: grid;
   gap: var(--space-3);
   max-width: 58rem;

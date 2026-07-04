@@ -30,13 +30,13 @@ export default function HomeRoute() {
         </div>
       </section>
       <section className="home-poster" aria-label="Studio product signals">
-        <div className="poster-number">01</div>
-        <div className="poster-title">Apps / Games / Tools</div>
+        <div className="home-poster-number">01</div>
+        <div className="home-poster-title">Apps / Games / Tools</div>
         <p>
           Store-facing product pages, support links, and privacy policies wrapped in a visual system
           with teeth.
         </p>
-        <div className="poster-strip" />
+        <div className="home-poster-strip" />
       </section>
       <section className="home-products" aria-label="Published products">
         <h2>Launch board</h2>

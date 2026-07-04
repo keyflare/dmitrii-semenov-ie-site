@@ -10,7 +10,11 @@ export const meta: MetaFunction = () => [
 export default function ContactRoute() {
   return (
     <>
-      <PageHeader title="Contact" description="Business inquiries for Keyflare Studio." />
+      <PageHeader
+        title="Contact"
+        description="Business inquiries for Keyflare Studio."
+        variant="document"
+      />
       <p>
         Email: <a href={`mailto:${siteConfig.businessEmail}`}>{siteConfig.businessEmail}</a>
       </p>

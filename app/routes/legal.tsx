@@ -11,7 +11,11 @@ export const meta: MetaFunction = () => [
 export default function LegalRoute() {
   return (
     <>
-      <PageHeader title="Legal" description={`Operator: ${siteConfig.legalOperator}.`} />
+      <PageHeader
+        title="Legal"
+        description={`Operator: ${siteConfig.legalOperator}.`}
+        variant="document"
+      />
       <p>
         Business contact:{" "}
         <a href={`mailto:${siteConfig.businessEmail}`}>{siteConfig.businessEmail}</a>

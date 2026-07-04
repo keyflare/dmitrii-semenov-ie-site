@@ -40,7 +40,11 @@ export function ProductPrivacyContent({ product }: { product: Product }) {
 
   return (
     <>
-      <PageHeader title={`${product.name} Privacy Policy`} description={product.shortDescription} />
+      <PageHeader
+        title={`${product.name} Privacy Policy`}
+        description={product.shortDescription}
+        variant="document"
+      />
       {sections.map((section) => (
         <section key={section.title}>
           <h2>{section.title}</h2>

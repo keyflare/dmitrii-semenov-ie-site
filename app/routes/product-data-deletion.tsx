@@ -37,6 +37,7 @@ export default function ProductDataDeletionRoute({ params }: Route.ComponentProp
       <PageHeader
         title={`${product.name} Data Deletion`}
         description="Instructions for requesting deletion of product-related data."
+        variant="document"
       />
       <p>
         Send a deletion request to{" "}

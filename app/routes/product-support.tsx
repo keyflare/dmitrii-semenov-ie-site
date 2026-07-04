@@ -36,7 +36,11 @@ export function ProductSupportContent({ product }: { product: Product }) {
 
   return (
     <>
-      <PageHeader title={`${product.name} Support`} description={product.shortDescription} />
+      <PageHeader
+        title={`${product.name} Support`}
+        description={product.shortDescription}
+        variant="document"
+      />
       <p>
         Email: <a href={`mailto:${product.supportEmail}`}>{product.supportEmail}</a>
       </p>

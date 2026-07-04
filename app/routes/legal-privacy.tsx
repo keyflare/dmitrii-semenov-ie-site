@@ -13,6 +13,7 @@ export default function LegalPrivacyRoute() {
       <PageHeader
         title="Website Privacy Policy"
         description="Privacy information for visitors of this website."
+        variant="document"
       />
       <p>This website is operated by {siteConfig.legalOperator}.</p>
       <p>This page covers the website itself, not individual product privacy policies.</p>

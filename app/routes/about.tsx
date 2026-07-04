@@ -12,6 +12,7 @@ export default function AboutRoute() {
     <PageHeader
       title={`About ${siteConfig.brandName}`}
       description="Keyflare Studio publishes independent software products for app stores and desktop platforms."
+      variant="document"
     />
   );
 }

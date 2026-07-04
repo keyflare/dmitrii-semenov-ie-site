@@ -112,7 +112,7 @@ svg {
   transform: rotate(17deg);
 }
 
-.poster-number {
+.home-poster-number {
   position: absolute;
   top: var(--space-6);
   left: var(--space-6);
@@ -122,7 +122,7 @@ svg {
   line-height: 0.8;
 }
 
-.poster-title {
+.home-poster-title {
   position: relative;
   z-index: 1;
   max-width: 16rem;
@@ -140,7 +140,7 @@ svg {
   line-height: 1.55;
 }
 
-.poster-strip {
+.home-poster-strip {
   position: absolute;
   right: var(--space-6);
   bottom: var(--space-6);
