@@ -149,10 +149,6 @@
   background: var(--product-gradient, var(--gradient-chromatic));
 }
 
-.feedbackLink {
-  background: var(--color-paper-soft);
-}
-
 .media {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

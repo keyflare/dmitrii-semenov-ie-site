@@ -134,6 +134,12 @@ describe("product customization", () => {
     expect(html).toContain("/products/palette-master/screenshots/palette-master-03");
     expect(html).toContain("/products/palette-master/privacy/");
     expect(html).toContain("/products/palette-master/support/");
+    expect(html).toMatch(
+      /<nav[^>]+aria-label="Palette Master links"[^>]*><a[^>]+>Send feedback<\/a>/,
+    );
+    expect(html).not.toContain(
+      'href="/products/palette-master/" data-discover="true">Overview</a>',
+    );
     expect(html).not.toContain(">Android</a>");
     expect(html).not.toContain("iOS coming soon</span>");
     expect(html).not.toContain("Get it on Android");

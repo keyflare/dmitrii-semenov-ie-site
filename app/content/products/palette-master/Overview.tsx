@@ -75,14 +75,11 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
             awake.
           </p>
           <nav className={styles.heroLinks} aria-label="Palette Master links">
-            <Link className={styles.primaryLink} to={`/products/${product.slug}/`}>
-              Overview
-            </Link>
-            <Link to={`/products/${product.slug}/privacy/`}>Privacy</Link>
-            <Link to={`/products/${product.slug}/support/`}>Support</Link>
-            <a className={styles.feedbackLink} href={feedbackUrl}>
+            <a className={styles.primaryLink} href={feedbackUrl}>
               Send feedback
             </a>
+            <Link to={`/products/${product.slug}/privacy/`}>Privacy</Link>
+            <Link to={`/products/${product.slug}/support/`}>Support</Link>
           </nav>
         </div>
         <div className={styles.media} aria-label="Palette Master screenshots">
