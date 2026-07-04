@@ -174,10 +174,15 @@ svg {
   z-index: 1;
   max-width: 16rem;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 4rem);
+  font-size: clamp(1.7rem, 4.25vw, 3.4rem);
   font-weight: 800;
   line-height: 0.9;
   text-transform: uppercase;
+}
+
+.home-poster-title-token {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .home-poster p {

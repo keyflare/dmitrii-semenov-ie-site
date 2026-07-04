@@ -47,7 +47,11 @@ export default function HomeRoute() {
       </section>
       <section className="home-poster" aria-label="Studio product signals">
         <div className="home-poster-number">01</div>
-        <div className="home-poster-title">Apps / Games / Tools</div>
+        <div className="home-poster-title">
+          <span className="home-poster-title-token">Apps /</span>{" "}
+          <span className="home-poster-title-token">Games /</span>{" "}
+          <span className="home-poster-title-token">Tools</span>
+        </div>
         <p>
           Store-facing product pages, support links, and privacy policies wrapped in a visual system
           with teeth.

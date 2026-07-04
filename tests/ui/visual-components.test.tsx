@@ -150,6 +150,9 @@ describe("visual components", () => {
     expect(html).toContain("home-title-studio-word");
     expect(html).toContain("home-title-logo");
     expect(html).toContain("eyebrowEnd");
+    expect(html).toContain("home-poster-title-token");
+    expect(html).toContain("Apps /</span>");
+    expect(html).toContain("Games /</span>");
     expect(html).not.toContain("home-title-studio-line");
     expect(html).not.toContain("home-title-lockup");
     expect(html).not.toContain("home-studio-logo");
@@ -172,6 +175,9 @@ describe("visual components", () => {
     expect(globalCss).toContain("gap: 0;");
     expect(globalCss).toContain("justify-content: space-between;");
     expect(globalCss).toContain("overflow-wrap: anywhere;");
+    expect(globalCss).toContain("font-size: clamp(1.7rem, 4.25vw, 3.4rem);");
+    expect(globalCss).toContain(".home-poster-title-token");
+    expect(globalCss).toContain("white-space: nowrap;");
     expect(globalCss).not.toContain("drop-shadow(0.3rem 0.3rem 0 rgb(21 17 28 / 14%))");
     expect(pageHeaderCss).toContain("gap: var(--space-1);");
     expect(pageHeaderCss).toContain(".poster .description");
