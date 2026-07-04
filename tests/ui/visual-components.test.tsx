@@ -66,7 +66,23 @@ describe("visual components", () => {
     expect(html).not.toContain(">ios</a>");
     expect(html).not.toContain(">android</a>");
     expect(html).toContain('href="https://example.com/play"');
-    expect(html).toContain(">web</a>");
+    expect(html).toContain(">Web</a>");
+  });
+
+  test("ProductLinks renders platforms without store links as coming soon", () => {
+    const html = renderWithRouter(
+      createElement(ProductLinks, {
+        product: {
+          ...product,
+          storeLinks: {
+            android: "https://play.google.com/store/apps/details?id=example",
+          },
+        },
+      }),
+    );
+
+    expect(html).toContain(">Android</a>");
+    expect(html).toContain("iOS coming soon");
   });
 
   test("ProductCard includes product metadata and shared product links", async () => {

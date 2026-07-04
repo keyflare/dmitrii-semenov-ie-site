@@ -67,29 +67,53 @@ describe("product customization", () => {
     expect(productMdxContent).toHaveProperty("palette-master-privacy-extra");
   });
 
-  test("draft Palette Master exists but is not returned as published", () => {
+  test("Palette Master is published with Android availability and iOS coming soon", () => {
     const paletteMaster = products.find((product) => product.slug === "palette-master");
 
-    expect(paletteMaster?.status).toBe("draft");
-    expect(getPublishedProducts()).not.toContainEqual(
+    expect(paletteMaster).toMatchObject({
+      status: "published",
+      type: "mobile-game",
+      platforms: ["android", "ios"],
+      supportEmail: "semdm.am@gmail.com",
+      storeLinks: {
+        android: "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en",
+      },
+      privacyProfile: {
+        usesAdMob: true,
+        usesAnalytics: false,
+        usesCrashReporting: false,
+        hasAccounts: false,
+        collectsPersonalData: false,
+        requiresDataDeletionPage: false,
+        thirdPartyServices: ["Google AdMob"],
+      },
+    });
+    expect(getPublishedProducts()).toContainEqual(
       expect.objectContaining({ slug: "palette-master" }),
     );
   });
 
-  test("draft Palette Master is absent from public product paths", () => {
-    expect(findPublishedProduct("palette-master")).toBeUndefined();
-    expect(getPrerenderPaths()).not.toContain("/products/palette-master");
-    expect(getPrerenderPaths()).not.toContain("/products/palette-master/privacy");
-    expect(getPrerenderPaths()).not.toContain("/products/palette-master/support");
+  test("published Palette Master appears in public product paths without data deletion", () => {
+    expect(findPublishedProduct("palette-master")).toEqual(
+      expect.objectContaining({ slug: "palette-master" }),
+    );
+    expect(getPrerenderPaths()).toContain("/products/palette-master");
+    expect(getPrerenderPaths()).toContain("/products/palette-master/privacy");
+    expect(getPrerenderPaths()).toContain("/products/palette-master/support");
+    expect(getPrerenderPaths()).not.toContain("/products/palette-master/data-deletion");
   });
 
-  test.each([
-    ["overview", getProductOverviewProduct],
-    ["privacy", getProductPrivacyProduct],
-    ["support", getProductSupportProduct],
-    ["data deletion", getProductDataDeletionProduct],
-  ])("throws 404 for draft Palette Master on the %s route", (_routeName, getRouteProduct) => {
-    expectRoute404(getRouteProduct, "palette-master");
+  test("published Palette Master resolves through public overview, privacy, and support routes", () => {
+    expect(getProductOverviewProduct("palette-master")).toEqual(
+      expect.objectContaining({ slug: "palette-master" }),
+    );
+    expect(getProductPrivacyProduct("palette-master")).toEqual(
+      expect.objectContaining({ slug: "palette-master" }),
+    );
+    expect(getProductSupportProduct("palette-master")).toEqual(
+      expect.objectContaining({ slug: "palette-master" }),
+    );
+    expectRoute404(getProductDataDeletionProduct, "palette-master");
   });
 
   test("renders a custom overview component when configured", () => {
@@ -97,8 +121,13 @@ describe("product customization", () => {
       createElement(ProductOverviewContent, { product: getRegistryProduct("palette-master") }),
     );
 
-    expect(html).toContain("A color-focused mobile puzzle game with poster-bright energy.");
-    expect(html).toContain("Palette Master color tiles");
+    expect(html).toContain("offline color puzzle game");
+    expect(html).toContain("Android");
+    expect(html).toContain("iOS coming soon");
+    expect(html).toContain("200+ levels");
+    expect(html).toContain("No timers");
+    expect(html).toContain("mailto:semdm.am@gmail.com?subject=Palette%20Master%20feedback");
+    expect(html).toContain("/products/palette-master/screenshots/palette-master-01");
     expect(html).toContain("/products/palette-master/privacy/");
     expect(html).toContain("/products/palette-master/support/");
   });
@@ -127,8 +156,9 @@ describe("product customization", () => {
 
     expect(html).toContain("Email:");
     expect(html).toMatch(/<article class="[^"]*document[^"]*">/);
-    expect(html).toMatch(/<h2 class="[^"]*heading2[^"]*">Support Notes<\/h2>/);
-    expect(html).toContain("Support Notes");
+    expect(html).toMatch(/<h2 class="[^"]*heading2[^"]*">Feedback and Support<\/h2>/);
+    expect(html).toContain("Palette%20Master%20feedback");
+    expect(html).toContain("Android device model");
   });
 
   test("keeps generated privacy sections and appends MDX content when configured", () => {
@@ -138,7 +168,9 @@ describe("product customization", () => {
 
     expect(html).toMatch(/<article class="[^"]*document[^"]*">/);
     expect(html).toContain("Operator");
-    expect(html).toMatch(/<h2 class="[^"]*heading2[^"]*">Product-Specific Notes<\/h2>/);
-    expect(html).toContain("Product-Specific Notes");
+    expect(html).toContain("Advertising");
+    expect(html).toMatch(/<h2 class="[^"]*heading2[^"]*">Palette Master Notes<\/h2>/);
+    expect(html).toContain("does not use accounts");
+    expect(html).toContain("Google AdMob");
   });
 });

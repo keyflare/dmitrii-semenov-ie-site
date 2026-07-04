@@ -29,15 +29,18 @@ export const products: Product[] = [
     },
   },
   {
-    status: "draft",
+    status: "published",
     slug: "palette-master",
     name: "Palette Master",
     type: "mobile-game",
-    shortDescription: "A color-focused mobile puzzle game.",
-    platforms: ["ios", "android"],
+    shortDescription:
+      "An offline color puzzle game about rebuilding broken gradients tile by tile.",
+    platforms: ["android", "ios"],
     supportEmail: "semdm.am@gmail.com",
     lastUpdated: "2026-07-04",
-    storeLinks: {},
+    storeLinks: {
+      android: "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en",
+    },
     presentation: {
       overview: { mode: "custom", componentKey: "palette-master" },
       support: { mode: "mdx", contentKey: "palette-master-support" },
@@ -53,13 +56,13 @@ export const products: Product[] = [
       visualVolume: "poster",
     },
     privacyProfile: {
-      usesAdMob: false,
+      usesAdMob: true,
       usesAnalytics: false,
       usesCrashReporting: false,
       hasAccounts: false,
       collectsPersonalData: false,
       requiresDataDeletionPage: false,
-      thirdPartyServices: [],
+      thirdPartyServices: ["Google AdMob"],
     },
   },
 ];

@@ -4,6 +4,48 @@ import { ProductLinks } from "~/components/ProductLinks";
 import type { CustomProductOverviewProps } from "../customOverviewPages";
 import styles from "./Overview.module.css";
 
+const playStoreUrl =
+  "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en";
+
+const feedbackUrl = "mailto:semdm.am@gmail.com?subject=Palette%20Master%20feedback";
+
+const screenshots = [
+  {
+    src: "/products/palette-master/screenshots/palette-master-01.png",
+    alt: "Palette Master puzzle level with a broken color gradient",
+  },
+  {
+    src: "/products/palette-master/screenshots/palette-master-02.png",
+    alt: "Palette Master level selection and progress screen",
+  },
+  {
+    src: "/products/palette-master/screenshots/palette-master-03.png",
+    alt: "Palette Master gameplay with bright draggable tiles",
+  },
+  {
+    src: "/products/palette-master/screenshots/palette-master-04.png",
+    alt: "Palette Master completed palette preview",
+  },
+  {
+    src: "/products/palette-master/screenshots/palette-master-05.png",
+    alt: "Palette Master hint and puzzle controls",
+  },
+  {
+    src: "/products/palette-master/screenshots/palette-master-06.png",
+    alt: "Palette Master dark theme gameplay screen",
+  },
+];
+
+const facts = [
+  ["200+ levels", "Hand-sized gradient puzzles that grow more demanding as you progress."],
+  [
+    "Offline single-player",
+    "Play anywhere, at your own pace, without accounts or social pressure.",
+  ],
+  ["No timers", "Experiment freely. Mistakes are part of reading the palette."],
+  ["Hints included", "Reveal a correct tile or lock the pieces that already belong."],
+];
+
 export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
   const themeStyle = product.theme
     ? ({
@@ -19,32 +61,83 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
     <article className={styles.overview} style={themeStyle}>
       <section className={styles.hero}>
         <div className={styles.copy}>
+          <div className={styles.kicker}>Mobile game / Android live / iOS coming soon</div>
           <PageHeader
             eyebrow="Mobile game"
             title={product.name}
-            description="A color-focused mobile puzzle game with poster-bright energy."
+            description="An offline color puzzle game about rebuilding broken gradients tile by tile."
           />
+          <p className={styles.lede}>
+            Slide pieces into place, trust your eye for hue, and turn scattered color fields back
+            into smooth palettes. It is calm enough for a break and sharp enough to keep your brain
+            awake.
+          </p>
           <ProductLinks product={product} />
+          <div className={styles.heroActions} aria-label="Palette Master actions">
+            <a className={styles.playLink} href={playStoreUrl} rel="noreferrer" target="_blank">
+              Get it on Android
+            </a>
+            <a className={styles.feedbackLink} href={feedbackUrl}>
+              Send feedback
+            </a>
+          </div>
         </div>
-        <div className={styles.media} aria-label="Palette Master color tiles">
-          <div className={styles.tile} />
-          <div className={styles.tile} />
-          <div className={styles.tile} />
+        <div className={styles.media} aria-label="Palette Master screenshots">
+          <img
+            className={styles.heroShot}
+            src={screenshots[0].src}
+            alt={screenshots[0].alt}
+            loading="eager"
+          />
+          <img
+            className={styles.heroShot}
+            src={screenshots[5].src}
+            alt={screenshots[5].alt}
+            loading="eager"
+          />
         </div>
       </section>
-      <section className={styles.details}>
-        <div className={styles.detail}>
-          <h2>Match</h2>
-          <p>Read color relationships quickly and solve compact visual puzzles.</p>
+      <section className={styles.platformPanel} aria-label="Platform availability">
+        <div>
+          <span>Available now</span>
+          <strong>Android</strong>
         </div>
-        <div className={styles.detail}>
-          <h2>Shift</h2>
-          <p>Move through palettes, contrast, and rhythm without losing the board.</p>
+        <div>
+          <span>Next palette</span>
+          <strong>iOS coming soon</strong>
         </div>
-        <div className={styles.detail}>
-          <h2>Clear</h2>
-          <p>Designed as a bright mobile game surface for iOS and Android.</p>
+      </section>
+      <section className={styles.details} aria-label="Gameplay highlights">
+        {facts.map(([title, body]) => (
+          <div key={title} className={styles.detail}>
+            <h2>{title}</h2>
+            <p>{body}</p>
+          </div>
+        ))}
+      </section>
+      <section className={styles.gallery} aria-label="Palette Master screenshots">
+        <div className={styles.galleryHeader}>
+          <p>Inside the puzzle</p>
+          <h2>Color, contrast, and tiny victories</h2>
         </div>
+        <div className={styles.screenshotGrid}>
+          {screenshots.map((screenshot) => (
+            <img
+              key={screenshot.src}
+              className={styles.screenshot}
+              src={screenshot.src}
+              alt={screenshot.alt}
+              loading="lazy"
+            />
+          ))}
+        </div>
+      </section>
+      <section className={styles.feedback} aria-label="Palette Master feedback">
+        <div>
+          <p>Found a rough edge or have a color puzzle idea?</p>
+          <h2>Tell us what should shift next.</h2>
+        </div>
+        <a href={feedbackUrl}>Write to support</a>
       </section>
     </article>
   );
