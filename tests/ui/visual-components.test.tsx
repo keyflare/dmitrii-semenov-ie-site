@@ -1,9 +1,10 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { MemoryRouter } from "react-router";
+import { createRoutesStub, MemoryRouter } from "react-router";
 import { describe, expect, test } from "vitest";
 import { DocumentPage } from "../../app/components/DocumentPage";
 import { ProductLinks } from "../../app/components/ProductLinks";
+import { products } from "../../app/content/products/registry";
 import type { Product } from "../../app/content/products/types";
 
 const product: Product = {
@@ -66,7 +67,23 @@ describe("visual components", () => {
     expect(html).not.toContain(">ios</a>");
     expect(html).not.toContain(">android</a>");
     expect(html).toContain('href="https://example.com/play"');
-    expect(html).toContain(">web</a>");
+    expect(html).toContain(">Web</a>");
+  });
+
+  test("ProductLinks renders platforms without store links as coming soon", () => {
+    const html = renderWithRouter(
+      createElement(ProductLinks, {
+        product: {
+          ...product,
+          storeLinks: {
+            android: "https://play.google.com/store/apps/details?id=example",
+          },
+        },
+      }),
+    );
+
+    expect(html).toContain(">Android</a>");
+    expect(html).toContain("iOS coming soon");
   });
 
   test("ProductCard includes product metadata and shared product links", async () => {
@@ -76,7 +93,47 @@ describe("visual components", () => {
     expect(html).toContain("Visual Test Product");
     expect(html).toContain("mobile-app");
     expect(html).toContain("ios / android");
+    expect(html).toContain('href="/products/visual-test-product/"');
+    expect(html).toContain("Send feedback");
     expect(html).toContain("/products/visual-test-product/privacy/");
+    expect(html).toContain("/products/visual-test-product/support/");
+    expect(html).not.toContain(">Overview<");
+  });
+
+  test("ProductCard makes Palette Master card clickable and shows a product preview", async () => {
+    const { ProductCard } = await import("../../app/components/ProductCard");
+    const paletteMaster = products.find((entry) => entry.slug === "palette-master");
+
+    if (!paletteMaster) {
+      throw new Error("Missing Palette Master product fixture");
+    }
+
+    const html = renderWithRouter(createElement(ProductCard, { product: paletteMaster }));
+
+    expect(html).toContain('href="/products/palette-master/"');
+    expect(html).toContain("mailto:semdm.am@gmail.com?subject=Palette%20Master%20feedback");
+    expect(html).toContain("/products/palette-master/privacy/");
+    expect(html).toContain("/products/palette-master/support/");
+    expect(html).toContain(
+      "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&amp;hl=en",
+    );
+    expect(html).toContain("/products/palette-master/store-icons/google-play.svg");
+    expect(html).toContain("/products/palette-master/store-icons/app-store.svg");
+    expect(html).toContain("iOS coming soon");
+    expect(html).not.toContain(">Overview<");
+    expect(html).toContain("/products/palette-master/screenshots/palette-master-03.png");
+    expect(html).toContain("Palette Master gameplay preview");
+  });
+
+  test("Home route shows published products on the launch board", async () => {
+    const { default: HomeRoute } = await import("../../app/routes/home");
+    const Stub = createRoutesStub([{ path: "/", Component: HomeRoute }]);
+    const html = renderToStaticMarkup(createElement(Stub));
+
+    expect(html).toContain("Launch board");
+    expect(html).toContain("Palette Master");
+    expect(html).toContain('href="/products/palette-master/"');
+    expect(html).not.toContain("Published products appear here with store-safe links.");
   });
 
   test("DocumentPage renders a calm document wrapper", () => {

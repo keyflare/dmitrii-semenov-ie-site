@@ -1,15 +1,29 @@
 import { Link } from "react-router";
-import type { Product } from "~/content/products/types";
+import type { Product, ProductPlatform } from "~/content/products/types";
 import styles from "./ProductLinks.module.css";
+
+const platformLabels: Record<ProductPlatform, string> = {
+  android: "Android",
+  ios: "iOS",
+  macos: "macOS",
+  windows: "Windows",
+  linux: "Linux",
+  web: "Web",
+};
 
 export function ProductLinks({ product }: { product: Product }) {
   const storeLinks = Object.entries(product.storeLinks)
-    .filter((entry): entry is [string, string] => {
+    .filter((entry): entry is [ProductPlatform, string] => {
       const href = entry[1];
 
       return typeof href === "string" && href.trim() !== "";
     })
     .map(([platform, href]) => [platform, href.trim()] as const);
+
+  const linkedPlatforms = new Set(storeLinks.map(([platform]) => platform));
+  const comingSoonPlatforms = product.platforms.filter(
+    (platform) => !linkedPlatforms.has(platform),
+  );
 
   return (
     <nav className={styles.links} aria-label={`${product.name} links`}>
@@ -23,8 +37,13 @@ export function ProductLinks({ product }: { product: Product }) {
       ) : null}
       {storeLinks.map(([platform, href]) => (
         <a key={platform} href={href} rel="noreferrer" target="_blank">
-          {platform}
+          {platformLabels[platform]}
         </a>
+      ))}
+      {comingSoonPlatforms.map((platform) => (
+        <span key={platform} className={styles.comingSoon}>
+          {platformLabels[platform]} coming soon
+        </span>
       ))}
     </nav>
   );
