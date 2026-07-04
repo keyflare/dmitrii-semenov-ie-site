@@ -1,4 +1,5 @@
 import { createElement, type ReactElement } from "react";
+import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, test } from "vitest";
@@ -18,6 +19,11 @@ import {
 } from "../../app/routes/product-overview";
 import { getProductPrivacyProduct, ProductPrivacyContent } from "../../app/routes/product-privacy";
 import { getProductSupportProduct, ProductSupportContent } from "../../app/routes/product-support";
+
+const paletteMasterOverviewSource = readFileSync(
+  new URL("../../app/content/products/palette-master/Overview.tsx", import.meta.url),
+  "utf8",
+);
 
 function getRegistryProduct(slug: string): Product {
   const product = products.find((entry) => entry.slug === slug);
@@ -132,6 +138,12 @@ describe("product customization", () => {
     expect(html).toContain("No timers");
     expect(html).toContain("mailto:semdm.am@gmail.com?subject=Palette%20Master%20feedback");
     expect(html).toContain("/products/palette-master/screenshots/palette-master-03");
+    expect(html).toContain('aria-label="Previous screenshot"');
+    expect(html).toContain('aria-label="Next screenshot"');
+    expect(html).toContain('aria-live="polite"');
+    expect(html).toContain("1 / 6");
+    expect(html).toContain("carouselFrame");
+    expect(html).toContain("edgeFade");
     expect(html).toContain("/products/palette-master/privacy/");
     expect(html).toContain("/products/palette-master/support/");
     expect(html).toMatch(
@@ -143,6 +155,17 @@ describe("product customization", () => {
     expect(html).not.toContain(">Android</a>");
     expect(html).not.toContain("iOS coming soon</span>");
     expect(html).not.toContain("Get it on Android");
+  });
+
+  test("keeps the Palette Master screenshot carousel paced and scoped to one slide", () => {
+    expect(paletteMasterOverviewSource).toContain("const carouselIntervalMs = 2000");
+    expect(paletteMasterOverviewSource).toContain("track.scrollTo({");
+    expect(paletteMasterOverviewSource).toContain("target.offsetLeft - firstScreenshot.offsetLeft");
+    expect(paletteMasterOverviewSource).toContain("restartCarouselAutoplay");
+    expect(paletteMasterOverviewSource).toContain("handleCarouselControl");
+    expect(paletteMasterOverviewSource).toContain("lastCarouselInteractionAtRef");
+    expect(paletteMasterOverviewSource).not.toContain('addEventListener("scroll"');
+    expect(paletteMasterOverviewSource).not.toContain("scrollIntoView({");
   });
 
   test("renders standard overview with appended MDX content when configured", () => {
