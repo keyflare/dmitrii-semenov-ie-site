@@ -12,6 +12,11 @@ const baseProduct: Product = {
   supportEmail: "support@example.com",
   lastUpdated: "2026-07-03",
   storeLinks: {},
+  presentation: {
+    overview: { mode: "standard" },
+    support: { mode: "standard" },
+    privacy: { mode: "generated" },
+  },
   privacyProfile: {
     usesAdMob: false,
     usesAnalytics: false,
@@ -26,6 +31,16 @@ const baseProduct: Product = {
 describe("validateProducts", () => {
   test("accepts complete published products", () => {
     expect(validateProducts([baseProduct])).toEqual([]);
+  });
+
+  test("accepts published mobile games with standard presentation", () => {
+    const mobileGame: Product = {
+      ...baseProduct,
+      slug: "sample-game",
+      type: "mobile-game",
+    };
+
+    expect(validateProducts([mobileGame])).toEqual([]);
   });
 
   test("rejects duplicate slugs", () => {
@@ -82,6 +97,34 @@ describe("validateProducts", () => {
 
     expect(validateProducts([productWithUnsafeStoreUrl])).toContain(
       "Published product sample has invalid ios storeLink: javascript:alert(1)",
+    );
+  });
+
+  test("rejects published products with unknown custom overview keys", () => {
+    const productWithUnknownCustomOverview: Product = {
+      ...baseProduct,
+      presentation: {
+        ...baseProduct.presentation,
+        overview: { mode: "custom", componentKey: "missing-overview" as never },
+      },
+    };
+
+    expect(validateProducts([productWithUnknownCustomOverview])).toContain(
+      "Published product sample references unknown custom overview: missing-overview",
+    );
+  });
+
+  test("rejects published products with unknown MDX content keys", () => {
+    const productWithUnknownMdxContent: Product = {
+      ...baseProduct,
+      presentation: {
+        ...baseProduct.presentation,
+        support: { mode: "mdx", contentKey: "missing-mdx" as never },
+      },
+    };
+
+    expect(validateProducts([productWithUnknownMdxContent])).toContain(
+      "Published product sample references unknown MDX content: missing-mdx",
     );
   });
 

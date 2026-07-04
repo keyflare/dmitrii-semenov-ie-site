@@ -13,6 +13,11 @@ export const products: Product[] = [
     supportEmail: "support@example.com",
     lastUpdated: "2026-07-03",
     storeLinks: {},
+    presentation: {
+      overview: { mode: "standard" },
+      support: { mode: "standard" },
+      privacy: { mode: "generated" },
+    },
     privacyProfile: {
       usesAdMob: true,
       usesAnalytics: false,
@@ -21,6 +26,31 @@ export const products: Product[] = [
       collectsPersonalData: false,
       requiresDataDeletionPage: false,
       thirdPartyServices: ["Google AdMob"],
+    },
+  },
+  {
+    status: "draft",
+    slug: "palette-master",
+    name: "Palette Master",
+    type: "mobile-game",
+    shortDescription: "A color-focused mobile puzzle game.",
+    platforms: ["ios", "android"],
+    supportEmail: "semdm.am@gmail.com",
+    lastUpdated: "2026-07-04",
+    storeLinks: {},
+    presentation: {
+      overview: { mode: "custom", componentKey: "palette-master" },
+      support: { mode: "mdx", contentKey: "palette-master-support" },
+      privacy: { mode: "generated-with-mdx", contentKey: "palette-master-privacy-extra" },
+    },
+    privacyProfile: {
+      usesAdMob: false,
+      usesAnalytics: false,
+      usesCrashReporting: false,
+      hasAccounts: false,
+      collectsPersonalData: false,
+      requiresDataDeletionPage: false,
+      thirdPartyServices: [],
     },
   },
 ];

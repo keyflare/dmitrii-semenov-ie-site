@@ -1,7 +1,11 @@
+import { createElement } from "react";
 import { Link } from "react-router";
 import type { Route } from "./+types/product-support";
 import { PageHeader } from "~/components/PageHeader";
+import { getProductMdxContent } from "~/content/products/customMdxContent";
+import { productMdxComponents } from "~/content/products/mdxComponents";
 import { findPublishedProduct } from "~/content/products/registry";
+import type { Product } from "~/content/products/types";
 import { siteConfig } from "~/content/site";
 
 export const meta: Route.MetaFunction = ({ params }) => {
@@ -27,8 +31,8 @@ export function getProductSupportProduct(slug: string) {
   return product;
 }
 
-export default function ProductSupportRoute({ params }: Route.ComponentProps) {
-  const product = getProductSupportProduct(params.slug);
+export function ProductSupportContent({ product }: { product: Product }) {
+  const support = product.presentation.support;
 
   return (
     <>
@@ -39,6 +43,17 @@ export default function ProductSupportRoute({ params }: Route.ComponentProps) {
       <p>
         <Link to={`/products/${product.slug}/privacy/`}>Privacy policy</Link>
       </p>
+      {support.mode === "mdx"
+        ? createElement(getProductMdxContent(support.contentKey), {
+            components: productMdxComponents,
+          })
+        : null}
     </>
   );
+}
+
+export default function ProductSupportRoute({ params }: Route.ComponentProps) {
+  const product = getProductSupportProduct(params.slug);
+
+  return <ProductSupportContent product={product} />;
 }
