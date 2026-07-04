@@ -12,6 +12,11 @@ const baseProduct: Product = {
   supportEmail: "support@example.com",
   lastUpdated: "2026-07-03",
   storeLinks: {},
+  presentation: {
+    overview: { mode: "standard" },
+    support: { mode: "standard" },
+    privacy: { mode: "generated" },
+  },
   privacyProfile: {
     usesAdMob: false,
     usesAnalytics: false,
@@ -26,6 +31,16 @@ const baseProduct: Product = {
 describe("validateProducts", () => {
   test("accepts complete published products", () => {
     expect(validateProducts([baseProduct])).toEqual([]);
+  });
+
+  test("accepts published mobile games with standard presentation", () => {
+    const mobileGame: Product = {
+      ...baseProduct,
+      slug: "sample-game",
+      type: "mobile-game",
+    };
+
+    expect(validateProducts([mobileGame])).toEqual([]);
   });
 
   test("rejects duplicate slugs", () => {

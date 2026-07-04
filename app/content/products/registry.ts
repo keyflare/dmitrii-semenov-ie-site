@@ -13,6 +13,11 @@ export const products: Product[] = [
     supportEmail: "support@example.com",
     lastUpdated: "2026-07-03",
     storeLinks: {},
+    presentation: {
+      overview: { mode: "standard" },
+      support: { mode: "standard" },
+      privacy: { mode: "generated" },
+    },
     privacyProfile: {
       usesAdMob: true,
       usesAnalytics: false,
