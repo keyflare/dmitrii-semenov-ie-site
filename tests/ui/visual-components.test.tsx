@@ -49,6 +49,26 @@ describe("visual components", () => {
     expect(html).toContain("https://apps.apple.com/example");
   });
 
+  test("ProductLinks skips empty store links", () => {
+    const html = renderWithRouter(
+      createElement(ProductLinks, {
+        product: {
+          ...product,
+          storeLinks: {
+            ios: "",
+            android: undefined,
+            web: " https://example.com/play ",
+          },
+        },
+      }),
+    );
+
+    expect(html).not.toContain(">ios</a>");
+    expect(html).not.toContain(">android</a>");
+    expect(html).toContain('href="https://example.com/play"');
+    expect(html).toContain(">web</a>");
+  });
+
   test("ProductCard includes product metadata and shared product links", async () => {
     const { ProductCard } = await import("../../app/components/ProductCard");
     const html = renderWithRouter(createElement(ProductCard, { product }));
