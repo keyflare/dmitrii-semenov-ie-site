@@ -151,7 +151,8 @@ svg {
 
 .home-products {
   grid-column: 1 / -1;
-  max-width: var(--layout-readable);
+  display: grid;
+  gap: var(--space-5);
 }
 
 .home-products h2 {
@@ -160,6 +161,16 @@ svg {
   font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 0.95;
   text-transform: uppercase;
+}
+
+.home-products p {
+  max-width: var(--layout-readable);
+}
+
+.home-products-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: min(100%, 58rem);
 }
 
 @media (max-width: 860px) {

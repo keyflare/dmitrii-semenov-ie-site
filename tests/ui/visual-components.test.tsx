@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { MemoryRouter } from "react-router";
+import { createRoutesStub, MemoryRouter } from "react-router";
 import { describe, expect, test } from "vitest";
 import { DocumentPage } from "../../app/components/DocumentPage";
 import { ProductLinks } from "../../app/components/ProductLinks";
@@ -123,6 +123,17 @@ describe("visual components", () => {
     expect(html).not.toContain(">Overview<");
     expect(html).toContain("/products/palette-master/screenshots/palette-master-03.png");
     expect(html).toContain("Palette Master gameplay preview");
+  });
+
+  test("Home route shows published products on the launch board", async () => {
+    const { default: HomeRoute } = await import("../../app/routes/home");
+    const Stub = createRoutesStub([{ path: "/", Component: HomeRoute }]);
+    const html = renderToStaticMarkup(createElement(Stub));
+
+    expect(html).toContain("Launch board");
+    expect(html).toContain("Palette Master");
+    expect(html).toContain('href="/products/palette-master/"');
+    expect(html).not.toContain("Published products appear here with store-safe links.");
   });
 
   test("DocumentPage renders a calm document wrapper", () => {

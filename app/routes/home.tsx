@@ -1,6 +1,7 @@
 import type { MetaFunction } from "react-router";
 import { Link } from "react-router";
 import { PageHeader } from "~/components/PageHeader";
+import { ProductCard } from "~/components/ProductCard";
 import { getPublishedProducts } from "~/content/products/registry";
 import { siteConfig } from "~/content/site";
 
@@ -40,11 +41,15 @@ export default function HomeRoute() {
       </section>
       <section className="home-products" aria-label="Published products">
         <h2>Launch board</h2>
-        <p>
-          {products.length > 0
-            ? "Published products appear here with store-safe links."
-            : "Published products will appear here once they are ready for app-store submission."}
-        </p>
+        {products.length === 0 ? (
+          <p>Published products will appear here once they are ready for app-store submission.</p>
+        ) : (
+          <div className="home-products-grid">
+            {products.map((product) => (
+              <ProductCard key={product.slug} product={product} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
