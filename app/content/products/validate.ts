@@ -3,7 +3,7 @@ import { productCustomOverviewKeys, productMdxContentKeys, type Product } from "
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const lastUpdatedPattern = /^\d{4}-\d{2}-\d{2}$/;
 const hexColorPattern = /^#[0-9a-fA-F]{6}$/;
-const gradientPattern = /^(repeating-)?(linear|radial|conic)-gradient\(/;
+const gradientPattern = /^(repeating-)?(linear|radial|conic)-gradient\((.+)\)$/;
 
 export function validateProducts(products: Product[]): string[] {
   const errors: string[] = [];

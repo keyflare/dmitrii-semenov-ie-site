@@ -117,6 +117,28 @@ describe("validateProducts", () => {
     );
   });
 
+  test.each(["linear-gradient(", "linear-gradient(foo"])(
+    "rejects malformed product theme gradient metadata: %s",
+    (gradient) => {
+      const productWithMalformedThemeGradient: Product = {
+        ...baseProduct,
+        theme: {
+          accentPrimary: "#ff4f64",
+          accentSecondary: "#ffb000",
+          accentTertiary: "#19d3a2",
+          ink: "#15111c",
+          surface: "#fff4d7",
+          gradient,
+          visualVolume: "poster",
+        },
+      };
+
+      expect(validateProducts([productWithMalformedThemeGradient])).toContain(
+        "sample theme.gradient must be a CSS gradient value.",
+      );
+    },
+  );
+
   test("rejects duplicate slugs", () => {
     const duplicateProduct: Product = {
       ...baseProduct,
