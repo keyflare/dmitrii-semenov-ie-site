@@ -1,7 +1,7 @@
 import { createElement } from "react";
-import { Link } from "react-router";
 import type { Route } from "./+types/product-overview";
 import { PageHeader } from "~/components/PageHeader";
+import { ProductLinks } from "~/components/ProductLinks";
 import { getCustomProductOverview } from "~/content/products/customOverviewPages";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
 import { productMdxComponents } from "~/content/products/mdxComponents";
@@ -34,22 +34,21 @@ export function getProductOverviewProduct(slug: string) {
 
 export function StandardProductOverview({ product }: { product: Product }) {
   return (
-    <>
-      <PageHeader title={product.name} description={product.shortDescription} />
-      <p>Type: {product.type}</p>
-      <p>Platforms: {product.platforms.join(", ")}</p>
-      <p>
-        <Link to={`/products/${product.slug}/privacy/`}>Privacy policy</Link>
-      </p>
-      <p>
-        <Link to={`/products/${product.slug}/support/`}>Support</Link>
-      </p>
-      {product.privacyProfile.requiresDataDeletionPage ? (
-        <p>
-          <Link to={`/products/${product.slug}/data-deletion/`}>Data deletion</Link>
-        </p>
-      ) : null}
-    </>
+    <article className="product-overview">
+      <PageHeader
+        eyebrow={product.type}
+        title={product.name}
+        description={product.shortDescription}
+      />
+      <section className="product-panel" aria-label={`${product.name} details`}>
+        <div>
+          <h2>Product signal</h2>
+          <p>Platforms: {product.platforms.join(" / ")}</p>
+          <p>Type: {product.type}</p>
+        </div>
+        <ProductLinks product={product} />
+      </section>
+    </article>
   );
 }
 

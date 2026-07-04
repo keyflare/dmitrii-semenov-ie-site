@@ -97,7 +97,10 @@ describe("product customization", () => {
       createElement(ProductOverviewContent, { product: getRegistryProduct("palette-master") }),
     );
 
-    expect(html).toContain("Palette Master is a color-focused mobile game");
+    expect(html).toContain("A color-focused mobile puzzle game with poster-bright energy.");
+    expect(html).toContain("Palette Master color tiles");
+    expect(html).toContain("/products/palette-master/privacy/");
+    expect(html).toContain("/products/palette-master/support/");
   });
 
   test("renders standard overview with appended MDX content when configured", () => {
@@ -123,6 +126,8 @@ describe("product customization", () => {
     );
 
     expect(html).toContain("Email:");
+    expect(html).toMatch(/<article class="[^"]*document[^"]*">/);
+    expect(html).toMatch(/<h2 class="[^"]*heading2[^"]*">Support Notes<\/h2>/);
     expect(html).toContain("Support Notes");
   });
 
@@ -131,7 +136,9 @@ describe("product customization", () => {
       createElement(ProductPrivacyContent, { product: getRegistryProduct("palette-master") }),
     );
 
+    expect(html).toMatch(/<article class="[^"]*document[^"]*">/);
     expect(html).toContain("Operator");
+    expect(html).toMatch(/<h2 class="[^"]*heading2[^"]*">Product-Specific Notes<\/h2>/);
     expect(html).toContain("Product-Specific Notes");
   });
 });

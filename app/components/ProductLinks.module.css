@@ -1,0 +1,37 @@
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.links a {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.85rem;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  color: var(--color-ink);
+  background: var(--color-paper-soft);
+  box-shadow: 0.22rem 0.22rem 0 var(--color-ink);
+  font-size: 0.92rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease;
+}
+
+.links a:hover {
+  color: var(--color-ink);
+  background: var(--color-accent-amber);
+  box-shadow: 0.14rem 0.14rem 0 var(--color-ink);
+  transform: translate(0.08rem, 0.08rem);
+}
+
+.primaryLink {
+  background: var(--gradient-chromatic) !important;
+}

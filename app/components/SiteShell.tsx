@@ -7,8 +7,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
     <div className={styles.shell}>
       <header className={styles.header}>
         <div className={`${styles.inner} ${styles.nav}`}>
-          <Link className={styles.brand} to="/">
-            {siteConfig.brandName}
+          <Link className={styles.brand} to="/" aria-label={`${siteConfig.brandName} home`}>
+            <span className={styles.brandMark}>K</span>
+            <span>{siteConfig.brandName}</span>
           </Link>
           <nav className={styles.links} aria-label="Main navigation">
             <Link to="/products/">Products</Link>
@@ -21,8 +22,11 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <main className={styles.content}>{children}</main>
       <footer className={styles.footer}>
         <div className={`${styles.inner} ${styles.footerContent}`}>
-          <div>{siteConfig.brandName}</div>
-          <div>Operated by {siteConfig.legalOperator}.</div>
+          <div>
+            <strong>{siteConfig.brandName}</strong>
+            <p>Independent software products for mobile, desktop, and app-store surfaces.</p>
+          </div>
+          <div className={styles.legal}>Operated by {siteConfig.legalOperator}.</div>
         </div>
       </footer>
     </div>

@@ -2,6 +2,8 @@ import { productCustomOverviewKeys, productMdxContentKeys, type Product } from "
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const lastUpdatedPattern = /^\d{4}-\d{2}-\d{2}$/;
+const hexColorPattern = /^#[0-9a-fA-F]{6}$/;
+const gradientPattern = /^(repeating-)?(linear|radial|conic)-gradient\((.+)\)$/;
 
 export function validateProducts(products: Product[]): string[] {
   const errors: string[] = [];
@@ -63,10 +65,35 @@ export function validateProducts(products: Product[]): string[] {
       }
     }
 
+    validateProductTheme(product, errors);
     validatePresentation(product, errors);
   }
 
   return errors;
+}
+
+function validateProductTheme(product: Product, errors: string[]) {
+  if (!product.theme) {
+    return;
+  }
+
+  const colorEntries = [
+    ["accentPrimary", product.theme.accentPrimary],
+    ["accentSecondary", product.theme.accentSecondary],
+    ["accentTertiary", product.theme.accentTertiary],
+    ["ink", product.theme.ink],
+    ["surface", product.theme.surface],
+  ] as const;
+
+  for (const [field, value] of colorEntries) {
+    if (!hexColorPattern.test(value)) {
+      errors.push(`${product.slug} theme.${field} must be a six-digit hex color.`);
+    }
+  }
+
+  if (!gradientPattern.test(product.theme.gradient.trim())) {
+    errors.push(`${product.slug} theme.gradient must be a CSS gradient value.`);
+  }
 }
 
 function validatePresentation(product: Product, errors: string[]) {
