@@ -9,8 +9,8 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <header className={styles.header}>
         <div className={`${styles.inner} ${styles.nav}`}>
           <Link className={styles.brand} to="/" aria-label={`${siteConfig.brandName} home`}>
-            <StudioLogo className={styles.brandLogo} variant="framed" />
-            <span>{siteConfig.brandName}</span>
+            <StudioLogo className={styles.brandLogo} />
+            <span className={styles.brandName}>{siteConfig.brandName}</span>
           </Link>
           <nav className={styles.links} aria-label="Main navigation">
             <Link to="/products/">Products</Link>

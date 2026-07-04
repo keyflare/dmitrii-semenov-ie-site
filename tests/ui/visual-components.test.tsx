@@ -49,6 +49,10 @@ describe("visual components", () => {
 
     expect(html).toContain('src="/brand/keyflare-studio-logo.svg"');
     expect(html).toContain('alt=""');
+    expect(html).toContain(">Keyflare Studio</span>");
+    expect(html).not.toContain(">KEYFLARE STUDIO</span>");
+    expect(html).toContain("_plain_");
+    expect(html).not.toContain("_framed_");
     expect(html).not.toContain(">K</span>");
   });
 
@@ -190,6 +194,16 @@ describe("visual components", () => {
     expect(pageHeaderCss).toContain("transform: translateY(var(--page-header-eyebrow-drop, 0));");
     expect(pageHeaderCss).toContain(".poster .description");
     expect(pageHeaderCss).toContain("margin-top: var(--space-1);");
+  });
+
+  test("SiteShell header brand is mixed case, larger, and unframed", () => {
+    const siteShellCss = readFileSync("app/components/SiteShell.module.css", "utf8");
+
+    expect(siteShellCss).toContain(".brandName");
+    expect(siteShellCss).toContain("--studio-logo-size: 2.3rem;");
+    expect(siteShellCss).toContain("transform: translateY(-0.12rem);");
+    expect(siteShellCss).toContain("font-size: 1.275rem;");
+    expect(siteShellCss).not.toContain("text-transform: uppercase;");
   });
 
   test("DocumentPage renders a calm document wrapper", () => {
