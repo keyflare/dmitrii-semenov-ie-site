@@ -1,5 +1,6 @@
 import { createElement } from "react";
 import type { Route } from "./+types/product-privacy";
+import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
 import { productMdxComponents } from "~/content/products/mdxComponents";
@@ -45,17 +46,19 @@ export function ProductPrivacyContent({ product }: { product: Product }) {
         description={product.shortDescription}
         variant="document"
       />
-      {sections.map((section) => (
-        <section key={section.title}>
-          <h2>{section.title}</h2>
-          <p>{section.body}</p>
-        </section>
-      ))}
-      {privacy.mode === "generated-with-mdx"
-        ? createElement(getProductMdxContent(privacy.contentKey), {
-            components: productMdxComponents,
-          })
-        : null}
+      <DocumentPage>
+        {sections.map((section) => (
+          <section key={section.title}>
+            <h2>{section.title}</h2>
+            <p>{section.body}</p>
+          </section>
+        ))}
+        {privacy.mode === "generated-with-mdx"
+          ? createElement(getProductMdxContent(privacy.contentKey), {
+              components: productMdxComponents,
+            })
+          : null}
+      </DocumentPage>
     </>
   );
 }

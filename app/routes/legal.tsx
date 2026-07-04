@@ -1,5 +1,6 @@
 import type { MetaFunction } from "react-router";
 import { Link } from "react-router";
+import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
 import { siteConfig } from "~/content/site";
 
@@ -16,13 +17,15 @@ export default function LegalRoute() {
         description={`Operator: ${siteConfig.legalOperator}.`}
         variant="document"
       />
-      <p>
-        Business contact:{" "}
-        <a href={`mailto:${siteConfig.businessEmail}`}>{siteConfig.businessEmail}</a>
-      </p>
-      <p>
-        <Link to="/legal/privacy/">Website privacy policy</Link>
-      </p>
+      <DocumentPage>
+        <p>
+          Business contact:{" "}
+          <a href={`mailto:${siteConfig.businessEmail}`}>{siteConfig.businessEmail}</a>
+        </p>
+        <p>
+          <Link to="/legal/privacy/">Website privacy policy</Link>
+        </p>
+      </DocumentPage>
     </>
   );
 }

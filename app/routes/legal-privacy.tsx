@@ -1,4 +1,5 @@
 import type { MetaFunction } from "react-router";
+import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
 import { siteConfig } from "~/content/site";
 
@@ -15,8 +16,10 @@ export default function LegalPrivacyRoute() {
         description="Privacy information for visitors of this website."
         variant="document"
       />
-      <p>This website is operated by {siteConfig.legalOperator}.</p>
-      <p>This page covers the website itself, not individual product privacy policies.</p>
+      <DocumentPage>
+        <p>This website is operated by {siteConfig.legalOperator}.</p>
+        <p>This page covers the website itself, not individual product privacy policies.</p>
+      </DocumentPage>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import type { MetaFunction } from "react-router";
+import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
 import { siteConfig } from "~/content/site";
 
@@ -15,9 +16,11 @@ export default function ContactRoute() {
         description="Business inquiries for Keyflare Studio."
         variant="document"
       />
-      <p>
-        Email: <a href={`mailto:${siteConfig.businessEmail}`}>{siteConfig.businessEmail}</a>
-      </p>
+      <DocumentPage>
+        <p>
+          Email: <a href={`mailto:${siteConfig.businessEmail}`}>{siteConfig.businessEmail}</a>
+        </p>
+      </DocumentPage>
     </>
   );
 }

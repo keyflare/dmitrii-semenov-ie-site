@@ -1,4 +1,5 @@
 import type { Route } from "./+types/product-data-deletion";
+import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
 import { findPublishedProduct } from "~/content/products/registry";
 import { siteConfig } from "~/content/site";
@@ -39,10 +40,12 @@ export default function ProductDataDeletionRoute({ params }: Route.ComponentProp
         description="Instructions for requesting deletion of product-related data."
         variant="document"
       />
-      <p>
-        Send a deletion request to{" "}
-        <a href={`mailto:${product.supportEmail}`}>{product.supportEmail}</a>.
-      </p>
+      <DocumentPage>
+        <p>
+          Send a deletion request to{" "}
+          <a href={`mailto:${product.supportEmail}`}>{product.supportEmail}</a>.
+        </p>
+      </DocumentPage>
     </>
   );
 }

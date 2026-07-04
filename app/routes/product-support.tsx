@@ -1,6 +1,7 @@
 import { createElement } from "react";
 import { Link } from "react-router";
 import type { Route } from "./+types/product-support";
+import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
 import { productMdxComponents } from "~/content/products/mdxComponents";
@@ -41,17 +42,19 @@ export function ProductSupportContent({ product }: { product: Product }) {
         description={product.shortDescription}
         variant="document"
       />
-      <p>
-        Email: <a href={`mailto:${product.supportEmail}`}>{product.supportEmail}</a>
-      </p>
-      <p>
-        <Link to={`/products/${product.slug}/privacy/`}>Privacy policy</Link>
-      </p>
-      {support.mode === "mdx"
-        ? createElement(getProductMdxContent(support.contentKey), {
-            components: productMdxComponents,
-          })
-        : null}
+      <DocumentPage>
+        <p>
+          Email: <a href={`mailto:${product.supportEmail}`}>{product.supportEmail}</a>
+        </p>
+        <p>
+          <Link to={`/products/${product.slug}/privacy/`}>Privacy policy</Link>
+        </p>
+        {support.mode === "mdx"
+          ? createElement(getProductMdxContent(support.contentKey), {
+              components: productMdxComponents,
+            })
+          : null}
+      </DocumentPage>
     </>
   );
 }
