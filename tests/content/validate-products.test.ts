@@ -79,6 +79,44 @@ describe("validateProducts", () => {
     );
   });
 
+  test("rejects invalid product theme gradient metadata", () => {
+    const productWithInvalidThemeGradient: Product = {
+      ...baseProduct,
+      theme: {
+        accentPrimary: "#ff4f64",
+        accentSecondary: "#ffb000",
+        accentTertiary: "#19d3a2",
+        ink: "#15111c",
+        surface: "#fff4d7",
+        gradient: "not-a-gradient",
+        visualVolume: "poster",
+      },
+    };
+
+    expect(validateProducts([productWithInvalidThemeGradient])).toContain(
+      "sample theme.gradient must be a CSS gradient value.",
+    );
+  });
+
+  test("rejects product theme gradient metadata with invalid prefixes", () => {
+    const productWithInvalidThemeGradientPrefix: Product = {
+      ...baseProduct,
+      theme: {
+        accentPrimary: "#ff4f64",
+        accentSecondary: "#ffb000",
+        accentTertiary: "#19d3a2",
+        ink: "#15111c",
+        surface: "#fff4d7",
+        gradient: "not-css gradient(",
+        visualVolume: "poster",
+      },
+    };
+
+    expect(validateProducts([productWithInvalidThemeGradientPrefix])).toContain(
+      "sample theme.gradient must be a CSS gradient value.",
+    );
+  });
+
   test("rejects duplicate slugs", () => {
     const duplicateProduct: Product = {
       ...baseProduct,
