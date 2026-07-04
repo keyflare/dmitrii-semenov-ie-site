@@ -53,6 +53,12 @@ Branch names for agent-created work branches must use the format `codex/<work-de
 
 If the worktree is already on a named branch, continue using that branch unless the user explicitly asks to switch or create another one.
 
+Pull request rules for agent-created work:
+
+- Open pull requests as ready for review, not as drafts.
+- Do not add agent/tool prefixes such as `[codex]` or `Codex:` to pull request titles.
+- Keep pull request titles short and describe the change in one sentence.
+
 Deployment behavior:
 
 - Local merge into `main` does not deploy by itself.
