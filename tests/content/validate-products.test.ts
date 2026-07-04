@@ -43,6 +43,42 @@ describe("validateProducts", () => {
     expect(validateProducts([mobileGame])).toEqual([]);
   });
 
+  test("accepts valid product theme metadata", () => {
+    const productWithTheme: Product = {
+      ...baseProduct,
+      theme: {
+        accentPrimary: "#ff4f64",
+        accentSecondary: "#ffb000",
+        accentTertiary: "#19d3a2",
+        ink: "#15111c",
+        surface: "#fff4d7",
+        gradient: "linear-gradient(90deg, #ff4f64, #ffb000, #19d3a2, #2563ff)",
+        visualVolume: "poster",
+      },
+    };
+
+    expect(validateProducts([productWithTheme])).toEqual([]);
+  });
+
+  test("rejects invalid product theme color metadata", () => {
+    const productWithInvalidThemeColor: Product = {
+      ...baseProduct,
+      theme: {
+        accentPrimary: "ff4f64",
+        accentSecondary: "#ffb000",
+        accentTertiary: "#19d3a2",
+        ink: "#15111c",
+        surface: "#fff4d7",
+        gradient: "linear-gradient(90deg, #ff4f64, #ffb000, #19d3a2, #2563ff)",
+        visualVolume: "poster",
+      },
+    };
+
+    expect(validateProducts([productWithInvalidThemeColor])).toContain(
+      "sample theme.accentPrimary must be a six-digit hex color.",
+    );
+  });
+
   test("rejects duplicate slugs", () => {
     const duplicateProduct: Product = {
       ...baseProduct,

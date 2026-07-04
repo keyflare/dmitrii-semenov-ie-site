@@ -43,6 +43,18 @@ export type ProductPresentation = {
   privacy: ProductPrivacyPresentation;
 };
 
+export type ProductVisualVolume = "calm" | "poster" | "immersive";
+
+export type ProductTheme = {
+  accentPrimary: string;
+  accentSecondary: string;
+  accentTertiary: string;
+  ink: string;
+  surface: string;
+  gradient: string;
+  visualVolume: ProductVisualVolume;
+};
+
 export type Product = {
   status: ProductStatus;
   slug: string;
@@ -54,5 +66,6 @@ export type Product = {
   lastUpdated: string;
   storeLinks: Partial<Record<ProductPlatform, string>>;
   presentation: ProductPresentation;
+  theme?: ProductTheme;
   privacyProfile: PrivacyProfile;
 };

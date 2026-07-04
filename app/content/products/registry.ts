@@ -43,6 +43,15 @@ export const products: Product[] = [
       support: { mode: "mdx", contentKey: "palette-master-support" },
       privacy: { mode: "generated-with-mdx", contentKey: "palette-master-privacy-extra" },
     },
+    theme: {
+      accentPrimary: "#ff4f64",
+      accentSecondary: "#ffb000",
+      accentTertiary: "#19d3a2",
+      ink: "#15111c",
+      surface: "#fff4d7",
+      gradient: "linear-gradient(90deg, #ff4f64, #ffb000, #19d3a2, #2563ff)",
+      visualVolume: "poster",
+    },
     privacyProfile: {
       usesAdMob: false,
       usesAnalytics: false,
