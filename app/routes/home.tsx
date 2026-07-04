@@ -20,6 +20,7 @@ export default function HomeRoute() {
       <section className="home-hero" aria-labelledby="home-title">
         <PageHeader
           eyebrow="Independent software studio"
+          id="home-title"
           title={siteConfig.brandName}
           description="Tiny apps, loud ideas. Mobile games, tools, and software products with a bright studio pulse."
         />
