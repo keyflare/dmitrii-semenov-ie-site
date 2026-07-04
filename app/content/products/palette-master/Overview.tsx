@@ -1,5 +1,4 @@
 import type { CSSProperties } from "react";
-import { PageHeader } from "~/components/PageHeader";
 import { ProductLinks } from "~/components/ProductLinks";
 import type { CustomProductOverviewProps } from "../customOverviewPages";
 import styles from "./Overview.module.css";
@@ -61,12 +60,15 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
     <article className={styles.overview} style={themeStyle}>
       <section className={styles.hero}>
         <div className={styles.copy}>
-          <div className={styles.kicker}>Mobile game / Android live / iOS coming soon</div>
-          <PageHeader
-            eyebrow="Mobile game"
-            title={product.name}
-            description="An offline color puzzle game about rebuilding broken gradients tile by tile."
-          />
+          <div className={styles.kicker}>
+            <span>Mobile Game</span>
+            <span>Android</span>
+            <strong>iOS Coming Soon</strong>
+          </div>
+          <h1 className={styles.title}>{product.name}</h1>
+          <p className={styles.tagline}>
+            An offline color puzzle game about rebuilding broken gradients tile by tile.
+          </p>
           <p className={styles.lede}>
             Slide pieces into place, trust your eye for hue, and turn scattered color fields back
             into smooth palettes. It is calm enough for a break and sharp enough to keep your brain
@@ -85,8 +87,8 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
         <div className={styles.media} aria-label="Palette Master screenshots">
           <img
             className={styles.heroShot}
-            src={screenshots[0].src}
-            alt={screenshots[0].alt}
+            src={screenshots[2].src}
+            alt={screenshots[2].alt}
             loading="eager"
           />
           <img
