@@ -122,14 +122,21 @@ describe("product customization", () => {
     );
 
     expect(html).toContain("offline color puzzle game");
-    expect(html).toContain("Android");
-    expect(html).toContain("iOS coming soon");
+    expect(html).toContain("Available now");
+    expect(html).toContain("/products/palette-master/store-icons/google-play.svg");
+    expect(html).toContain("Android · Google Play");
+    expect(html).toContain("Coming soon");
+    expect(html).toContain("/products/palette-master/store-icons/app-store.svg");
+    expect(html).toContain("iOS · App Store");
     expect(html).toContain("200+ levels");
     expect(html).toContain("No timers");
     expect(html).toContain("mailto:semdm.am@gmail.com?subject=Palette%20Master%20feedback");
-    expect(html).toContain("/products/palette-master/screenshots/palette-master-01");
+    expect(html).toContain("/products/palette-master/screenshots/palette-master-03");
     expect(html).toContain("/products/palette-master/privacy/");
     expect(html).toContain("/products/palette-master/support/");
+    expect(html).not.toContain(">Android</a>");
+    expect(html).not.toContain("iOS coming soon</span>");
+    expect(html).not.toContain("Get it on Android");
   });
 
   test("renders standard overview with appended MDX content when configured", () => {

@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { ProductLinks } from "~/components/ProductLinks";
+import { Link } from "react-router";
 import type { CustomProductOverviewProps } from "../customOverviewPages";
 import styles from "./Overview.module.css";
 
@@ -74,15 +74,16 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
             into smooth palettes. It is calm enough for a break and sharp enough to keep your brain
             awake.
           </p>
-          <ProductLinks product={product} />
-          <div className={styles.heroActions} aria-label="Palette Master actions">
-            <a className={styles.playLink} href={playStoreUrl} rel="noreferrer" target="_blank">
-              Get it on Android
-            </a>
+          <nav className={styles.heroLinks} aria-label="Palette Master links">
+            <Link className={styles.primaryLink} to={`/products/${product.slug}/`}>
+              Overview
+            </Link>
+            <Link to={`/products/${product.slug}/privacy/`}>Privacy</Link>
+            <Link to={`/products/${product.slug}/support/`}>Support</Link>
             <a className={styles.feedbackLink} href={feedbackUrl}>
               Send feedback
             </a>
-          </div>
+          </nav>
         </div>
         <div className={styles.media} aria-label="Palette Master screenshots">
           <img
@@ -100,13 +101,29 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
         </div>
       </section>
       <section className={styles.platformPanel} aria-label="Platform availability">
-        <div>
-          <span>Available now</span>
-          <strong>Android</strong>
-        </div>
-        <div>
-          <span>Next palette</span>
-          <strong>iOS coming soon</strong>
+        <a className={styles.platformCard} href={playStoreUrl} rel="noreferrer" target="_blank">
+          <img
+            className={styles.storeLogo}
+            src="/products/palette-master/store-icons/google-play.svg"
+            alt="Google Play logo"
+            loading="lazy"
+          />
+          <span className={styles.platformCopy}>
+            <span>Available now</span>
+            <strong>Android · Google Play</strong>
+          </span>
+        </a>
+        <div className={`${styles.platformCard} ${styles.comingSoonCard}`}>
+          <img
+            className={styles.storeLogo}
+            src="/products/palette-master/store-icons/app-store.svg"
+            alt="App Store logo"
+            loading="lazy"
+          />
+          <span className={styles.platformCopy}>
+            <span>Coming soon</span>
+            <strong>iOS · App Store</strong>
+          </span>
         </div>
       </section>
       <section className={styles.details} aria-label="Gameplay highlights">

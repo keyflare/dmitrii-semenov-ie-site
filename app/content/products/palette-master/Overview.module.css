@@ -113,13 +113,14 @@
   line-height: 1.7;
 }
 
-.heroActions {
+.heroLinks {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
+  align-items: center;
 }
 
-.heroActions a,
+.heroLinks a,
 .feedback a {
   display: inline-flex;
   min-height: 2.8rem;
@@ -133,17 +134,18 @@
   font-weight: 900;
   text-decoration: none;
   transition:
+    background 140ms ease,
     transform 140ms ease,
     box-shadow 140ms ease;
 }
 
-.heroActions a:hover,
+.heroLinks a:hover,
 .feedback a:hover {
   box-shadow: 0.14rem 0.14rem 0 var(--color-ink);
   transform: translate(0.08rem, 0.08rem);
 }
 
-.playLink {
+.primaryLink {
   background: var(--product-gradient, var(--gradient-chromatic));
 }
 
@@ -186,28 +188,88 @@
 
 .platformPanel {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: var(--space-4);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(90deg, rgb(21 17 28 / 6%) 1px, transparent 1px),
+    linear-gradient(180deg, rgb(21 17 28 / 5%) 1px, transparent 1px),
+    color-mix(in srgb, var(--palette-secondary) 14%, var(--color-paper-soft));
+  background-size: 1.25rem 1.25rem;
+  box-shadow: var(--shadow-poster);
 }
 
-.platformPanel div {
+.platformCard {
+  display: flex;
+  min-height: 9rem;
+  gap: var(--space-4);
+  align-items: center;
   padding: var(--space-5);
   border: 2px solid var(--color-ink);
   border-radius: var(--radius-md);
-  background: var(--color-paper-soft);
-  box-shadow: 0.22rem 0.22rem 0 var(--color-ink);
+  color: var(--color-ink);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--palette-tertiary) 22%, var(--color-paper-soft)),
+    color-mix(in srgb, var(--palette-secondary) 12%, var(--color-paper-soft)) 58%,
+    color-mix(in srgb, var(--color-accent-blue) 10%, var(--color-paper-soft))
+  );
+  box-shadow: 0.3rem 0.3rem 0 var(--color-ink);
+  text-decoration: none;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease;
 }
 
-.platformPanel span {
+.platformCard:hover {
+  color: var(--color-ink);
+  box-shadow: 0.18rem 0.18rem 0 var(--color-ink);
+  transform: translate(0.08rem, 0.08rem);
+}
+
+.storeLogo {
+  flex: 0 0 auto;
+  width: clamp(3rem, 2.6rem + 1vw, 4rem);
+  height: clamp(3rem, 2.6rem + 1vw, 4rem);
+  object-fit: contain;
+}
+
+.platformCopy {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.platformCopy span {
   display: block;
-  margin-bottom: var(--space-2);
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
 }
 
-.platformPanel strong {
-  font-family: var(--font-display);
-  font-size: clamp(1.55rem, 1.35rem + 0.85vw, 2.3rem);
-  line-height: 1;
+.platformCopy strong {
+  font-family: var(--font-sans);
+  font-size: clamp(1.45rem, 1.14rem + 1vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.05;
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: normal;
+}
+
+.comingSoonCard {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-paper-soft) 0,
+    var(--color-paper-soft) 0.7rem,
+    color-mix(in srgb, var(--color-accent-blue) 18%, var(--color-paper-soft)) 0.7rem,
+    color-mix(in srgb, var(--color-accent-blue) 18%, var(--color-paper-soft)) 1.4rem
+  );
+}
+
+.comingSoonCard:hover {
+  box-shadow: 0.3rem 0.3rem 0 var(--color-ink);
+  transform: none;
 }
 
 .details {
@@ -339,6 +401,10 @@
 
   .media {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .platformCard {
+    min-height: 7.5rem;
   }
 
   .heroShot:last-child {
