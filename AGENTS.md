@@ -45,7 +45,13 @@ Generated or installed directories such as `build/`, `.react-router/`, and `node
 
 `main` is the production branch.
 
-Feature work should happen on short-lived branches, usually using the `codex/` prefix unless the user asks otherwise.
+Before making direct codebase changes, inspect the current git state.
+
+If the worktree is in detached `HEAD`, create a task branch first.
+
+Branch names for agent-created work branches must use the format `codex/<work-description>`, where `<work-description>` is 1 to 5 short kebab-case words that summarize the task, for example `codex/add-product-page`.
+
+If the worktree is already on a named branch, continue using that branch unless the user explicitly asks to switch or create another one.
 
 Deployment behavior:
 
