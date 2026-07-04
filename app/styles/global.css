@@ -55,3 +55,146 @@ img,
 svg {
   max-width: 100%;
 }
+
+.home-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.7fr);
+  gap: var(--space-8);
+  align-items: stretch;
+}
+
+.home-hero {
+  display: grid;
+  align-content: center;
+  min-height: min(38rem, calc(100vh - 9rem));
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.home-actions a {
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  color: var(--color-ink);
+  background: var(--color-paper-soft);
+  box-shadow: var(--shadow-poster);
+  text-decoration: none;
+}
+
+.home-actions a:first-child {
+  background: var(--gradient-chromatic);
+}
+
+.home-poster {
+  position: relative;
+  display: grid;
+  align-content: end;
+  min-height: 32rem;
+  padding: var(--space-6);
+  overflow: hidden;
+  border: 2px solid var(--color-ink);
+  background: var(--color-paper-soft);
+  box-shadow: var(--shadow-poster);
+}
+
+.home-poster::before {
+  content: "";
+  position: absolute;
+  inset: 4rem -5rem auto auto;
+  width: 22rem;
+  height: 7rem;
+  background: var(--gradient-chromatic);
+  transform: rotate(17deg);
+}
+
+.poster-number {
+  position: absolute;
+  top: var(--space-6);
+  left: var(--space-6);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 800;
+  line-height: 0.8;
+}
+
+.poster-title {
+  position: relative;
+  z-index: 1;
+  max-width: 16rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.home-poster p {
+  position: relative;
+  z-index: 1;
+  color: var(--color-ink-soft);
+  line-height: 1.55;
+}
+
+.poster-strip {
+  position: absolute;
+  right: var(--space-6);
+  bottom: var(--space-6);
+  width: 7rem;
+  height: 1rem;
+  background: var(--color-accent-green);
+}
+
+.home-products {
+  grid-column: 1 / -1;
+  max-width: var(--layout-readable);
+}
+
+.home-products h2 {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+@media (max-width: 860px) {
+  .home-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .home-hero {
+    min-height: auto;
+  }
+}
+
+.catalog-layout {
+  display: grid;
+  gap: var(--space-10);
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: var(--space-6);
+}
+
+.catalog-empty {
+  max-width: var(--layout-readable);
+  padding: var(--space-8);
+  border: 2px dashed var(--color-ink);
+  border-radius: var(--radius-md);
+  background: var(--color-paper-soft);
+}
+
+.catalog-empty h2 {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}

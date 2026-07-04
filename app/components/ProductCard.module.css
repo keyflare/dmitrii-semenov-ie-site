@@ -1,25 +1,42 @@
 .card {
+  position: relative;
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
+  min-height: 17rem;
   padding: var(--space-6);
-  border: 1px solid var(--color-border);
+  overflow: hidden;
+  border: 2px solid var(--color-ink);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
+  background: var(--color-paper-soft);
+  box-shadow: var(--shadow-poster);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.85rem;
+  background: var(--gradient-chromatic);
+}
+
+.marker,
+.meta {
+  color: var(--color-ink-soft);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .title {
-  margin: 0;
-  font-size: 1.25rem;
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 0.9;
+  text-transform: uppercase;
 }
 
 .description {
   margin: 0;
   color: var(--color-muted);
   line-height: 1.6;
-}
-
-.links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
 }

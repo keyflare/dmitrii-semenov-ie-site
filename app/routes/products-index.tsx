@@ -13,16 +13,27 @@ export default function ProductsIndexRoute() {
   const products = getPublishedProducts();
 
   return (
-    <>
+    <div className="catalog-layout">
       <PageHeader
+        eyebrow="Launch board"
         title="Products"
         description={`Mobile apps, desktop apps, and software products from ${siteConfig.brandName}.`}
       />
       {products.length === 0 ? (
-        <p>Published products will appear here.</p>
+        <section className="catalog-empty">
+          <h2>No public launches yet</h2>
+          <p>
+            Published products will appear here once their store, support, and policy pages are
+            ready.
+          </p>
+        </section>
       ) : (
-        products.map((product) => <ProductCard key={product.slug} product={product} />)
+        <div className="catalog-grid">
+          {products.map((product) => (
+            <ProductCard key={product.slug} product={product} />
+          ))}
+        </div>
       )}
-    </>
+    </div>
   );
 }

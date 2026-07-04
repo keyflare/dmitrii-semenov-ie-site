@@ -49,6 +49,16 @@ describe("visual components", () => {
     expect(html).toContain("https://apps.apple.com/example");
   });
 
+  test("ProductCard includes product metadata and shared product links", async () => {
+    const { ProductCard } = await import("../../app/components/ProductCard");
+    const html = renderWithRouter(createElement(ProductCard, { product }));
+
+    expect(html).toContain("Visual Test Product");
+    expect(html).toContain("mobile-app");
+    expect(html).toContain("ios / android");
+    expect(html).toContain("/products/visual-test-product/privacy/");
+  });
+
   test("DocumentPage renders a calm document wrapper", () => {
     const html = renderToStaticMarkup(
       createElement(DocumentPage, null, createElement("p", null, "Readable policy text")),
