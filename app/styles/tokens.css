@@ -3,6 +3,7 @@
   --color-paper-soft: #fffaf0;
   --color-ink: #15111c;
   --color-ink-soft: #3e3448;
+  --color-text: var(--color-ink);
   --color-muted: #665d70;
   --color-surface: #ffffff;
   --color-surface-tint: #f8efe2;
