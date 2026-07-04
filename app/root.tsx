@@ -1,3 +1,8 @@
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
+import "@fontsource/syne/700.css";
+import "@fontsource/syne/800.css";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { LinksFunction } from "react-router";
 import { SiteShell } from "~/components/SiteShell";

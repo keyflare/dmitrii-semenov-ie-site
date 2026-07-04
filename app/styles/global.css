@@ -5,23 +5,53 @@
 }
 
 html {
+  min-width: 320px;
+  background:
+    linear-gradient(90deg, rgb(21 17 28 / 5%) 1px, transparent 1px),
+    linear-gradient(180deg, rgb(21 17 28 / 4%) 1px, transparent 1px), var(--color-paper);
+  background-size: 2.25rem 2.25rem;
+  color: var(--color-ink);
   font-family: var(--font-sans);
-  background: var(--color-bg);
-  color: var(--color-text);
 }
 
 body {
   margin: 0;
 }
 
+body::selection {
+  color: var(--color-ink);
+  background: var(--color-accent-amber);
+}
+
 a {
-  color: var(--color-accent);
+  color: var(--color-link);
+  font-weight: 700;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.18em;
 }
 
 a:hover {
-  color: var(--color-accent-strong);
+  color: var(--color-link-hover);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--color-accent-blue);
+  outline-offset: 3px;
 }
 
 main {
   min-height: 60vh;
+}
+
+h1,
+h2,
+h3,
+p {
+  overflow-wrap: anywhere;
+}
+
+img,
+svg {
+  max-width: 100%;
 }
