@@ -17,9 +17,7 @@ export type PrivacyProfile = {
 export type ProductCustomOverviewKey = "palette-master";
 
 export type ProductMdxContentKey =
-  | "palette-master-overview"
-  | "palette-master-support"
-  | "palette-master-privacy-extra";
+  "palette-master-overview" | "palette-master-support" | "palette-master-privacy-extra";
 
 export type ProductOverviewPresentation =
   | { mode: "standard" }
@@ -27,12 +25,10 @@ export type ProductOverviewPresentation =
   | { mode: "custom"; componentKey: ProductCustomOverviewKey };
 
 export type ProductSupportPresentation =
-  | { mode: "standard" }
-  | { mode: "mdx"; contentKey: ProductMdxContentKey };
+  { mode: "standard" } | { mode: "mdx"; contentKey: ProductMdxContentKey };
 
 export type ProductPrivacyPresentation =
-  | { mode: "generated" }
-  | { mode: "generated-with-mdx"; contentKey: ProductMdxContentKey };
+  { mode: "generated" } | { mode: "generated-with-mdx"; contentKey: ProductMdxContentKey };
 
 export type ProductPresentation = {
   overview: ProductOverviewPresentation;

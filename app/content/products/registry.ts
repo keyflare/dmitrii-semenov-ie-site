@@ -28,6 +28,31 @@ export const products: Product[] = [
       thirdPartyServices: ["Google AdMob"],
     },
   },
+  {
+    status: "draft",
+    slug: "palette-master",
+    name: "Palette Master",
+    type: "mobile-game",
+    shortDescription: "A color-focused mobile puzzle game.",
+    platforms: ["ios", "android"],
+    supportEmail: "semdm.am@gmail.com",
+    lastUpdated: "2026-07-04",
+    storeLinks: {},
+    presentation: {
+      overview: { mode: "custom", componentKey: "palette-master" },
+      support: { mode: "mdx", contentKey: "palette-master-support" },
+      privacy: { mode: "generated-with-mdx", contentKey: "palette-master-privacy-extra" },
+    },
+    privacyProfile: {
+      usesAdMob: false,
+      usesAnalytics: false,
+      usesCrashReporting: false,
+      hasAccounts: false,
+      collectsPersonalData: false,
+      requiresDataDeletionPage: false,
+      thirdPartyServices: [],
+    },
+  },
 ];
 
 export function getPublishedProducts() {
