@@ -1,7 +1,11 @@
+import { createElement } from "react";
 import type { Route } from "./+types/product-privacy";
 import { PageHeader } from "~/components/PageHeader";
+import { getProductMdxContent } from "~/content/products/customMdxContent";
+import { productMdxComponents } from "~/content/products/mdxComponents";
 import { findPublishedProduct } from "~/content/products/registry";
 import { getPrivacySections } from "~/content/products/privacyBlocks";
+import type { Product } from "~/content/products/types";
 import { siteConfig } from "~/content/site";
 
 export const meta: Route.MetaFunction = ({ params }) => {
@@ -30,10 +34,9 @@ export function getProductPrivacyProduct(slug: string) {
   return product;
 }
 
-export default function ProductPrivacyRoute({ params }: Route.ComponentProps) {
-  const product = getProductPrivacyProduct(params.slug);
-
+export function ProductPrivacyContent({ product }: { product: Product }) {
   const sections = getPrivacySections(product);
+  const privacy = product.presentation.privacy;
 
   return (
     <>
@@ -44,6 +47,17 @@ export default function ProductPrivacyRoute({ params }: Route.ComponentProps) {
           <p>{section.body}</p>
         </section>
       ))}
+      {privacy.mode === "generated-with-mdx"
+        ? createElement(getProductMdxContent(privacy.contentKey), {
+            components: productMdxComponents,
+          })
+        : null}
     </>
   );
+}
+
+export default function ProductPrivacyRoute({ params }: Route.ComponentProps) {
+  const product = getProductPrivacyProduct(params.slug);
+
+  return <ProductPrivacyContent product={product} />;
 }
