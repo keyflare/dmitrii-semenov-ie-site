@@ -35,17 +35,14 @@
   text-decoration: none;
 }
 
-.brandMark {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
-  border: 2px solid var(--color-ink);
-  border-radius: var(--radius-sm);
-  background: var(--gradient-chromatic);
-  box-shadow: 0.18rem 0.18rem 0 var(--color-ink);
-  font-family: var(--font-display);
-  line-height: 1;
+.brandLogo {
+  --studio-logo-size: 2.3rem;
+
+  transform: translateY(-0.12rem);
+}
+
+.brandName {
+  font-size: 1.275rem;
 }
 
 .links {

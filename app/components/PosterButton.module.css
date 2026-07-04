@@ -1,0 +1,72 @@
+.posterButton {
+  display: inline-flex;
+  min-height: var(--poster-button-min-height);
+  gap: 0.48rem;
+  align-items: center;
+  justify-content: center;
+  padding: var(--poster-button-padding);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  color: var(--color-ink);
+  background: var(--color-paper-soft);
+  box-shadow: var(--poster-button-shadow);
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    background 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.posterButton img {
+  display: block;
+  width: 1.18rem;
+  height: 1.18rem;
+  object-fit: contain;
+}
+
+.hero {
+  --poster-button-hover-shadow: 0.2rem 0.2rem 0 var(--color-ink);
+  --poster-button-min-height: 3.25rem;
+  --poster-button-padding: 0.8rem 1rem;
+  --poster-button-shadow: var(--shadow-poster);
+
+  font-size: 1rem;
+}
+
+.compact {
+  --poster-button-hover-shadow: 0.12rem 0.12rem 0 var(--color-ink);
+  --poster-button-min-height: 2.35rem;
+  --poster-button-padding: 0.48rem 0.78rem;
+  --poster-button-shadow: 0.2rem 0.2rem 0 var(--color-ink);
+
+  font-size: 0.88rem;
+}
+
+.primary {
+  background: var(--gradient-chromatic);
+}
+
+.disabled {
+  color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-paper-soft) 0,
+    var(--color-paper-soft) 0.45rem,
+    color-mix(in srgb, var(--color-accent-blue) 16%, var(--color-paper-soft)) 0.45rem,
+    color-mix(in srgb, var(--color-accent-blue) 16%, var(--color-paper-soft)) 0.9rem
+  );
+}
+
+.interactive:hover,
+.interactive:focus-visible {
+  color: var(--color-ink);
+  background: var(--color-accent-amber);
+  box-shadow: var(--poster-button-hover-shadow);
+  transform: translate(0.08rem, 0.08rem);
+}
+
+.primary.interactive:hover,
+.primary.interactive:focus-visible {
+  background: var(--gradient-chromatic);
+}
