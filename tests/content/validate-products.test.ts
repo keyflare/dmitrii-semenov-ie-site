@@ -100,6 +100,34 @@ describe("validateProducts", () => {
     );
   });
 
+  test("rejects published products with unknown custom overview keys", () => {
+    const productWithUnknownCustomOverview: Product = {
+      ...baseProduct,
+      presentation: {
+        ...baseProduct.presentation,
+        overview: { mode: "custom", componentKey: "missing-overview" as never },
+      },
+    };
+
+    expect(validateProducts([productWithUnknownCustomOverview])).toContain(
+      "Published product sample references unknown custom overview: missing-overview",
+    );
+  });
+
+  test("rejects published products with unknown MDX content keys", () => {
+    const productWithUnknownMdxContent: Product = {
+      ...baseProduct,
+      presentation: {
+        ...baseProduct.presentation,
+        support: { mode: "mdx", contentKey: "missing-mdx" as never },
+      },
+    };
+
+    expect(validateProducts([productWithUnknownMdxContent])).toContain(
+      "Published product sample references unknown MDX content: missing-mdx",
+    );
+  });
+
   test("allows fixture products to stay out of public validation", () => {
     const fixtureProduct: Product = {
       ...baseProduct,

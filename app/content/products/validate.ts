@@ -1,4 +1,4 @@
-import type { Product } from "./types";
+import { productCustomOverviewKeys, productMdxContentKeys, type Product } from "./types";
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const lastUpdatedPattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -62,9 +62,71 @@ export function validateProducts(products: Product[]): string[] {
         );
       }
     }
+
+    validatePresentation(product, errors);
   }
 
   return errors;
+}
+
+function validatePresentation(product: Product, errors: string[]) {
+  const presentation = product.presentation;
+
+  if (!presentation) {
+    errors.push(`Published product ${product.slug} is missing presentation`);
+    return;
+  }
+
+  const overview = presentation.overview;
+
+  if (
+    overview.mode === "custom" &&
+    !hasKnownKey(productCustomOverviewKeys, overview.componentKey)
+  ) {
+    errors.push(
+      `Published product ${product.slug} references unknown custom overview: ${String(
+        overview.componentKey,
+      )}`,
+    );
+  }
+
+  if (
+    overview.mode === "standard-with-mdx" &&
+    !hasKnownKey(productMdxContentKeys, overview.contentKey)
+  ) {
+    errors.push(
+      `Published product ${product.slug} references unknown MDX content: ${String(
+        overview.contentKey,
+      )}`,
+    );
+  }
+
+  const support = presentation.support;
+
+  if (support.mode === "mdx" && !hasKnownKey(productMdxContentKeys, support.contentKey)) {
+    errors.push(
+      `Published product ${product.slug} references unknown MDX content: ${String(
+        support.contentKey,
+      )}`,
+    );
+  }
+
+  const privacy = presentation.privacy;
+
+  if (
+    privacy.mode === "generated-with-mdx" &&
+    !hasKnownKey(productMdxContentKeys, privacy.contentKey)
+  ) {
+    errors.push(
+      `Published product ${product.slug} references unknown MDX content: ${String(
+        privacy.contentKey,
+      )}`,
+    );
+  }
+}
+
+function hasKnownKey(keys: readonly string[], key: unknown): key is string {
+  return typeof key === "string" && keys.includes(key);
 }
 
 function isValidLastUpdated(value: string): boolean {

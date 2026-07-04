@@ -14,10 +14,17 @@ export type PrivacyProfile = {
   thirdPartyServices: string[];
 };
 
-export type ProductCustomOverviewKey = "palette-master";
+export const productCustomOverviewKeys = ["palette-master"] as const;
 
-export type ProductMdxContentKey =
-  "palette-master-overview" | "palette-master-support" | "palette-master-privacy-extra";
+export type ProductCustomOverviewKey = (typeof productCustomOverviewKeys)[number];
+
+export const productMdxContentKeys = [
+  "palette-master-overview",
+  "palette-master-support",
+  "palette-master-privacy-extra",
+] as const;
+
+export type ProductMdxContentKey = (typeof productMdxContentKeys)[number];
 
 export type ProductOverviewPresentation =
   | { mode: "standard" }
