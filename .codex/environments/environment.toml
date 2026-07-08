@@ -9,3 +9,8 @@ set -e
 git fetch origin --prune
 git switch --detach origin/main
 '''
+
+[[actions]]
+name = "Run"
+icon = "play"
+command = "set -e; if [ ! -d node_modules ]; then npm install; fi; npm run dev -- --host 127.0.0.1"
