@@ -1,6 +1,6 @@
 import type { Product } from "./types";
 
-const staticPrerenderPaths = ["/", "/products", "/about", "/contact", "/legal", "/legal/privacy"];
+const staticPrerenderPaths = ["/", "/products", "/contact", "/privacy", "/legal"];
 
 export const products: Product[] = [
   {
@@ -36,15 +36,15 @@ export const products: Product[] = [
     shortDescription:
       "An offline color puzzle game about rebuilding broken gradients tile by tile.",
     platforms: ["android", "ios"],
-    supportEmail: "semdm.am@gmail.com",
-    lastUpdated: "2026-07-04",
+    supportEmail: "support@keyflare.studio",
+    lastUpdated: "2026-07-08",
     storeLinks: {
       android: "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en",
     },
     presentation: {
       overview: { mode: "custom", componentKey: "palette-master" },
       support: { mode: "mdx", contentKey: "palette-master-support" },
-      privacy: { mode: "generated-with-mdx", contentKey: "palette-master-privacy-extra" },
+      privacy: { mode: "mdx", contentKey: "palette-master-privacy" },
     },
     theme: {
       accentPrimary: "#ff4f64",
@@ -57,12 +57,12 @@ export const products: Product[] = [
     },
     privacyProfile: {
       usesAdMob: true,
-      usesAnalytics: false,
-      usesCrashReporting: false,
+      usesAnalytics: true,
+      usesCrashReporting: true,
       hasAccounts: false,
-      collectsPersonalData: false,
+      collectsPersonalData: true,
       requiresDataDeletionPage: false,
-      thirdPartyServices: ["Google AdMob"],
+      thirdPartyServices: ["Google AdMob", "Google User Messaging Platform", "AppMetrica"],
     },
   },
 ];

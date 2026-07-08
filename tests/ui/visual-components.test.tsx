@@ -50,6 +50,12 @@ describe("visual components", () => {
     expect(html).toContain('src="/brand/keyflare-studio-logo.svg"');
     expect(html).toContain('alt=""');
     expect(html).toContain(">Keyflare Studio</span>");
+    expect(html).toContain('href="/privacy/"');
+    expect(html).toContain("Software for mobile, desktop, TV, and whatever comes next.");
+    expect(html).toContain("© 2026 Keyflare Studio.");
+    expect(html).toContain("Operated by Dmitrii Semenov IE.");
+    expect(html).toContain("Republic of Armenia.");
+    expect(html).not.toContain("Independent software products for mobile, desktop");
     expect(html).not.toContain(">KEYFLARE STUDIO</span>");
     expect(html).toContain("_plain_");
     expect(html).not.toContain("_framed_");
@@ -129,7 +135,7 @@ describe("visual components", () => {
     const html = renderWithRouter(createElement(ProductCard, { product: paletteMaster }));
 
     expect(html).toContain('href="/products/palette-master/"');
-    expect(html).toContain("mailto:semdm.am@gmail.com?subject=Palette%20Master%20feedback");
+    expect(html).toContain("mailto:support@keyflare.studio?subject=Palette%20Master%20feedback");
     expect(html).toContain("/products/palette-master/privacy/");
     expect(html).toContain("/products/palette-master/support/");
     expect(html).toContain(
@@ -213,6 +219,7 @@ describe("visual components", () => {
     expect(siteShellCss).toContain("--studio-logo-size: 2.3rem;");
     expect(siteShellCss).toContain("transform: translateY(-0.12rem);");
     expect(siteShellCss).toContain("font-size: 1.275rem;");
+    expect(siteShellCss).toMatch(/\.footerContent\s*{[^}]*align-items: center;/);
     expect(siteShellCss).not.toContain("text-transform: uppercase;");
   });
 
@@ -233,5 +240,45 @@ describe("visual components", () => {
     );
 
     expect(html).toContain("Readable policy text");
+  });
+
+  test("Legal route renders the studio legal profile", async () => {
+    const { default: LegalRoute } = await import("../../app/routes/legal");
+    const Stub = createRoutesStub([{ path: "/", Component: LegalRoute }]);
+    const html = renderToStaticMarkup(createElement(Stub));
+
+    expect(html).toContain("Business Information");
+    expect(html).toContain("Keyflare Studio is an independent software development");
+    expect(html).toContain("Legal Entity");
+    expect(html).toContain("<dt>Legal entity</dt>");
+    expect(html).toContain("<dd>Dmitrii Semenov IE</dd>");
+    expect(html).toContain("<dt>Business type</dt>");
+    expect(html).toContain("<dd>Individual Entrepreneur (IE)</dd>");
+    expect(html).toContain("<dt>Country of registration</dt>");
+    expect(html).toContain("<dd>Republic of Armenia</dd>");
+    expect(html).toContain("Keyflare Studio is the public business brand of Dmitrii Semenov IE.");
+    expect(html).toContain('href="mailto:support@keyflare.studio"');
+    expect(html).toContain(
+      "Business registration information is available upon legitimate request",
+    );
+    expect(html).toContain('href="/privacy/"');
+    expect(html).toContain("Last updated: July 2026");
+  });
+
+  test("Privacy route renders website privacy and product policy index", async () => {
+    const { default: PrivacyRoute } = await import("../../app/routes/privacy");
+    const Stub = createRoutesStub([{ path: "/", Component: PrivacyRoute }]);
+    const html = renderToStaticMarkup(createElement(Stub));
+
+    expect(html).toContain("Website Privacy Policy");
+    expect(html).toContain(
+      "This website does not require user registration and does not intentionally collect personal information.",
+    );
+    expect(html).toContain("This website does not use analytics");
+    expect(html).toContain("If you contact Keyflare Studio by email");
+    expect(html).toContain("Product Privacy Policies");
+    expect(html).toContain('href="/products/palette-master/privacy/"');
+    expect(html).toContain("Palette Master Privacy Policy");
+    expect(html).toContain("Last updated: July 2026");
   });
 });

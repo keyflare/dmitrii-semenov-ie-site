@@ -6,7 +6,7 @@ import styles from "./Overview.module.css";
 const playStoreUrl =
   "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en";
 
-const feedbackUrl = "mailto:semdm.am@gmail.com?subject=Palette%20Master%20feedback";
+const feedbackUrl = "mailto:support@keyflare.studio?subject=Palette%20Master%20feedback";
 
 const screenshots = [
   {

@@ -21,8 +21,10 @@ function expectFixtureRoute404(getRouteProduct: (slug: string) => unknown) {
 describe("product route paths", () => {
   test("includes static public routes", () => {
     expect(getPrerenderPaths()).toEqual(
-      expect.arrayContaining(["/", "/products", "/about", "/contact", "/legal", "/legal/privacy"]),
+      expect.arrayContaining(["/", "/products", "/contact", "/privacy", "/legal"]),
     );
+    expect(getPrerenderPaths()).not.toContain("/about");
+    expect(getPrerenderPaths()).not.toContain("/legal/privacy");
   });
 
   test("does not prerender fixture product routes", () => {
