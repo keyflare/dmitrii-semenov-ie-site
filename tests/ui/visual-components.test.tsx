@@ -234,4 +234,27 @@ describe("visual components", () => {
 
     expect(html).toContain("Readable policy text");
   });
+
+  test("Legal route renders the studio legal profile", async () => {
+    const { default: LegalRoute } = await import("../../app/routes/legal");
+    const Stub = createRoutesStub([{ path: "/", Component: LegalRoute }]);
+    const html = renderToStaticMarkup(createElement(Stub));
+
+    expect(html).toContain("Business Information");
+    expect(html).toContain("Keyflare Studio is an independent software development");
+    expect(html).toContain("Legal Entity");
+    expect(html).toContain("<dt>Legal entity</dt>");
+    expect(html).toContain("<dd>Dmitrii Semenov IE</dd>");
+    expect(html).toContain("<dt>Business type</dt>");
+    expect(html).toContain("<dd>Individual Entrepreneur (IE)</dd>");
+    expect(html).toContain("<dt>Country of registration</dt>");
+    expect(html).toContain("<dd>Republic of Armenia</dd>");
+    expect(html).toContain("Keyflare Studio is the public business brand of Dmitrii Semenov IE.");
+    expect(html).toContain('href="mailto:support@keyflare.studio"');
+    expect(html).toContain(
+      "Business registration information is available upon legitimate request",
+    );
+    expect(html).toContain('href="/legal/privacy/"');
+    expect(html).toContain("Last updated: July 2026");
+  });
 });
