@@ -84,7 +84,7 @@ export default function LegalRoute() {
             information.
           </p>
           <p>
-            <Link to="/legal/privacy/">Website privacy policy</Link>
+            <Link to="/privacy/">Website privacy policy</Link>
           </p>
         </section>
 

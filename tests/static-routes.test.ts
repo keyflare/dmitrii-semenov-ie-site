@@ -8,13 +8,14 @@ describe("static route paths", () => {
         "/",
         "/products",
         "/contact",
+        "/privacy",
         "/legal",
-        "/legal/privacy",
         "/products/palette-master",
         "/products/palette-master/privacy",
         "/products/palette-master/support",
       ]),
     );
     expect(getPrerenderPaths()).not.toContain("/about");
+    expect(getPrerenderPaths()).not.toContain("/legal/privacy");
   });
 });

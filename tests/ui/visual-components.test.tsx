@@ -50,6 +50,7 @@ describe("visual components", () => {
     expect(html).toContain('src="/brand/keyflare-studio-logo.svg"');
     expect(html).toContain('alt=""');
     expect(html).toContain(">Keyflare Studio</span>");
+    expect(html).toContain('href="/privacy/"');
     expect(html).toContain("Software for mobile, desktop, TV, and whatever comes next.");
     expect(html).toContain("© 2026 Keyflare Studio.");
     expect(html).toContain("Operated by Dmitrii Semenov IE.");
@@ -260,7 +261,24 @@ describe("visual components", () => {
     expect(html).toContain(
       "Business registration information is available upon legitimate request",
     );
-    expect(html).toContain('href="/legal/privacy/"');
+    expect(html).toContain('href="/privacy/"');
+    expect(html).toContain("Last updated: July 2026");
+  });
+
+  test("Privacy route renders website privacy and product policy index", async () => {
+    const { default: PrivacyRoute } = await import("../../app/routes/privacy");
+    const Stub = createRoutesStub([{ path: "/", Component: PrivacyRoute }]);
+    const html = renderToStaticMarkup(createElement(Stub));
+
+    expect(html).toContain("Website Privacy Policy");
+    expect(html).toContain(
+      "This website does not require user registration and does not intentionally collect personal information.",
+    );
+    expect(html).toContain("This website does not use analytics");
+    expect(html).toContain("If you contact Keyflare Studio by email");
+    expect(html).toContain("Product Privacy Policies");
+    expect(html).toContain('href="/products/palette-master/privacy/"');
+    expect(html).toContain("Palette Master Privacy Policy");
     expect(html).toContain("Last updated: July 2026");
   });
 });

@@ -8,6 +8,6 @@ export default [
   route("products/:slug/support", "./routes/product-support.tsx"),
   route("products/:slug/data-deletion", "./routes/product-data-deletion.tsx"),
   route("contact", "./routes/contact.tsx"),
+  route("privacy", "./routes/privacy.tsx"),
   route("legal", "./routes/legal.tsx"),
-  route("legal/privacy", "./routes/legal-privacy.tsx"),
 ] satisfies RouteConfig;

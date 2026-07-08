@@ -14,6 +14,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </Link>
           <nav className={styles.links} aria-label="Main navigation">
             <Link to="/products/">Products</Link>
+            <Link to="/privacy/">Privacy</Link>
             <Link to="/legal/">Legal</Link>
             <Link to="/contact/">Contact</Link>
           </nav>

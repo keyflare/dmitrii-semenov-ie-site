@@ -1,6 +1,6 @@
 import type { Product } from "./types";
 
-const staticPrerenderPaths = ["/", "/products", "/contact", "/legal", "/legal/privacy"];
+const staticPrerenderPaths = ["/", "/products", "/contact", "/privacy", "/legal"];
 
 export const products: Product[] = [
   {

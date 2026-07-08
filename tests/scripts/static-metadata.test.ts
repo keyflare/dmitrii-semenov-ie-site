@@ -9,14 +9,10 @@ describe("static metadata generation", () => {
   });
 
   test("sitemap includes normalized route URLs", () => {
-    const sitemap = buildSitemapXml("https://www.keyflare.studio", [
-      "/",
-      "/products",
-      "/legal/privacy",
-    ]);
+    const sitemap = buildSitemapXml("https://www.keyflare.studio", ["/", "/products", "/privacy"]);
 
     expect(sitemap).toContain("<loc>https://www.keyflare.studio/</loc>");
     expect(sitemap).toContain("<loc>https://www.keyflare.studio/products/</loc>");
-    expect(sitemap).toContain("<loc>https://www.keyflare.studio/legal/privacy/</loc>");
+    expect(sitemap).toContain("<loc>https://www.keyflare.studio/privacy/</loc>");
   });
 });
