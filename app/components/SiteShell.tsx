@@ -25,9 +25,13 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         <div className={`${styles.inner} ${styles.footerContent}`}>
           <div>
             <strong>{siteConfig.brandName}</strong>
-            <p>Independent software products for mobile, desktop, and app-store surfaces.</p>
+            <p>Software for mobile, desktop, TV, and whatever comes next.</p>
           </div>
-          <div className={styles.legal}>Operated by {siteConfig.legalOperator}.</div>
+          <div className={styles.legal}>
+            <p>© 2026 {siteConfig.brandName}.</p>
+            <p>Operated by Dmitrii Semenov IE.</p>
+            <p>Republic of Armenia.</p>
+          </div>
         </div>
       </footer>
     </div>

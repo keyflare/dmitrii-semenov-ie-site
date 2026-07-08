@@ -78,6 +78,7 @@
 
 .footerContent {
   display: grid;
+  align-items: center;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: var(--space-8);
   padding: var(--space-8) 0;
@@ -90,6 +91,18 @@
   line-height: 1.55;
 }
 
+.legal {
+  text-align: right;
+}
+
+.legal p {
+  margin: 0;
+}
+
+.legal p + p {
+  margin-top: var(--space-1);
+}
+
 @media (max-width: 720px) {
   .nav,
   .footerContent {
@@ -100,5 +113,9 @@
   .nav {
     flex-direction: column;
     padding: var(--space-4) 0;
+  }
+
+  .legal {
+    text-align: left;
   }
 }

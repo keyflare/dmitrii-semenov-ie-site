@@ -50,6 +50,11 @@ describe("visual components", () => {
     expect(html).toContain('src="/brand/keyflare-studio-logo.svg"');
     expect(html).toContain('alt=""');
     expect(html).toContain(">Keyflare Studio</span>");
+    expect(html).toContain("Software for mobile, desktop, TV, and whatever comes next.");
+    expect(html).toContain("© 2026 Keyflare Studio.");
+    expect(html).toContain("Operated by Dmitrii Semenov IE.");
+    expect(html).toContain("Republic of Armenia.");
+    expect(html).not.toContain("Independent software products for mobile, desktop");
     expect(html).not.toContain(">KEYFLARE STUDIO</span>");
     expect(html).toContain("_plain_");
     expect(html).not.toContain("_framed_");
@@ -213,6 +218,7 @@ describe("visual components", () => {
     expect(siteShellCss).toContain("--studio-logo-size: 2.3rem;");
     expect(siteShellCss).toContain("transform: translateY(-0.12rem);");
     expect(siteShellCss).toContain("font-size: 1.275rem;");
+    expect(siteShellCss).toMatch(/\.footerContent\s*{[^}]*align-items: center;/);
     expect(siteShellCss).not.toContain("text-transform: uppercase;");
   });
 
