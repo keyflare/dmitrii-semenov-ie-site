@@ -141,7 +141,7 @@ function validatePresentation(product: Product, errors: string[]) {
   const privacy = presentation.privacy;
 
   if (
-    privacy.mode === "generated-with-mdx" &&
+    (privacy.mode === "generated-with-mdx" || privacy.mode === "mdx") &&
     !hasKnownKey(productMdxContentKeys, privacy.contentKey)
   ) {
     errors.push(

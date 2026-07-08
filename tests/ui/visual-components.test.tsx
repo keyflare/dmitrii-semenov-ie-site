@@ -135,7 +135,7 @@ describe("visual components", () => {
     const html = renderWithRouter(createElement(ProductCard, { product: paletteMaster }));
 
     expect(html).toContain('href="/products/palette-master/"');
-    expect(html).toContain("mailto:semdm.am@gmail.com?subject=Palette%20Master%20feedback");
+    expect(html).toContain("mailto:support@keyflare.studio?subject=Palette%20Master%20feedback");
     expect(html).toContain("/products/palette-master/privacy/");
     expect(html).toContain("/products/palette-master/support/");
     expect(html).toContain(

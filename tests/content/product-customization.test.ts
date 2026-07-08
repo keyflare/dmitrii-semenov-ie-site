@@ -70,7 +70,7 @@ describe("product customization", () => {
   test("MDX content registry contains Palette Master content sections", () => {
     expect(productMdxContent).toHaveProperty("palette-master-overview");
     expect(productMdxContent).toHaveProperty("palette-master-support");
-    expect(productMdxContent).toHaveProperty("palette-master-privacy-extra");
+    expect(productMdxContent).toHaveProperty("palette-master-privacy");
   });
 
   test("Palette Master is published with Android availability and iOS coming soon", () => {
@@ -80,18 +80,18 @@ describe("product customization", () => {
       status: "published",
       type: "mobile-game",
       platforms: ["android", "ios"],
-      supportEmail: "semdm.am@gmail.com",
+      supportEmail: "support@keyflare.studio",
       storeLinks: {
         android: "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en",
       },
       privacyProfile: {
         usesAdMob: true,
-        usesAnalytics: false,
-        usesCrashReporting: false,
+        usesAnalytics: true,
+        usesCrashReporting: true,
         hasAccounts: false,
-        collectsPersonalData: false,
+        collectsPersonalData: true,
         requiresDataDeletionPage: false,
-        thirdPartyServices: ["Google AdMob"],
+        thirdPartyServices: ["Google AdMob", "Google User Messaging Platform", "AppMetrica"],
       },
     });
     expect(getPublishedProducts()).toContainEqual(
@@ -136,7 +136,7 @@ describe("product customization", () => {
     expect(html).toContain("iOS · App Store");
     expect(html).toContain("200+ levels");
     expect(html).toContain("No timers");
-    expect(html).toContain("mailto:semdm.am@gmail.com?subject=Palette%20Master%20feedback");
+    expect(html).toContain("mailto:support@keyflare.studio?subject=Palette%20Master%20feedback");
     expect(html).toContain("/products/palette-master/screenshots/palette-master-03");
     expect(html).toContain('aria-label="Previous screenshot"');
     expect(html).toContain('aria-label="Next screenshot"');
@@ -197,16 +197,25 @@ describe("product customization", () => {
     expect(html).toContain("Android device model");
   });
 
-  test("keeps generated privacy sections and appends MDX content when configured", () => {
+  test("renders the full Palette Master privacy policy from MDX", () => {
     const html = renderWithRouter(
       createElement(ProductPrivacyContent, { product: getRegistryProduct("palette-master") }),
     );
 
     expect(html).toMatch(/<article class="[^"]*document[^"]*">/);
-    expect(html).toContain("Operator");
-    expect(html).toContain("Advertising");
-    expect(html).toMatch(/<h2 class="[^"]*heading2[^"]*">Palette Master Notes<\/h2>/);
-    expect(html).toContain("does not use accounts");
-    expect(html).toContain("Google AdMob");
+    expect(html).toContain("July 8, 2026");
+    expect(html).toContain("<footer>Last updated: July 8, 2026</footer>");
+    expect(html).not.toContain("<strong>Last updated:</strong>");
+    expect(html).toContain("support@keyflare.studio");
+    expect(html).toContain("Gameplay and app usage data");
+    expect(html).toContain("AppMetrica");
+    expect(html).toContain("Google User Messaging Platform");
+    expect(html).toContain("Options");
+    expect(html).toMatch(/Privacy\s+choices/);
+    expect(html).toContain("We do not sell your personal information for money.");
+    expect(html).not.toContain(
+      "This product is configured as not collecting personal data directly.",
+    );
+    expect(html).not.toContain("Palette Master Notes");
   });
 });
