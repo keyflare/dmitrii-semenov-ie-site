@@ -63,7 +63,6 @@ Canonical content is English. The current public route model is:
 /products/:slug/privacy/
 /products/:slug/support/
 /products/:slug/data-deletion/
-/about/
 /contact/
 /legal/
 /legal/privacy/

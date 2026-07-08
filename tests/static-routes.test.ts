@@ -7,7 +7,6 @@ describe("static route paths", () => {
       expect.arrayContaining([
         "/",
         "/products",
-        "/about",
         "/contact",
         "/legal",
         "/legal/privacy",
@@ -16,5 +15,6 @@ describe("static route paths", () => {
         "/products/palette-master/support",
       ]),
     );
+    expect(getPrerenderPaths()).not.toContain("/about");
   });
 });

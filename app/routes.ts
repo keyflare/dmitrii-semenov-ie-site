@@ -7,7 +7,6 @@ export default [
   route("products/:slug/privacy", "./routes/product-privacy.tsx"),
   route("products/:slug/support", "./routes/product-support.tsx"),
   route("products/:slug/data-deletion", "./routes/product-data-deletion.tsx"),
-  route("about", "./routes/about.tsx"),
   route("contact", "./routes/contact.tsx"),
   route("legal", "./routes/legal.tsx"),
   route("legal/privacy", "./routes/legal-privacy.tsx"),
