@@ -110,7 +110,7 @@ Current expected values:
 
 ```text
 public/CNAME
-www.dmitrii-semenov-ie.studio
+www.keyflare.studio
 ```
 
 ```text
