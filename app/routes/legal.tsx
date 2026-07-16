@@ -25,7 +25,7 @@ export default function LegalRoute() {
           <h2>Business Information</h2>
           <p>
             Keyflare Studio is an independent software development and publishing brand operated by
-            Dmitrii Semenov IE, a registered Individual Entrepreneur in the Republic of Armenia.
+            Dmitrii Semenov, IE, a registered Individual Entrepreneur in the Republic of Armenia.
           </p>
           <p>
             Keyflare Studio develops, publishes, and supports software products for Apple, Android,
@@ -38,7 +38,7 @@ export default function LegalRoute() {
           <dl>
             <div>
               <dt>Legal entity</dt>
-              <dd>Dmitrii Semenov IE</dd>
+              <dd>Dmitrii Semenov, IE</dd>
             </div>
             <div>
               <dt>Business type</dt>
@@ -53,14 +53,14 @@ export default function LegalRoute() {
 
         <section>
           <h2>Brand</h2>
-          <p>Keyflare Studio is the public business brand of Dmitrii Semenov IE.</p>
+          <p>Keyflare Studio is the public business brand of Dmitrii Semenov, IE.</p>
           <p>
             All software products, services, websites, and applications published under the Keyflare
-            Studio name are operated by Dmitrii Semenov IE.
+            Studio name are operated by Dmitrii Semenov, IE.
           </p>
           <p>
             References to "Keyflare Studio", "we", "our", or "us" throughout this website refer to
-            Dmitrii Semenov IE.
+            Dmitrii Semenov, IE.
           </p>
         </section>
 

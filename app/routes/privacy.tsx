@@ -29,7 +29,7 @@ export default function PrivacyRoute() {
           </p>
           <p>
             This website is a static product and legal information hub for Keyflare Studio, operated
-            by Dmitrii Semenov IE.
+            by Dmitrii Semenov, IE.
           </p>
         </section>
 
