@@ -29,7 +29,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </div>
           <div className={styles.legal}>
             <p>© 2026 {siteConfig.brandName}.</p>
-            <p>Operated by Dmitrii Semenov IE.</p>
+            <p>Operated by Dmitrii Semenov, IE.</p>
             <p>Republic of Armenia.</p>
           </div>
         </div>

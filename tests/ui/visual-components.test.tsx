@@ -53,7 +53,7 @@ describe("visual components", () => {
     expect(html).toContain('href="/privacy/"');
     expect(html).toContain("Software for mobile, desktop, TV, and whatever comes next.");
     expect(html).toContain("© 2026 Keyflare Studio.");
-    expect(html).toContain("Operated by Dmitrii Semenov IE.");
+    expect(html).toContain("Operated by Dmitrii Semenov, IE.");
     expect(html).toContain("Republic of Armenia.");
     expect(html).not.toContain("Independent software products for mobile, desktop");
     expect(html).not.toContain(">KEYFLARE STUDIO</span>");
@@ -251,12 +251,12 @@ describe("visual components", () => {
     expect(html).toContain("Keyflare Studio is an independent software development");
     expect(html).toContain("Legal Entity");
     expect(html).toContain("<dt>Legal entity</dt>");
-    expect(html).toContain("<dd>Dmitrii Semenov IE</dd>");
+    expect(html).toContain("<dd>Dmitrii Semenov, IE</dd>");
     expect(html).toContain("<dt>Business type</dt>");
     expect(html).toContain("<dd>Individual Entrepreneur (IE)</dd>");
     expect(html).toContain("<dt>Country of registration</dt>");
     expect(html).toContain("<dd>Republic of Armenia</dd>");
-    expect(html).toContain("Keyflare Studio is the public business brand of Dmitrii Semenov IE.");
+    expect(html).toContain("Keyflare Studio is the public business brand of Dmitrii Semenov, IE.");
     expect(html).toContain('href="mailto:support@keyflare.studio"');
     expect(html).toContain(
       "Business registration information is available upon legitimate request",
