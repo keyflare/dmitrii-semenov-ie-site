@@ -207,6 +207,7 @@ describe("product customization", () => {
     expect(html).toContain("<footer>Last updated: July 8, 2026</footer>");
     expect(html).not.toContain("<strong>Last updated:</strong>");
     expect(html).toContain("support@keyflare.studio");
+    expect(html.match(/href="mailto:support@keyflare\.studio"/g)).toHaveLength(3);
     expect(html).toContain("Gameplay and app usage data");
     expect(html).toContain("AppMetrica");
     expect(html).toContain("Google User Messaging Platform");

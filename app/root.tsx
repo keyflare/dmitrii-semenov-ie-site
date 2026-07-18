@@ -8,7 +8,10 @@ import type { LinksFunction } from "react-router";
 import { SiteShell } from "~/components/SiteShell";
 import globalStyles from "~/styles/global.css?url";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: globalStyles }];
+export const links: LinksFunction = () => [
+  { rel: "icon", type: "image/svg+xml", href: "/brand/keyflare-studio-logo.svg" },
+  { rel: "stylesheet", href: globalStyles },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

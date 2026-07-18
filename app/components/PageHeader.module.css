@@ -34,6 +34,10 @@
   max-width: 100%;
 }
 
+.titleLockupWithIcon {
+  width: 100%;
+}
+
 .eyebrow {
   position: relative;
   z-index: 2;
@@ -65,6 +69,16 @@
   letter-spacing: 0;
   line-height: 0.86;
   text-transform: uppercase;
+}
+
+.titleWithIcon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.titleText {
+  min-width: 0;
 }
 
 .document .title {

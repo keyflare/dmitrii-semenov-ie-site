@@ -2,6 +2,7 @@ import type { MetaFunction } from "react-router";
 import { Link } from "react-router";
 import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
+import { PageIcon } from "~/components/PageIcon";
 import { getPublishedProducts } from "~/content/products/registry";
 import { siteConfig } from "~/content/site";
 
@@ -16,6 +17,7 @@ export default function PrivacyRoute() {
   return (
     <>
       <PageHeader
+        icon={<PageIcon name="privacy" />}
         title="Website Privacy Policy"
         description="Privacy information for visitors of this website and links to product policies."
         variant="document"

@@ -1,6 +1,7 @@
 import type { MetaFunction } from "react-router";
 import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
+import { PageIcon } from "~/components/PageIcon";
 import { siteConfig } from "~/content/site";
 
 export const meta: MetaFunction = () => [
@@ -12,6 +13,7 @@ export default function ContactRoute() {
   return (
     <>
       <PageHeader
+        icon={<PageIcon name="contact" />}
         title="Contact"
         description="Business inquiries for Keyflare Studio."
         variant="document"
