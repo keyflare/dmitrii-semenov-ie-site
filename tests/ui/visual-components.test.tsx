@@ -41,6 +41,82 @@ function renderWithRouter(element: React.ReactElement) {
 }
 
 describe("visual components", () => {
+  test("root links declare the square studio logo as an SVG favicon", async () => {
+    const { links } = await import("../../app/root");
+
+    expect(links()).toEqual(
+      expect.arrayContaining([
+        {
+          rel: "icon",
+          type: "image/svg+xml",
+          href: "/brand/keyflare-studio-logo.svg",
+        },
+      ]),
+    );
+  });
+
+  test("PageHeader renders an optional decorative page icon", async () => {
+    const { PageHeader } = await import("../../app/components/PageHeader");
+    const { PageIcon } = await import("../../app/components/PageIcon");
+    const html = renderToStaticMarkup(
+      createElement(PageHeader, {
+        title: "Contact",
+        variant: "document",
+        icon: createElement(PageIcon, { name: "contact" }),
+      }),
+    );
+
+    expect(html).toContain('data-page-icon="contact"');
+    expect(html).toContain('aria-hidden="true"');
+    expect(html).toContain('focusable="false"');
+    expect(html).toContain("<h1");
+    expect(html).toContain("Contact</span></h1>");
+  });
+
+  test("PageIcon uses the supplied filled SVG artwork", async () => {
+    const { PageIcon } = await import("../../app/components/PageIcon");
+    const contactHtml = renderToStaticMarkup(createElement(PageIcon, { name: "contact" }));
+    const legalHtml = renderToStaticMarkup(createElement(PageIcon, { name: "legal" }));
+    const privacyHtml = renderToStaticMarkup(createElement(PageIcon, { name: "privacy" }));
+
+    for (const html of [contactHtml, legalHtml, privacyHtml]) {
+      expect(html).toContain('viewBox="0 -960 960 960"');
+      expect(html).toContain('fill="currentColor"');
+      expect(html).not.toContain("stroke=");
+    }
+    expect(contactHtml).toContain('d="M480-480Zm0-40 320-200H160l320 200Z');
+    expect(legalHtml).toContain('d="M160-120v-80h480v80H160Z');
+    expect(privacyHtml).toContain('d="M480-80q-139-35-229.5-159.5T160-516');
+  });
+
+  test("PageHeader keeps headings icon-free by default", async () => {
+    const { PageHeader } = await import("../../app/components/PageHeader");
+    const html = renderToStaticMarkup(createElement(PageHeader, { title: "Products" }));
+
+    expect(html).toContain(">Products</h1>");
+    expect(html).not.toContain("data-page-icon");
+  });
+
+  test("PageHeader constrains icon title lockups at narrow widths", async () => {
+    const { PageHeader } = await import("../../app/components/PageHeader");
+    const { PageIcon } = await import("../../app/components/PageIcon");
+    const html = renderToStaticMarkup(
+      createElement(PageHeader, {
+        title: "Website Privacy Policy",
+        variant: "document",
+        icon: createElement(PageIcon, { name: "privacy" }),
+      }),
+    );
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
+    const globalCss = readFileSync("app/styles/global.css", "utf8");
+
+    expect(html).toContain("titleLockupWithIcon");
+    expect(pageHeaderCss).toMatch(/\.titleLockupWithIcon\s*{[^}]*width: 100%;/);
+    expect(pageHeaderCss).toMatch(/\.titleWithIcon\s*{[^}]*display: flex;/);
+    expect(pageHeaderCss).toMatch(/\.titleText\s*{[^}]*min-width: 0;/);
+    expect(globalCss).toMatch(/h1,\s*h2,\s*h3,\s*p\s*{[^}]*overflow-wrap: anywhere;/);
+  });
+
   test("SiteShell uses the studio logo asset in the header brand", async () => {
     const { SiteShell } = await import("../../app/components/SiteShell");
     const html = renderWithRouter(
@@ -242,11 +318,21 @@ describe("visual components", () => {
     expect(html).toContain("Readable policy text");
   });
 
+  test("Contact route renders its page icon", async () => {
+    const { default: ContactRoute } = await import("../../app/routes/contact");
+    const Stub = createRoutesStub([{ path: "/", Component: ContactRoute }]);
+    const html = renderToStaticMarkup(createElement(Stub));
+
+    expect(html).toContain('data-page-icon="contact"');
+    expect(html).toContain('href="mailto:contact@keyflare.studio"');
+  });
+
   test("Legal route renders the studio legal profile", async () => {
     const { default: LegalRoute } = await import("../../app/routes/legal");
     const Stub = createRoutesStub([{ path: "/", Component: LegalRoute }]);
     const html = renderToStaticMarkup(createElement(Stub));
 
+    expect(html).toContain('data-page-icon="legal"');
     expect(html).toContain("Business Information");
     expect(html).toContain("Keyflare Studio is an independent software development");
     expect(html).toContain("Legal Entity");
@@ -257,7 +343,7 @@ describe("visual components", () => {
     expect(html).toContain("<dt>Country of registration</dt>");
     expect(html).toContain("<dd>Republic of Armenia</dd>");
     expect(html).toContain("Keyflare Studio is the public business brand of Dmitrii Semenov, IE.");
-    expect(html).toContain('href="mailto:support@keyflare.studio"');
+    expect(html).toContain('href="mailto:contact@keyflare.studio"');
     expect(html).toContain(
       "Business registration information is available upon legitimate request",
     );
@@ -270,6 +356,7 @@ describe("visual components", () => {
     const Stub = createRoutesStub([{ path: "/", Component: PrivacyRoute }]);
     const html = renderToStaticMarkup(createElement(Stub));
 
+    expect(html).toContain('data-page-icon="privacy"');
     expect(html).toContain("Website Privacy Policy");
     expect(html).toContain(
       "This website does not require user registration and does not intentionally collect personal information.",

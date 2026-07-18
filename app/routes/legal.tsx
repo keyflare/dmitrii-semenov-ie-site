@@ -2,6 +2,7 @@ import type { MetaFunction } from "react-router";
 import { Link } from "react-router";
 import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
+import { PageIcon } from "~/components/PageIcon";
 import { siteConfig } from "~/content/site";
 
 export const meta: MetaFunction = () => [
@@ -16,6 +17,7 @@ export default function LegalRoute() {
   return (
     <>
       <PageHeader
+        icon={<PageIcon name="legal" />}
         title="Legal"
         description={`Business and legal information for ${siteConfig.brandName}.`}
         variant="document"
