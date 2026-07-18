@@ -13,4 +13,9 @@ git switch --detach origin/main
 [[actions]]
 name = "Run"
 icon = "play"
-command = "set -e; if [ ! -d node_modules ]; then npm install; fi; npm run dev -- --host 127.0.0.1"
+command = "set -e; if [ ! -d node_modules ]; then npm install; fi; /bin/sh scripts/codex-stop-dev-servers.sh; npm run dev -- --host 127.0.0.1 --port 5173 --strictPort"
+
+[[actions]]
+name = "Stop Servers"
+icon = "square"
+command = "/bin/sh scripts/codex-stop-dev-servers.sh"
