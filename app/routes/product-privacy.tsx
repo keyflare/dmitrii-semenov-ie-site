@@ -38,6 +38,12 @@ export function getProductPrivacyProduct(slug: string) {
 export function ProductPrivacyContent({ product }: { product: Product }) {
   const sections = getPrivacySections(product);
   const privacy = product.presentation.privacy;
+  const privacyMdx =
+    privacy.mode === "mdx" || privacy.mode === "generated-with-mdx"
+      ? createElement(getProductMdxContent(privacy.contentKey), {
+          components: productMdxComponents,
+        })
+      : null;
 
   return (
     <>
@@ -47,17 +53,15 @@ export function ProductPrivacyContent({ product }: { product: Product }) {
         variant="document"
       />
       <DocumentPage>
-        {sections.map((section) => (
-          <section key={section.title}>
-            <h2>{section.title}</h2>
-            <p>{section.body}</p>
-          </section>
-        ))}
-        {privacy.mode === "generated-with-mdx"
-          ? createElement(getProductMdxContent(privacy.contentKey), {
-              components: productMdxComponents,
-            })
-          : null}
+        {privacy.mode === "mdx"
+          ? privacyMdx
+          : sections.map((section) => (
+              <section key={section.title}>
+                <h2>{section.title}</h2>
+                <p>{section.body}</p>
+              </section>
+            ))}
+        {privacy.mode === "generated-with-mdx" ? privacyMdx : null}
       </DocumentPage>
     </>
   );

@@ -63,10 +63,9 @@ Canonical content is English. The current public route model is:
 /products/:slug/privacy/
 /products/:slug/support/
 /products/:slug/data-deletion/
-/about/
 /contact/
+/privacy/
 /legal/
-/legal/privacy/
 /app-ads.txt
 ```
 
@@ -110,7 +109,7 @@ Current expected values:
 
 ```text
 public/CNAME
-www.dmitrii-semenov-ie.studio
+www.keyflare.studio
 ```
 
 ```text

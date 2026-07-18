@@ -1,14 +1,39 @@
+.cardShell {
+  position: relative;
+  display: block;
+}
+
+.overviewLink {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--radius-md);
+}
+
+.overviewLink:focus-visible {
+  outline: 0.2rem solid var(--color-accent-blue);
+  outline-offset: 0.2rem;
+}
+
 .card {
   position: relative;
+  z-index: 2;
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(8rem, 11rem);
   gap: var(--space-4);
   min-height: 17rem;
   padding: var(--space-6);
   overflow: hidden;
   border: 2px solid var(--color-ink);
   border-radius: var(--radius-md);
+  color: var(--color-ink);
   background: var(--color-paper-soft);
   box-shadow: var(--shadow-poster);
+  transition:
+    background 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+  pointer-events: none;
 }
 
 .card::before {
@@ -17,6 +42,23 @@
   inset: 0 0 auto;
   height: 0.85rem;
   background: var(--gradient-chromatic);
+}
+
+.card:hover,
+.cardShell:has(.overviewLink:hover) .card,
+.cardShell:has(.overviewLink:focus-visible) .card {
+  color: var(--color-ink);
+  background: color-mix(in srgb, var(--color-paper-soft) 86%, var(--color-accent-amber));
+  box-shadow: 0.45rem 0.45rem 0 var(--color-ink);
+  transform: translate(-0.08rem, -0.08rem);
+}
+
+.copy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
 }
 
 .marker,
@@ -39,4 +81,60 @@
   margin: 0;
   color: var(--color-muted);
   line-height: 1.6;
+}
+
+.actions {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  pointer-events: auto;
+}
+
+.storeAction {
+  padding-inline: 0.62rem 0.82rem !important;
+}
+
+.preview {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  justify-self: end;
+  width: min(100%, 10.5rem);
+  transform: rotate(2.5deg);
+}
+
+.preview::before {
+  content: "";
+  position: absolute;
+  inset: 0.85rem -0.65rem -0.55rem 0.65rem;
+  z-index: -1;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-md);
+  background: var(--gradient-chromatic);
+}
+
+.preview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-md);
+  background: var(--color-ink);
+  box-shadow: 0.28rem 0.28rem 0 var(--color-ink);
+}
+
+@media (max-width: 720px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .preview {
+    justify-self: start;
+    width: min(52vw, 10rem);
+  }
 }

@@ -2,7 +2,7 @@
   position: relative;
   isolation: isolate;
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-1);
   max-width: 58rem;
 }
 
@@ -27,12 +27,34 @@
   border-bottom: 2px solid var(--color-border-soft);
 }
 
+.titleLockup {
+  display: grid;
+  gap: var(--space-1);
+  width: max-content;
+  max-width: 100%;
+}
+
 .eyebrow {
+  position: relative;
+  z-index: 2;
   color: var(--color-ink-soft);
   font-size: 0.82rem;
   font-weight: 800;
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+.poster .eyebrow {
+  transform: translateY(var(--page-header-eyebrow-drop, 0));
+}
+
+.eyebrowStart {
+  justify-self: start;
+}
+
+.eyebrowEnd {
+  justify-self: end;
+  text-align: right;
 }
 
 .title {
@@ -58,4 +80,8 @@
   color: var(--color-muted);
   font-size: clamp(1rem, 2vw, 1.25rem);
   line-height: 1.58;
+}
+
+.poster .description {
+  margin-top: var(--space-1);
 }

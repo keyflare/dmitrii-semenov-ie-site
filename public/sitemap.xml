@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.dmitrii-semenov-ie.studio/</loc></url>
-  <url><loc>https://www.dmitrii-semenov-ie.studio/products/</loc></url>
-  <url><loc>https://www.dmitrii-semenov-ie.studio/about/</loc></url>
-  <url><loc>https://www.dmitrii-semenov-ie.studio/contact/</loc></url>
-  <url><loc>https://www.dmitrii-semenov-ie.studio/legal/</loc></url>
-  <url><loc>https://www.dmitrii-semenov-ie.studio/legal/privacy/</loc></url>
+  <url><loc>https://www.keyflare.studio/</loc></url>
+  <url><loc>https://www.keyflare.studio/products/</loc></url>
+  <url><loc>https://www.keyflare.studio/contact/</loc></url>
+  <url><loc>https://www.keyflare.studio/privacy/</loc></url>
+  <url><loc>https://www.keyflare.studio/legal/</loc></url>
+  <url><loc>https://www.keyflare.studio/products/palette-master/</loc></url>
+  <url><loc>https://www.keyflare.studio/products/palette-master/privacy/</loc></url>
+  <url><loc>https://www.keyflare.studio/products/palette-master/support/</loc></url>
 </urlset>

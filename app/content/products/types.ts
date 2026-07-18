@@ -21,7 +21,7 @@ export type ProductCustomOverviewKey = (typeof productCustomOverviewKeys)[number
 export const productMdxContentKeys = [
   "palette-master-overview",
   "palette-master-support",
-  "palette-master-privacy-extra",
+  "palette-master-privacy",
 ] as const;
 
 export type ProductMdxContentKey = (typeof productMdxContentKeys)[number];
@@ -35,7 +35,9 @@ export type ProductSupportPresentation =
   { mode: "standard" } | { mode: "mdx"; contentKey: ProductMdxContentKey };
 
 export type ProductPrivacyPresentation =
-  { mode: "generated" } | { mode: "generated-with-mdx"; contentKey: ProductMdxContentKey };
+  | { mode: "generated" }
+  | { mode: "generated-with-mdx"; contentKey: ProductMdxContentKey }
+  | { mode: "mdx"; contentKey: ProductMdxContentKey };
 
 export type ProductPresentation = {
   overview: ProductOverviewPresentation;
