@@ -65,6 +65,11 @@ Every published product should have:
 - platform and store links when available;
 - product metadata for SEO and Open Graph.
 
+The `Product Privacy Policies` index on the website-level `/privacy/` page must include every
+published product. Keep that index registry-driven with `getPublishedProducts()`; do not maintain a
+separate manual list. Its focused test must enumerate the current published registry and assert
+exactly one `/products/:slug/privacy/` link and policy label for every published product.
+
 Terms of Service are an optional product capability. A product with `presentation.terms` gets a
 statically prerendered `/products/:slug/terms/` route and conditional Terms links. Products without
 configured Terms content return `404` at that route.
@@ -160,6 +165,10 @@ Validation should check:
 - valid product theme values when present;
 - required subscription privacy metadata;
 - exclusion of draft and fixture products from production public output.
+
+Focused route coverage should also verify that the website-level privacy index stays complete when
+a product changes to `published`. Adding a published product without its entry in `/privacy/` is a
+release-blocking regression.
 
 When changing the product model, routing, publication guards, privacy profile, prerendering, or
 metadata generation, add or update focused Vitest coverage and run `npm run check`.

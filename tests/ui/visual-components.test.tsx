@@ -423,8 +423,17 @@ describe("visual components", () => {
     expect(html).toContain("This website does not use analytics");
     expect(html).toContain("If you contact Keyflare Studio by email");
     expect(html).toContain("Product Privacy Policies");
-    expect(html).toContain('href="/products/palette-master/privacy/"');
-    expect(html).toContain("Palette Master Privacy Policy");
+
+    const publishedProducts = products.filter((product) => product.status === "published");
+    const productPrivacyLinks = html.match(/href="\/products\/[^"]+\/privacy\/"/g)?.length ?? 0;
+
+    expect(productPrivacyLinks).toBe(publishedProducts.length);
+
+    for (const publishedProduct of publishedProducts) {
+      expect(html).toContain(`href="/products/${publishedProduct.slug}/privacy/"`);
+      expect(html).toContain(`${publishedProduct.name} Privacy Policy`);
+    }
+
     expect(html).toContain("Last updated: July 2026");
   });
 });
