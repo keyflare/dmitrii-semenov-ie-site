@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import { PosterButton } from "./PosterButton";
-import { Chromatic404Artwork, type Chromatic404ArtworkHandle } from "./Chromatic404Artwork";
+import { TearOff404Artwork, type TearOff404ArtworkHandle } from "./TearOff404Artwork";
 import styles from "./NotFoundPage.module.css";
 
 export function NotFoundPage() {
-  const [aligned, setAligned] = useState(false);
-  const artworkRef = useRef<Chromatic404ArtworkHandle>(null);
+  const [open, setOpen] = useState(false);
+  const artworkRef = useRef<TearOff404ArtworkHandle>(null);
 
   const resetArtwork = () => {
     artworkRef.current?.reset();
@@ -16,18 +16,21 @@ export function NotFoundPage() {
       <title>404 - Page not found | Keyflare Studio</title>
       <meta name="robots" content="noindex, follow" />
       <section className={styles.page} aria-labelledby="not-found-title">
-        <div className={styles.copy}>
-          <p className={styles.eyebrow}>ERROR EDITION / 404</p>
-          <div className={styles.message} aria-live="polite">
+        <header className={styles.intro}>
+          <div className={styles.titleBlock}>
+            <p className={styles.eyebrow}>ERROR EDITION / 404</p>
             <h1 id="not-found-title">
-              {aligned ? "Beautifully wrong." : "This page slipped out of register."}
+              {open ? "Nothing underneath either." : "This page isn’t here."}
             </h1>
-            <p>
-              {aligned
-                ? "The page is still missing. The way home isn't."
-                : "The address is real. The page isn't."}
-            </p>
           </div>
+          <p className={styles.summary} aria-live="polite">
+            {open
+              ? "Still missing. At least the exits work."
+              : "Pull the error print aside—or use a working exit."}
+          </p>
+        </header>
+        <TearOff404Artwork ref={artworkRef} onOpenChange={setOpen} />
+        <footer className={styles.utility}>
           <div className={styles.actions}>
             <PosterButton to="/" size="hero" tone="primary">
               Return home
@@ -35,18 +38,17 @@ export function NotFoundPage() {
             <PosterButton to="/products/" size="hero">
               View products
             </PosterButton>
-            {aligned ? (
+            {open ? (
               <button className={styles.resetButton} type="button" onClick={resetArtwork}>
-                Play again
+                Print it again
               </button>
             ) : null}
           </div>
-          <div className={styles.registrationNote}>
-            <strong>404 / Chromatic calibration</strong>
+          <div className={styles.productionNote}>
+            <strong>404 / Tear-off edition</strong>
             <span>Missing route · working exits</span>
           </div>
-        </div>
-        <Chromatic404Artwork ref={artworkRef} onAlignmentChange={setAligned} />
+        </footer>
       </section>
     </>
   );

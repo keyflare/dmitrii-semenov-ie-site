@@ -69,47 +69,45 @@ describe("tear-off 404 geometry", () => {
   });
 });
 
-describe("chromatic 404 page", () => {
+describe("tear-off 404 page", () => {
   test("renders useful 404 content and exits before hydration", () => {
     const html = renderToStaticMarkup(
       createElement(MemoryRouter, null, createElement(NotFoundPage)),
     );
 
     expect(html).toContain("ERROR EDITION / 404");
-    expect(html).toContain("This page slipped out of register.");
-    expect(html).toContain("The address is real. The page isn&#x27;t.");
+    expect(html).toContain("This page isn’t here.");
+    expect(html).toContain("Pull the error print aside");
     expect(html).toContain('href="/"');
     expect(html).toContain('href="/products/"');
     expect(html).toContain("noindex, follow");
     expect(html.match(/aria-hidden="true"/g)?.length).toBeGreaterThanOrEqual(3);
     expect(html).toContain('aria-live="polite"');
-    expect(html).toContain('aria-label="Align colour plates automatically"');
+    expect(html).toContain('aria-label="Tear away the error poster"');
   });
 
-  test("keeps long display words intact inside the copy poster", () => {
+  test("uses one wide poster instead of the old two-card layout", () => {
     const css = readFileSync("app/components/NotFoundPage.module.css", "utf8");
 
-    expect(css).not.toContain("max-width: 10ch");
-    expect(css).toContain("grid-template-columns: minmax(22rem, 0.82fr) minmax(30rem, 1.18fr);");
-    expect(css).toMatch(
-      /\.message h1\s*{[^}]*font-size: clamp\(2\.25rem, 3\.4vw, 4rem\);[^}]*letter-spacing: 0;[^}]*overflow-wrap: normal;[^}]*word-break: normal;/s,
+    expect(css).not.toContain(
+      "grid-template-columns: minmax(22rem, 0.82fr) minmax(30rem, 1.18fr);",
     );
+    expect(css).toMatch(/\.page\s*{[^}]*display: grid;[^}]*min-width: 0;/s);
+    expect(css).toMatch(/\.intro h1\s*{[^}]*font-size: 5\.75rem;[^}]*letter-spacing: 0;/s);
   });
 
-  test("allows both posters to shrink without mobile overflow", () => {
+  test("keeps the artwork and actions usable without mobile overflow", () => {
     const pageCss = readFileSync("app/components/NotFoundPage.module.css", "utf8");
-    const artworkCss = readFileSync("app/components/Chromatic404Artwork.module.css", "utf8");
+    const artworkCss = readFileSync("app/components/TearOff404Artwork.module.css", "utf8");
 
-    expect(pageCss).toMatch(/\.copy\s*{[^}]*min-width: 0;/s);
+    expect(pageCss).toMatch(/\.page\s*{[^}]*min-width: 0;/s);
     expect(artworkCss).toMatch(/\.artwork\s*{[^}]*min-width: 0;/s);
-    expect(pageCss).toMatch(
-      /@media \(max-width: 520px\)[\s\S]*?\.message h1\s*{[^}]*font-size: clamp\(1\.75rem, 8\.8vw, 2\.75rem\);/s,
-    );
     expect(artworkCss.match(/^\.artwork\s*{([^}]*)}/m)?.[1]).not.toContain("touch-action: none");
-    expect(artworkCss).toMatch(/\.plate\s*{[^}]*touch-action: none;/s);
+    expect(artworkCss).toMatch(/\.pullHandle\s*{[^}]*touch-action: none;/s);
+    expect(pageCss).toMatch(/@media \(max-width: 580px\)[\s\S]*?\.actions\s*{[^}]*width: 100%;/s);
   });
 
-  test("offers an accessible shortcut while retaining both exits after success", async () => {
+  test("offers one accessible tear action and retains both exits after opening", async () => {
     const container = document.createElement("div");
     document.body.append(container);
     let root: Root;
@@ -124,28 +122,29 @@ describe("chromatic 404 page", () => {
 
     expect(linkLabels()).toEqual(expect.arrayContaining(["Return home", "View products"]));
 
-    const alignButton = container.querySelector<HTMLButtonElement>(
-      '[aria-label="Align colour plates automatically"]',
+    const pullHandle = container.querySelector<HTMLButtonElement>(
+      '[aria-label="Tear away the error poster"]',
     );
-    expect(alignButton).not.toBeNull();
+    expect(pullHandle).not.toBeNull();
 
     await act(async () => {
-      alignButton!.click();
+      pullHandle!.click();
     });
 
-    expect(container.querySelector("h1")?.textContent).toBe("Beautifully wrong.");
+    expect(container.querySelector("h1")?.textContent).toBe("Nothing underneath either.");
     expect(linkLabels()).toEqual(expect.arrayContaining(["Return home", "View products"]));
+    expect(container.querySelector('[aria-label="Tear away the error poster"]')).toBeNull();
 
-    const playAgain = Array.from(container.querySelectorAll("button")).find(
-      (button) => button.textContent === "Play again",
+    const printAgain = Array.from(container.querySelectorAll("button")).find(
+      (button) => button.textContent === "Print it again",
     );
-    expect(playAgain).toBeDefined();
+    expect(printAgain).toBeDefined();
 
     await act(async () => {
-      playAgain!.click();
+      printAgain!.click();
     });
 
-    expect(container.querySelector("h1")?.textContent).toBe("This page slipped out of register.");
+    expect(container.querySelector("h1")?.textContent).toBe("This page isn’t here.");
 
     await act(async () => {
       root!.unmount();
@@ -199,7 +198,7 @@ describe("root error classification", () => {
 
     for (const html of [fallbackHtml, errorHtml]) {
       expect(html).toContain("Keyflare Studio");
-      expect(html).toContain("This page slipped out of register.");
+      expect(html).toContain("This page isn’t here.");
       expect(html).toContain("Return home");
     }
   });
@@ -217,6 +216,6 @@ describe("root error classification", () => {
     );
 
     expect(html).toContain("Something went wrong");
-    expect(html).not.toContain("This page slipped out of register.");
+    expect(html).not.toContain("This page isn’t here.");
   });
 });
