@@ -62,6 +62,10 @@ Avoid viewport-width font scaling. Use stable minimum and maximum sizes.
 
 Document pages should use smaller, calmer headings than homepage and product hero pages.
 
+Shared `PageHeader` titles must stay on one line. Size them down at narrow widths instead of
+wrapping or inserting manual breaks. The only approved wrapped page title is the intentional
+two-line Keyflare Studio lockup on the homepage, enabled as an explicit component exception.
+
 ## Color And Graphics
 
 The visual system uses a light warm base with sharp chromatic accents:

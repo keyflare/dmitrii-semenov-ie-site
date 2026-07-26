@@ -93,9 +93,23 @@ describe("visual components", () => {
   test("PageHeader keeps headings icon-free by default", async () => {
     const { PageHeader } = await import("../../app/components/PageHeader");
     const html = renderToStaticMarkup(createElement(PageHeader, { title: "Products" }));
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
 
     expect(html).toContain(">Products</h1>");
     expect(html).not.toContain("data-page-icon");
+    expect(html).toContain("titleNoWrap");
+    expect(pageHeaderCss).toMatch(/\.titleNoWrap\s*{[^}]*white-space:\s*nowrap;/s);
+  });
+
+  test("PageHeader allows wrapping only when explicitly requested", async () => {
+    const { PageHeader } = await import("../../app/components/PageHeader");
+    const html = renderToStaticMarkup(
+      createElement(PageHeader, { title: "Keyflare Studio", allowTitleWrap: true }),
+    );
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
+
+    expect(html).toContain("titleAllowWrap");
+    expect(pageHeaderCss).toMatch(/\.titleAllowWrap\s*{[^}]*white-space:\s*normal;/s);
   });
 
   test("PageHeader constrains icon title lockups at narrow widths", async () => {
@@ -242,6 +256,7 @@ describe("visual components", () => {
     expect(html).toContain("home-title-studio-word");
     expect(html).toContain("home-title-logo");
     expect(html).toContain("titleLockup");
+    expect(html).toContain("titleAllowWrap");
     expect(html).toContain("eyebrowEnd");
     expect(html).toContain("BY DMITRII SEMENOV");
     expect(html).not.toContain("Independent software studio");
@@ -302,7 +317,10 @@ describe("visual components", () => {
     const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
 
     expect(pageHeaderCss).toMatch(
-      /@media \(max-width: 420px\)\s*{\s*\.poster \.title\s*\{[^}]*font-size:\s*clamp\(2rem,\s*9vw,\s*2\.4rem\);/s,
+      /@media \(max-width: 420px\)[\s\S]*\.poster \.title\s*\{[^}]*font-size:\s*clamp\(1\.5rem,\s*8vw,\s*2\.4rem\);/s,
+    );
+    expect(pageHeaderCss).toMatch(
+      /@media \(max-width: 420px\)[\s\S]*\.document \.title\s*\{[^}]*font-size:\s*clamp\(1\.2rem,\s*5vw,\s*2rem\);/s,
     );
   });
 

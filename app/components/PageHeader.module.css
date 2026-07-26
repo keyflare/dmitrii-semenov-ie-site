@@ -82,6 +82,16 @@
   gap: var(--space-3);
 }
 
+.titleNoWrap {
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: normal;
+}
+
+.titleAllowWrap {
+  white-space: normal;
+}
+
 .titleText {
   min-width: 0;
 }
@@ -107,6 +117,10 @@
 
 @media (max-width: 420px) {
   .poster .title {
-    font-size: clamp(2rem, 9vw, 2.4rem);
+    font-size: clamp(1.5rem, 8vw, 2.4rem);
+  }
+
+  .document .title {
+    font-size: clamp(1.2rem, 5vw, 2rem);
   }
 }

@@ -21,6 +21,7 @@ export default function HomeRoute() {
     <div className="home-layout">
       <section className="home-hero" aria-labelledby="home-title">
         <PageHeader
+          allowTitleWrap
           eyebrow="BY DMITRII SEMENOV"
           eyebrowAlign="end"
           id="home-title"
