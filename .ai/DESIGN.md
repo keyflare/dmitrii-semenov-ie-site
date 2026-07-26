@@ -150,3 +150,26 @@ platform/store links when available, support and privacy links, and publication 
 Privacy, support, legal, and data deletion pages should preserve generated compliance sections, keep
 text highly readable, use restrained brand accents, and avoid oversized decorative modules inside
 dense policy text.
+
+## Not Found Page
+
+The studio-level 404 page uses a **tear-off error poster** metaphor inside the normal warm-paper
+Chromatic Poster system. A warm error sheet sits above a saturated blue `404` print, and a large
+amber `PULL` handle makes the horizontal reveal gesture explicit.
+
+Use one handle, one horizontal direction, and one-to-one pointer or touch response. Do not return to
+overlapping draggable colour plates or restrained cursor parallax: the interaction should explain
+itself before movement begins. Crossing the visible threshold may tear the sheet away, revise the
+copy, and expose a replay action, but it must never redirect automatically.
+
+Keep these guarantees:
+
+- the normal Keyflare Studio header, navigation, footer, and legal identity remain visible;
+- Home and Products links are available immediately without solving the interaction;
+- the page is understandable before JavaScript hydration;
+- the pull handle is a real keyboard-operable button and decorative print layers are hidden from
+  assistive technology;
+- reduced-motion users keep the same useful states without spring, hover-drift, or completion
+  animation;
+- mobile layouts keep the 404 inside the viewport without horizontal overflow;
+- unexpected non-404 failures use the calm generic error view rather than the playful 404 concept.

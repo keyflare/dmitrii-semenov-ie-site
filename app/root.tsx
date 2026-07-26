@@ -5,7 +5,10 @@ import "@fontsource/syne/700.css";
 import "@fontsource/syne/800.css";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { LinksFunction } from "react-router";
+import { GenericErrorPage } from "~/components/GenericErrorPage";
+import { NotFoundPage } from "~/components/NotFoundPage";
 import { SiteShell } from "~/components/SiteShell";
+import { getRootErrorKind } from "~/rootError";
 import globalStyles from "~/styles/global.css?url";
 
 export const links: LinksFunction = () => [
@@ -37,4 +40,28 @@ export default function Root() {
       <Outlet />
     </SiteShell>
   );
+}
+
+export function RootHydrateFallback() {
+  return (
+    <SiteShell>
+      <NotFoundPage />
+    </SiteShell>
+  );
+}
+
+export function HydrateFallback() {
+  return <RootHydrateFallback />;
+}
+
+export function RootErrorBoundary({ error }: { error: unknown }) {
+  return (
+    <SiteShell>
+      {getRootErrorKind(error) === "not-found" ? <NotFoundPage /> : <GenericErrorPage />}
+    </SiteShell>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: unknown }) {
+  return <RootErrorBoundary error={error} />;
 }
