@@ -9,6 +9,7 @@ import {
   getAmbientOffsets,
 } from "../../app/components/Chromatic404Artwork.logic";
 import { NotFoundPage } from "../../app/components/NotFoundPage";
+import { getRootErrorKind } from "../../app/rootError";
 
 describe("chromatic 404 artwork geometry", () => {
   test("starts visibly out of register", () => {
@@ -62,5 +63,72 @@ describe("chromatic 404 page", () => {
     expect(html).toContain("noindex, follow");
     expect(html.match(/aria-hidden="true"/g)?.length).toBeGreaterThanOrEqual(3);
     expect(html).toContain('aria-live="polite"');
+  });
+});
+
+describe("root error classification", () => {
+  test("separates 404 route responses from unexpected errors", () => {
+    expect(
+      getRootErrorKind({
+        status: 404,
+        statusText: "Not Found",
+        internal: true,
+        data: "No route matches URL",
+      }),
+    ).toBe("not-found");
+    expect(
+      getRootErrorKind({
+        status: 500,
+        statusText: "Server Error",
+        internal: false,
+        data: "Broken",
+      }),
+    ).toBe("error");
+    expect(getRootErrorKind(new Error("Broken"))).toBe("error");
+  });
+
+  test("renders the missing page through the hydration fallback and root boundary", async () => {
+    const { RootErrorBoundary, RootHydrateFallback } = await import("../../app/root");
+    const route404 = {
+      status: 404,
+      statusText: "Not Found",
+      internal: true,
+      data: "No route matches URL",
+    };
+
+    const fallbackHtml = renderToStaticMarkup(
+      createElement(MemoryRouter, null, createElement(RootHydrateFallback)),
+    );
+    const errorHtml = renderToStaticMarkup(
+      createElement(
+        MemoryRouter,
+        null,
+        createElement(RootErrorBoundary, {
+          error: route404,
+        }),
+      ),
+    );
+
+    for (const html of [fallbackHtml, errorHtml]) {
+      expect(html).toContain("Keyflare Studio");
+      expect(html).toContain("This page slipped out of register.");
+      expect(html).toContain("Return home");
+    }
+  });
+
+  test("keeps unexpected root errors distinct from missing pages", async () => {
+    const { RootErrorBoundary } = await import("../../app/root");
+    const html = renderToStaticMarkup(
+      createElement(
+        MemoryRouter,
+        null,
+        createElement(RootErrorBoundary, {
+          error: new Error("Broken"),
+        }),
+      ),
+    );
+
+    expect(html).toContain("Something went wrong");
+    expect(html).not.toContain("This page slipped out of register.");
   });
 });

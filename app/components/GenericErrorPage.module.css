@@ -1,0 +1,39 @@
+.page {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+  max-width: var(--layout-readable);
+  padding: var(--space-8);
+  border-left: 0.8rem solid var(--color-document-rail);
+  background: var(--color-document-bg);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.page h1 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 0.95;
+}
+
+.page > p:not(.eyebrow) {
+  max-width: 38rem;
+  margin: 0;
+  color: var(--color-ink-soft);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: var(--space-6);
+    border-left-width: 0.55rem;
+  }
+}
