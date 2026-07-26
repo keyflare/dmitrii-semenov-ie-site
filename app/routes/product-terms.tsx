@@ -2,6 +2,7 @@ import { createElement } from "react";
 import type { Route } from "./+types/product-terms";
 import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
+import { ProductPageFrame } from "~/components/ProductPageFrame";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
 import { productMdxComponents } from "~/content/products/mdxComponents";
 import { findPublishedProduct } from "~/content/products/registry";
@@ -42,7 +43,7 @@ export function ProductTermsContent({ product }: { product: Product }) {
   }
 
   return (
-    <>
+    <ProductPageFrame product={product}>
       <PageHeader
         title={`${product.name} Terms of Service`}
         description={product.shortDescription}
@@ -53,7 +54,7 @@ export function ProductTermsContent({ product }: { product: Product }) {
           components: productMdxComponents,
         })}
       </DocumentPage>
-    </>
+    </ProductPageFrame>
   );
 }
 

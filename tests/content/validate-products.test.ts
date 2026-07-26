@@ -118,6 +118,26 @@ describe("validateProducts", () => {
     );
   });
 
+  test("rejects unknown product page surface metadata", () => {
+    const productWithUnknownPageSurface: Product = {
+      ...baseProduct,
+      theme: {
+        accentPrimary: "#ff4f64",
+        accentSecondary: "#ffb000",
+        accentTertiary: "#19d3a2",
+        ink: "#15111c",
+        surface: "#fff4d7",
+        gradient: "linear-gradient(90deg, #ff4f64, #ffb000, #19d3a2, #2563ff)",
+        visualVolume: "calm",
+        pageSurface: "unknown" as never,
+      },
+    };
+
+    expect(validateProducts([productWithUnknownPageSurface])).toContain(
+      "sample theme.pageSurface must be a known page surface.",
+    );
+  });
+
   test.each(["linear-gradient(", "linear-gradient(foo"])(
     "rejects malformed product theme gradient metadata: %s",
     (gradient) => {

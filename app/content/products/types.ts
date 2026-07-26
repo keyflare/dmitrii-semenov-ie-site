@@ -59,6 +59,10 @@ export type ProductPresentation = {
 
 export type ProductVisualVolume = "calm" | "poster" | "immersive";
 
+export const productPageSurfaces = ["ledger"] as const;
+
+export type ProductPageSurface = (typeof productPageSurfaces)[number];
+
 export type ProductTheme = {
   accentPrimary: string;
   accentSecondary: string;
@@ -67,6 +71,7 @@ export type ProductTheme = {
   surface: string;
   gradient: string;
   visualVolume: ProductVisualVolume;
+  pageSurface?: ProductPageSurface;
 };
 
 export type Product = {

@@ -63,4 +63,3 @@ Replace the asymmetric two-column disclaimer with one dark, self-contained callo
 - Run the focused tests red/green, then the full `npm run check`.
 - Visually inspect Ratebench overview and documents plus Products and Home at wide, intermediate,
   and mobile widths, with horizontal-overflow and browser-error checks.
-

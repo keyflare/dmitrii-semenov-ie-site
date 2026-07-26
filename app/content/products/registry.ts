@@ -93,6 +93,7 @@ export const products: Product[] = [
       surface: "#ffffff",
       gradient: "linear-gradient(90deg, #196dff 0 78%, #3cb200 78% 91%, #fea00a 91%)",
       visualVolume: "calm",
+      pageSurface: "ledger",
     },
     privacyProfile: {
       usesAdMob: false,

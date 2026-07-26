@@ -1,6 +1,7 @@
 import type { Route } from "./+types/product-data-deletion";
 import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
+import { ProductPageFrame } from "~/components/ProductPageFrame";
 import { findPublishedProduct } from "~/content/products/registry";
 import { siteConfig } from "~/content/site";
 
@@ -34,7 +35,7 @@ export default function ProductDataDeletionRoute({ params }: Route.ComponentProp
   const product = getProductDataDeletionProduct(params.slug);
 
   return (
-    <>
+    <ProductPageFrame product={product}>
       <PageHeader
         title={`${product.name} Data Deletion`}
         description="Instructions for requesting deletion of product-related data."
@@ -46,6 +47,6 @@ export default function ProductDataDeletionRoute({ params }: Route.ComponentProp
           <a href={`mailto:${product.supportEmail}`}>{product.supportEmail}</a>.
         </p>
       </DocumentPage>
-    </>
+    </ProductPageFrame>
   );
 }

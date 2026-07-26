@@ -54,6 +54,9 @@ describe("Ratebench product", () => {
         terms: { mode: "mdx", contentKey: "ratebench-terms" },
         support: { mode: "mdx", contentKey: "ratebench-support" },
       },
+      theme: {
+        pageSurface: "ledger",
+      },
       privacyProfile: {
         usesAdMob: false,
         usesAnalytics: true,
@@ -100,6 +103,20 @@ describe("Ratebench product", () => {
 
   test("passes published product validation", () => {
     expect(validateProducts(products)).toEqual([]);
+  });
+
+  test("uses the ledger page surface across Ratebench routes", () => {
+    const product = getRatebench();
+    const pages = [
+      renderWithRouter(createElement(ProductOverviewContent, { product })),
+      renderWithRouter(createElement(ProductPrivacyContent, { product })),
+      renderWithRouter(createElement(ProductTermsContent, { product })),
+      renderWithRouter(createElement(ProductSupportContent, { product })),
+    ];
+
+    for (const html of pages) {
+      expect(html).toContain('data-page-surface="ledger"');
+    }
   });
 
   test("renders the Studio Ledger overview and product links", () => {

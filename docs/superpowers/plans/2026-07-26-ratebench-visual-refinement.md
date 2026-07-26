@@ -18,6 +18,7 @@ the registry publication model.
 ### Task 1: Add product page-surface metadata and frame
 
 **Files:**
+
 - Create: `app/components/ProductPageFrame.tsx`
 - Create: `app/components/ProductPageFrame.module.css`
 - Modify: `app/content/products/types.ts`
@@ -73,6 +74,7 @@ git commit -m "Add product-specific page surfaces"
 ### Task 2: Rebuild the Ratebench hero and benchmark
 
 **Files:**
+
 - Modify: `app/content/products/ratebench/Overview.tsx`
 - Modify: `app/content/products/ratebench/Overview.module.css`
 - Test: `tests/content/ratebench-product.test.tsx`
@@ -98,7 +100,7 @@ the old ledger array with structured rows:
 [
   { step: "01", pair: "USD / EUR", market: "0.920", effective: "0.900" },
   { step: "02", pair: "EUR / USDT", market: "1.080", effective: "1.050" },
-]
+];
 ```
 
 Render a final `Whole route · USD / USDT` row with `0.994` and `0.945`.
@@ -117,6 +119,7 @@ git commit -m "Refine Ratebench hero and benchmark"
 ### Task 3: Redraw the financial disclaimer
 
 **Files:**
+
 - Modify: `app/content/products/ratebench/Overview.tsx`
 - Modify: `app/content/products/ratebench/Overview.module.css`
 - Test: `tests/content/ratebench-product.test.tsx`
@@ -149,6 +152,7 @@ git commit -m "Redraw Ratebench financial disclaimer"
 ### Task 4: Improve Products and Launch board responsiveness
 
 **Files:**
+
 - Modify: `app/styles/global.css`
 - Modify: `app/components/ProductCard.module.css`
 - Test: `tests/ui/visual-components.test.tsx`
@@ -158,9 +162,19 @@ git commit -m "Redraw Ratebench financial disclaimer"
 Require:
 
 ```css
-.home-products-grid { gap: var(--space-6); }
-@media (max-width: 1050px) { .catalog-grid { grid-template-columns: 1fr; } }
-@media (max-width: 860px) { .card { grid-template-columns: 1fr; } }
+.home-products-grid {
+  gap: var(--space-6);
+}
+@media (max-width: 1050px) {
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 860px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+}
 ```
 
 - [ ] **Step 2: Run visual component tests and verify RED**
@@ -186,6 +200,7 @@ git commit -m "Improve product grid responsiveness"
 ### Task 5: Document and verify
 
 **Files:**
+
 - Modify: `.ai/DESIGN.md`
 - Delete: `docs/superpowers/specs/2026-07-26-ratebench-visual-refinement-design.md`
 - Delete: `docs/superpowers/plans/2026-07-26-ratebench-visual-refinement.md`
@@ -216,4 +231,3 @@ errors.
 git add .ai/DESIGN.md docs/superpowers
 git commit -m "Document product page surfaces"
 ```
-
