@@ -13,8 +13,14 @@ describe("static route paths", () => {
         "/products/palette-master",
         "/products/palette-master/privacy",
         "/products/palette-master/support",
+        "/products/ratebench",
+        "/products/ratebench/privacy",
+        "/products/ratebench/terms",
+        "/products/ratebench/support",
       ]),
     );
+    expect(getPrerenderPaths()).not.toContain("/products/palette-master/terms");
+    expect(getPrerenderPaths()).not.toContain("/products/fixture-product/terms");
     expect(getPrerenderPaths()).not.toContain("/about");
     expect(getPrerenderPaths()).not.toContain("/legal/privacy");
   });

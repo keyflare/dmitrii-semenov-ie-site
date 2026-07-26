@@ -15,6 +15,11 @@ The product registry is the source of truth for:
 - product metadata and privacy profile;
 - product presentation mode.
 
+Public registry status and customer-facing release stage are separate concerns. A product may use
+the optional `releaseStage: "in-development"` value while remaining `published` so its overview and
+compliance URLs are public. In-development products must not render store controls that imply a
+download is available.
+
 Published products must be complete and pass validation.
 
 ## Product Statuses
@@ -44,6 +49,7 @@ Current public product routes:
 /products/
 /products/:slug/
 /products/:slug/privacy/
+/products/:slug/terms/
 /products/:slug/support/
 /products/:slug/data-deletion/
 ```
@@ -58,6 +64,10 @@ Every published product should have:
 - product-specific support page;
 - platform and store links when available;
 - product metadata for SEO and Open Graph.
+
+Terms of Service are an optional product capability. A product with `presentation.terms` gets a
+statically prerendered `/products/:slug/terms/` route and conditional Terms links. Products without
+configured Terms content return `404` at that route.
 
 The product overview page should link to privacy, support, and data deletion pages when applicable.
 It should not duplicate full privacy or support content.
@@ -88,8 +98,13 @@ Privacy pages support:
 - `generated`;
 - `generated-with-mdx`.
 
-Custom overview pages and MDX content must be statically imported and explicitly registered. Do not
-add arbitrary dynamic imports, runtime content loading, CMS behavior, or remote content loading.
+Terms pages support:
+
+- `mdx`.
+
+Custom overview pages and all overview, privacy, terms, and support MDX content must be statically
+imported and explicitly registered. Do not add arbitrary dynamic imports, runtime content loading,
+CMS behavior, or remote content loading.
 
 ## Privacy And Support Rules
 
@@ -118,6 +133,11 @@ Reusable disclosure sections may cover:
 - international processing;
 - policy updates and `lastUpdated`.
 
+The structured privacy profile uses `usesSubscriptions` to make subscription disclosures
+inspectable. Subscription products should explain that Apple or Google handles store billing, what
+purchase or entitlement data the product processes, and that the product does not directly receive
+full payment-card details.
+
 Support pages should stay product-specific rather than becoming a shared support center. They may
 include support email, platform information, troubleshooting notes, FAQ entries, known issues, and
 links to privacy or data deletion pages.
@@ -136,7 +156,9 @@ Validation should check:
 - valid external URLs when store links are present;
 - valid `lastUpdated` values for policy pages;
 - known custom overview and MDX keys;
+- optional Terms presentation keys;
 - valid product theme values when present;
+- required subscription privacy metadata;
 - exclusion of draft and fixture products from production public output.
 
 When changing the product model, routing, publication guards, privacy profile, prerendering, or
