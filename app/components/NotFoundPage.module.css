@@ -6,8 +6,8 @@
 
 .intro {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.6fr);
-  gap: var(--space-10);
+  grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.4fr);
+  gap: var(--space-6);
   align-items: end;
   min-width: 0;
 }
@@ -34,10 +34,10 @@
 .intro h1 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 5.75rem;
+  font-size: 4.5rem;
   font-weight: 800;
   letter-spacing: 0;
-  line-height: 0.78;
+  line-height: 0.8;
   overflow-wrap: normal;
   text-transform: uppercase;
   word-break: normal;

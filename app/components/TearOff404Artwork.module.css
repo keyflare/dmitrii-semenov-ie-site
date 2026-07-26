@@ -8,7 +8,7 @@
   position: relative;
   isolation: isolate;
   min-width: 0;
-  min-height: 34rem;
+  min-height: 30rem;
   overflow: hidden;
   border: 2px solid var(--color-ink);
   border-radius: var(--radius-xs);
@@ -68,7 +68,7 @@
   left: 50%;
   color: var(--color-paper-soft);
   font-family: var(--font-display);
-  font-size: 18rem;
+  font-size: 16rem;
   font-weight: 800;
   letter-spacing: 0;
   line-height: 0.72;
@@ -195,7 +195,7 @@
   top: 51%;
   left: 55%;
   font-family: var(--font-display);
-  font-size: 5.7rem;
+  font-size: 5rem;
   font-weight: 800;
   letter-spacing: 0;
   line-height: 0.73;
@@ -322,7 +322,7 @@
 
 @media (max-width: 860px) {
   .artwork {
-    min-height: 30rem;
+    min-height: 28rem;
   }
 
   .code {
@@ -337,7 +337,7 @@
 
 @media (max-width: 580px) {
   .artwork {
-    min-height: 27rem;
+    min-height: 26rem;
     box-shadow: 0.35rem 0.35rem 0 var(--color-ink);
   }
 
@@ -374,8 +374,8 @@
 
   .sheetTitle {
     top: 52%;
-    left: 61%;
-    font-size: 3.25rem;
+    left: 60%;
+    font-size: 2.8rem;
   }
 
   .sheetRule {

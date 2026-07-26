@@ -93,7 +93,7 @@ describe("tear-off 404 page", () => {
       "grid-template-columns: minmax(22rem, 0.82fr) minmax(30rem, 1.18fr);",
     );
     expect(css).toMatch(/\.page\s*{[^}]*display: grid;[^}]*min-width: 0;/s);
-    expect(css).toMatch(/\.intro h1\s*{[^}]*font-size: 5\.75rem;[^}]*letter-spacing: 0;/s);
+    expect(css).toMatch(/\.intro h1\s*{[^}]*font-size: 4\.5rem;[^}]*letter-spacing: 0;/s);
   });
 
   test("keeps the artwork and actions usable without mobile overflow", () => {
@@ -104,6 +104,9 @@ describe("tear-off 404 page", () => {
     expect(artworkCss).toMatch(/\.artwork\s*{[^}]*min-width: 0;/s);
     expect(artworkCss.match(/^\.artwork\s*{([^}]*)}/m)?.[1]).not.toContain("touch-action: none");
     expect(artworkCss).toMatch(/\.pullHandle\s*{[^}]*touch-action: none;/s);
+    expect(artworkCss).toMatch(
+      /@media \(max-width: 580px\)[\s\S]*?\.sheetTitle\s*{[^}]*font-size: 2\.8rem;/s,
+    );
     expect(pageCss).toMatch(/@media \(max-width: 580px\)[\s\S]*?\.actions\s*{[^}]*width: 100%;/s);
   });
 
