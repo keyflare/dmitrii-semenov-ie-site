@@ -13,6 +13,7 @@ import {
   arePlatesAligned,
   clampPlateOffset,
   getAmbientOffsets,
+  getPlateZIndices,
   type PlateName,
   type PlateOffsets,
   type Point,
@@ -74,6 +75,7 @@ export const Chromatic404Artwork = forwardRef<Chromatic404ArtworkHandle, Chromat
     const plateOffsetsRef = useRef(plateOffsets);
     const activeDragRef = useRef<ActiveDrag | null>(null);
     const reducedMotion = usePrefersReducedMotion();
+    const plateZIndices = getPlateZIndices(plateOffsets);
 
     const updatePlateOffsets = useCallback((nextOffsets: PlateOffsets) => {
       plateOffsetsRef.current = nextOffsets;
@@ -200,6 +202,7 @@ export const Chromatic404Artwork = forwardRef<Chromatic404ArtworkHandle, Chromat
               "--plate-y": `${plateOffset.y}px`,
               "--ambient-x": `${ambientOffset.x}px`,
               "--ambient-y": `${ambientOffset.y}px`,
+              zIndex: activePlate === plate ? 6 : plateZIndices[plate],
             } as CSSProperties;
 
             return (

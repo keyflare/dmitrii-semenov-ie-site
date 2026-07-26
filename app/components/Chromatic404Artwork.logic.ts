@@ -8,6 +8,7 @@ export const INITIAL_PLATE_OFFSETS: PlateOffsets = {
   blue: { x: 0, y: 0 },
 };
 
+const plateNames: PlateName[] = ["red", "amber", "blue"];
 const dragLimit = 48;
 const snapDistance = 9;
 
@@ -24,6 +25,23 @@ export function getAmbientOffsets(normalizedX: number, normalizedY: number): Pla
     amber: { x: normalizedX * 6, y: normalizedY * 6 },
     blue: { x: normalizedX * -2, y: normalizedY * -2 },
   };
+}
+
+export function getPlateZIndices(offsets: PlateOffsets): Record<PlateName, number> {
+  const furthestFirst = [...plateNames].sort((first, second) => {
+    const firstOffset = offsets[first];
+    const secondOffset = offsets[second];
+
+    return Math.hypot(secondOffset.x, secondOffset.y) - Math.hypot(firstOffset.x, firstOffset.y);
+  });
+
+  return furthestFirst.reduce<Record<PlateName, number>>(
+    (zIndices, plate, index) => {
+      zIndices[plate] = plateNames.length + 1 - index;
+      return zIndices;
+    },
+    { red: 2, amber: 2, blue: 2 },
+  );
 }
 
 export function arePlatesAligned(offsets: PlateOffsets): boolean {

@@ -1,6 +1,7 @@
 .artwork {
   position: relative;
   isolation: isolate;
+  min-width: 0;
   min-height: 28rem;
   overflow: hidden;
   border: 2px solid var(--color-ink);

@@ -1,4 +1,5 @@
 import { createElement } from "react";
+import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, test } from "vitest";
@@ -7,6 +8,7 @@ import {
   arePlatesAligned,
   clampPlateOffset,
   getAmbientOffsets,
+  getPlateZIndices,
 } from "../../app/components/Chromatic404Artwork.logic";
 import { NotFoundPage } from "../../app/components/NotFoundPage";
 import { getRootErrorKind } from "../../app/rootError";
@@ -47,6 +49,21 @@ describe("chromatic 404 artwork geometry", () => {
       }),
     ).toBe(false);
   });
+
+  test("keeps the plate furthest from registration on top", () => {
+    expect(getPlateZIndices(INITIAL_PLATE_OFFSETS)).toEqual({
+      red: 4,
+      amber: 3,
+      blue: 2,
+    });
+    expect(
+      getPlateZIndices({
+        red: { x: 0, y: 0 },
+        amber: { x: 20, y: 11 },
+        blue: { x: 0, y: 0 },
+      }).amber,
+    ).toBe(4);
+  });
 });
 
 describe("chromatic 404 page", () => {
@@ -63,6 +80,27 @@ describe("chromatic 404 page", () => {
     expect(html).toContain("noindex, follow");
     expect(html.match(/aria-hidden="true"/g)?.length).toBeGreaterThanOrEqual(3);
     expect(html).toContain('aria-live="polite"');
+  });
+
+  test("keeps long display words intact inside the copy poster", () => {
+    const css = readFileSync("app/components/NotFoundPage.module.css", "utf8");
+
+    expect(css).not.toContain("max-width: 10ch");
+    expect(css).toContain("grid-template-columns: minmax(22rem, 0.82fr) minmax(30rem, 1.18fr);");
+    expect(css).toMatch(
+      /\.message h1\s*{[^}]*font-size: clamp\(2\.25rem, 3\.4vw, 4rem\);[^}]*letter-spacing: -0\.02em;[^}]*overflow-wrap: normal;[^}]*word-break: normal;/s,
+    );
+  });
+
+  test("allows both posters to shrink without mobile overflow", () => {
+    const pageCss = readFileSync("app/components/NotFoundPage.module.css", "utf8");
+    const artworkCss = readFileSync("app/components/Chromatic404Artwork.module.css", "utf8");
+
+    expect(pageCss).toMatch(/\.copy\s*{[^}]*min-width: 0;/s);
+    expect(artworkCss).toMatch(/\.artwork\s*{[^}]*min-width: 0;/s);
+    expect(pageCss).toMatch(
+      /@media \(max-width: 520px\)[\s\S]*?\.message h1\s*{[^}]*font-size: clamp\(1\.75rem, 8\.8vw, 2\.75rem\);/s,
+    );
   });
 });
 
