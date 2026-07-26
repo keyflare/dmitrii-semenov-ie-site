@@ -125,7 +125,17 @@ describe("Ratebench product", () => {
     );
 
     expect(html).toContain("In development");
+    expect(html).toMatch(/<h1[^>]*>Ratebench<\/h1>/);
     expect(html).toContain("Compare every step.");
+    expect(html).toContain("USD → EUR → USDT");
+    expect(html).toContain("Market");
+    expect(html).toContain("Effective");
+    expect(html).toContain("USD / EUR");
+    expect(html).toContain("EUR / USDT");
+    expect(html).toContain("Whole route");
+    expect(html).toContain("USD / USDT");
+    expect(html).not.toContain(">Sent<");
+    expect(html).not.toContain("Effective result");
     expect(html).toContain("Fiat &amp; crypto");
     expect(html).toContain("Multi-step calculations");
     expect(html).toContain("Local history");

@@ -21,11 +21,9 @@ const features = [
   },
 ];
 
-const ledgerRows = [
-  ["Sent", "1,000.00 USD"],
-  ["Step 01", "USD → EUR"],
-  ["Step 02", "EUR → USDT"],
-  ["Effective result", "981.24 USDT"],
+const benchmarkSteps = [
+  { step: "01", pair: "USD / EUR", market: "0.920", effective: "0.900" },
+  { step: "02", pair: "EUR / USDT", market: "1.080", effective: "1.050" },
 ];
 
 export function RatebenchOverview({ product }: CustomProductOverviewProps) {
@@ -54,10 +52,13 @@ export function RatebenchOverview({ product }: CustomProductOverviewProps) {
               alt="Ratebench logo"
               loading="eager"
             />
-            <span>Mobile app · Android & iOS</span>
+            <div className={styles.brandLockup}>
+              <h1 className={styles.title}>Ratebench</h1>
+              <span>Mobile app · Android & iOS</span>
+            </div>
           </div>
           <p className={styles.status}>In development</p>
-          <h1 className={styles.title}>Compare every step.</h1>
+          <p className={styles.tagline}>Compare every step.</p>
           <p className={styles.lede}>
             Ratebench is a reference and calculation tool for fiat and crypto assets. Compare a
             single conversion or model a chain of exchanges with rates, fees, and effective outcomes
@@ -78,15 +79,33 @@ export function RatebenchOverview({ product }: CustomProductOverviewProps) {
             <span>Exchange benchmark</span>
             <span className={styles.signal} aria-hidden="true" />
           </div>
-          {ledgerRows.map(([label, value], index) => (
-            <div
-              key={label}
-              className={`${styles.ledgerRow} ${index === ledgerRows.length - 1 ? styles.result : ""}`}
-            >
-              <span>{label}</span>
-              <strong className={styles.ledgerValue}>{value}</strong>
+          <div className={styles.route}>
+            <span>Route</span>
+            <strong>USD → EUR → USDT</strong>
+          </div>
+          <div className={`${styles.benchmarkGrid} ${styles.benchmarkColumns}`}>
+            <span>Operation</span>
+            <span>Market</span>
+            <span>Effective</span>
+          </div>
+          {benchmarkSteps.map((row) => (
+            <div key={row.step} className={`${styles.benchmarkGrid} ${styles.ledgerRow}`}>
+              <div className={styles.operation}>
+                <span>{row.step}</span>
+                <strong>{row.pair}</strong>
+              </div>
+              <strong className={styles.ledgerValue}>{row.market}</strong>
+              <strong className={styles.ledgerValue}>{row.effective}</strong>
             </div>
           ))}
+          <div className={`${styles.benchmarkGrid} ${styles.result}`}>
+            <div className={styles.operation}>
+              <span>Whole route</span>
+              <strong>USD / USDT</strong>
+            </div>
+            <strong className={styles.ledgerValue}>0.994</strong>
+            <strong className={styles.ledgerValue}>0.945</strong>
+          </div>
           <p className={styles.illustrationNote}>Illustrative values — not live market data.</p>
         </div>
       </section>

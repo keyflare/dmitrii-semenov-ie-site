@@ -40,9 +40,17 @@
 
 .productIdentity {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-4);
   align-items: center;
   margin-bottom: var(--space-6);
+}
+
+.brandLockup {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.brandLockup > span {
   color: var(--color-ink-soft);
   font-size: 0.78rem;
   font-weight: 800;
@@ -50,8 +58,8 @@
 }
 
 .logo {
-  width: 2.5rem;
-  height: 2.8rem;
+  width: 4.75rem;
+  height: 5.25rem;
   object-fit: contain;
 }
 
@@ -68,6 +76,7 @@
 }
 
 .title,
+.tagline,
 .feature h2,
 .disclaimer h2 {
   font-family: var(--font-display);
@@ -83,6 +92,14 @@
   line-height: 0.86;
   overflow-wrap: normal;
   word-break: normal;
+}
+
+.tagline {
+  margin: 0;
+  color: var(--ratebench-blue);
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  font-weight: 800;
+  line-height: 1;
 }
 
 .lede {
@@ -135,10 +152,8 @@
   box-shadow: 0.35rem 0.35rem 0 var(--product-ink, #161618);
 }
 
-.ledgerHeader,
-.ledgerRow {
+.ledgerHeader {
   display: flex;
-  gap: var(--space-4);
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4);
@@ -159,12 +174,67 @@
   background: var(--ratebench-green);
 }
 
+.route {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.route > span {
+  color: var(--color-ink-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.route strong {
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+}
+
+.benchmarkGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4.7rem 4.7rem;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.benchmarkColumns {
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-border-soft);
+  color: var(--color-ink-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.benchmarkColumns span:not(:first-child) {
+  text-align: right;
+}
+
 .ledgerRow {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-soft);
   font-size: 0.9rem;
 }
 
-.ledgerRow > span {
+.operation {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.operation > span {
   color: var(--color-ink-soft);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.operation > strong {
+  font-size: 0.82rem;
 }
 
 .ledgerValue {
@@ -172,7 +242,13 @@
   text-align: right;
 }
 
-.result strong {
+.result {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border-soft);
+  background: color-mix(in srgb, var(--ratebench-blue) 8%, #fff);
+}
+
+.result .ledgerValue:last-child {
   color: var(--ratebench-green);
 }
 
@@ -306,6 +382,16 @@
 
   .title {
     font-size: clamp(2rem, 8.8vw, 2.25rem);
+  }
+
+  .logo {
+    width: 4rem;
+    height: 4.4rem;
+  }
+
+  .benchmarkGrid {
+    grid-template-columns: minmax(0, 1fr) 4.35rem 4.35rem;
+    gap: var(--space-2);
   }
 
   .availability {
