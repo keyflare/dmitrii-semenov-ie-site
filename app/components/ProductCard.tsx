@@ -42,9 +42,10 @@ export function ProductCard({ product }: { product: Product }) {
     })
     .map(([platform, href]) => [platform, href.trim()] as const);
   const linkedPlatforms = new Set(storeLinks.map(([platform]) => platform));
-  const comingSoonPlatforms = product.platforms.filter(
-    (platform) => !linkedPlatforms.has(platform),
-  );
+  const isInDevelopment = product.releaseStage === "in-development";
+  const comingSoonPlatforms = isInDevelopment
+    ? []
+    : product.platforms.filter((platform) => !linkedPlatforms.has(platform));
   const renderPlatformActionLabel = (platform: ProductPlatform, suffix = "") => {
     const iconSrc = storeIcons[platform];
 
@@ -77,6 +78,11 @@ export function ProductCard({ product }: { product: Product }) {
             <PosterButton to={`/products/${product.slug}/privacy/`} size="compact">
               Privacy
             </PosterButton>
+            {product.presentation.terms ? (
+              <PosterButton to={`/products/${product.slug}/terms/`} size="compact">
+                Terms
+              </PosterButton>
+            ) : null}
             <PosterButton to={`/products/${product.slug}/support/`} size="compact">
               Support
             </PosterButton>
@@ -96,6 +102,12 @@ export function ProductCard({ product }: { product: Product }) {
                 {renderPlatformActionLabel(platform)}
               </PosterButton>
             ))}
+            {isInDevelopment ? (
+              <PosterButton size="compact" tone="disabled">
+                In development ·{" "}
+                {product.platforms.map((platform) => platformLabels[platform]).join(" / ")}
+              </PosterButton>
+            ) : null}
             {comingSoonPlatforms.map((platform) => (
               <PosterButton
                 key={platform}

@@ -26,9 +26,7 @@ function expectFixtureRoute404(getRouteProduct: (slug: string) => unknown) {
 
 describe("product route paths", () => {
   test("provides a product Terms route module", () => {
-    expect(
-      existsSync(new URL("../../app/routes/product-terms.tsx", import.meta.url)),
-    ).toBe(true);
+    expect(existsSync(new URL("../../app/routes/product-terms.tsx", import.meta.url))).toBe(true);
   });
 
   test("provides a public Terms product guard", async () => {

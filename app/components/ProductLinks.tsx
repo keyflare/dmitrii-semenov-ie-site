@@ -21,9 +21,10 @@ export function ProductLinks({ product }: { product: Product }) {
     .map(([platform, href]) => [platform, href.trim()] as const);
 
   const linkedPlatforms = new Set(storeLinks.map(([platform]) => platform));
-  const comingSoonPlatforms = product.platforms.filter(
-    (platform) => !linkedPlatforms.has(platform),
-  );
+  const isInDevelopment = product.releaseStage === "in-development";
+  const comingSoonPlatforms = isInDevelopment
+    ? []
+    : product.platforms.filter((platform) => !linkedPlatforms.has(platform));
 
   return (
     <nav className={styles.links} aria-label={`${product.name} links`}>
@@ -31,6 +32,9 @@ export function ProductLinks({ product }: { product: Product }) {
         Overview
       </Link>
       <Link to={`/products/${product.slug}/privacy/`}>Privacy</Link>
+      {product.presentation.terms ? (
+        <Link to={`/products/${product.slug}/terms/`}>Terms</Link>
+      ) : null}
       <Link to={`/products/${product.slug}/support/`}>Support</Link>
       {product.privacyProfile.requiresDataDeletionPage ? (
         <Link to={`/products/${product.slug}/data-deletion/`}>Data deletion</Link>
@@ -40,6 +44,12 @@ export function ProductLinks({ product }: { product: Product }) {
           {platformLabels[platform]}
         </a>
       ))}
+      {isInDevelopment ? (
+        <span className={styles.comingSoon}>
+          In development ·{" "}
+          {product.platforms.map((platform) => platformLabels[platform]).join(" / ")}
+        </span>
+      ) : null}
       {comingSoonPlatforms.map((platform) => (
         <span key={platform} className={styles.comingSoon}>
           {platformLabels[platform]} coming soon

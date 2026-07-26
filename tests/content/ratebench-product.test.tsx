@@ -1,4 +1,9 @@
+import { createElement, type ReactElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { MemoryRouter } from "react-router";
 import { describe, expect, test } from "vitest";
+import { ProductCard } from "../../app/components/ProductCard";
+import { ProductLinks } from "../../app/components/ProductLinks";
 import { customProductOverviewPages } from "../../app/content/products/customOverviewPages";
 import { productMdxContent } from "../../app/content/products/customMdxContent";
 import {
@@ -7,6 +12,7 @@ import {
   products,
 } from "../../app/content/products/registry";
 import { validateProducts } from "../../app/content/products/validate";
+import { ProductOverviewContent } from "../../app/routes/product-overview";
 
 function getRatebench() {
   const ratebench = products.find((product) => product.slug === "ratebench");
@@ -16,6 +22,10 @@ function getRatebench() {
   }
 
   return ratebench;
+}
+
+function renderWithRouter(element: ReactElement) {
+  return renderToStaticMarkup(createElement(MemoryRouter, null, element));
 }
 
 describe("Ratebench product", () => {
@@ -81,5 +91,36 @@ describe("Ratebench product", () => {
 
   test("passes published product validation", () => {
     expect(validateProducts(products)).toEqual([]);
+  });
+
+  test("renders the Studio Ledger overview and product links", () => {
+    const html = renderWithRouter(
+      createElement(ProductOverviewContent, { product: getRatebench() }),
+    );
+
+    expect(html).toContain("In development");
+    expect(html).toContain("Compare every step.");
+    expect(html).toContain("Fiat &amp; crypto");
+    expect(html).toContain("Multi-step calculations");
+    expect(html).toContain("Local history");
+    expect(html).toContain("not a financial institution");
+    expect(html).toContain("/products/ratebench/privacy/");
+    expect(html).toContain("/products/ratebench/terms/");
+    expect(html).toContain("/products/ratebench/support/");
+    expect(html).toContain("/products/ratebench/ratebench-logo.svg");
+    expect(html).not.toContain("Android coming soon");
+    expect(html).not.toContain("iOS coming soon");
+  });
+
+  test("renders one in-development status in shared product navigation", () => {
+    const cardHtml = renderWithRouter(createElement(ProductCard, { product: getRatebench() }));
+    const linksHtml = renderWithRouter(createElement(ProductLinks, { product: getRatebench() }));
+
+    for (const html of [cardHtml, linksHtml]) {
+      expect(html).toContain("In development");
+      expect(html).toContain("/products/ratebench/terms/");
+      expect(html).not.toContain("Android coming soon");
+      expect(html).not.toContain("iOS coming soon");
+    }
   });
 });
