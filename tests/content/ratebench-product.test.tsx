@@ -156,6 +156,19 @@ describe("Ratebench product", () => {
     expect(ratebenchOverviewCss).toContain("font-size: clamp(2rem, 8.8vw, 2.25rem);");
   });
 
+  test("uses a compact single-column financial disclaimer", () => {
+    const html = renderWithRouter(
+      createElement(ProductOverviewContent, { product: getRatebench() }),
+    );
+
+    expect(html).toContain("Important");
+    expect(html).toContain("Reference only");
+    expect(html).toContain("Reference, not advice");
+    expect(ratebenchOverviewCss).not.toContain(
+      "grid-template-columns: minmax(6rem, 0.28fr) minmax(0, 1fr);",
+    );
+  });
+
   test("renders one in-development status in shared product navigation", () => {
     const cardHtml = renderWithRouter(createElement(ProductCard, { product: getRatebench() }));
     const linksHtml = renderWithRouter(createElement(ProductLinks, { product: getRatebench() }));

@@ -132,8 +132,11 @@ export function RatebenchOverview({ product }: CustomProductOverviewProps) {
       </section>
 
       <section className={styles.disclaimer}>
-        <p>Important</p>
-        <div>
+        <div className={styles.disclaimerMeta}>
+          <span>Important</span>
+          <span>Reference only</span>
+        </div>
+        <div className={styles.disclaimerContent}>
           <h2>Reference, not advice</h2>
           <p>
             Ratebench is not a financial institution, exchange, broker, wallet, or adviser. Rates
