@@ -298,6 +298,14 @@ describe("visual components", () => {
     expect(pageHeaderCss).toMatch(/\.document \.titleLockup\s*\{[^}]*width:\s*100%;/s);
   });
 
+  test("Poster page headings stay on the canvas at phone widths", () => {
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
+
+    expect(pageHeaderCss).toMatch(
+      /@media \(max-width: 420px\)\s*{\s*\.poster \.title\s*\{[^}]*font-size:\s*clamp\(2rem,\s*9vw,\s*2\.4rem\);/s,
+    );
+  });
+
   test("Catalog grid content cannot widen the page", () => {
     const globalCss = readFileSync("app/styles/global.css", "utf8");
 
@@ -317,6 +325,7 @@ describe("visual components", () => {
     expect(productCardCss).toMatch(
       /@media \(max-width: 860px\)\s*{\s*\.card\s*{[^}]*grid-template-columns:\s*1fr;/s,
     );
+    expect(productCardCss).toMatch(/\.cardWithoutPreview\s*{[^}]*grid-template-columns:\s*1fr;/s);
   });
 
   test("SiteShell header brand is mixed case, larger, and unframed", () => {

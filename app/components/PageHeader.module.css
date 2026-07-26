@@ -104,3 +104,9 @@
 .poster .description {
   margin-top: var(--space-1);
 }
+
+@media (max-width: 420px) {
+  .poster .title {
+    font-size: clamp(2rem, 9vw, 2.4rem);
+  }
+}

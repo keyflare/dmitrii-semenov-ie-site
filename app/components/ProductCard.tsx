@@ -67,7 +67,7 @@ export function ProductCard({ product }: { product: Product }) {
         to={`/products/${product.slug}/`}
         aria-label={`Open ${product.name}`}
       />
-      <div className={styles.card}>
+      <div className={`${styles.card} ${preview ? "" : styles.cardWithoutPreview}`}>
         <div className={styles.copy}>
           <div className={styles.marker}>{product.type}</div>
           <h2 className={styles.title}>{product.name}</h2>

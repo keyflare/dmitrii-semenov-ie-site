@@ -153,7 +153,18 @@ describe("Ratebench product", () => {
       /\.title\s*\{[^}]*overflow-wrap:\s*normal;[^}]*word-break:\s*normal;/s,
     );
     expect(ratebenchOverviewCss).toContain("font-size: clamp(2.8rem, 5.5vw, 5rem);");
-    expect(ratebenchOverviewCss).toContain("font-size: clamp(2rem, 8.8vw, 2.25rem);");
+    expect(ratebenchOverviewCss).toContain("font-size: clamp(1.7rem, 7.2vw, 2rem);");
+    expect(ratebenchOverviewCss).toMatch(
+      /@media \(max-width: 620px\)[\s\S]*\.productIdentity\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*flex-start;/s,
+    );
+    expect(ratebenchOverviewCss).toMatch(/\.heroCopy\s*\{[^}]*min-width:\s*0;/s);
+    expect(ratebenchOverviewCss).toMatch(/\.ledger\s*\{[^}]*min-width:\s*0;/s);
+  });
+
+  test("stacks the benchmark before the hero identity can overlap it", () => {
+    expect(ratebenchOverviewCss).toMatch(
+      /@media \(max-width: 1050px\)\s*\{\s*\.hero\s*\{[^}]*grid-template-columns:\s*1fr;/s,
+    );
   });
 
   test("uses a compact single-column financial disclaimer", () => {

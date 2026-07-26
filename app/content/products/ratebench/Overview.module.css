@@ -35,6 +35,7 @@
 
 .heroCopy {
   display: grid;
+  min-width: 0;
   justify-items: start;
 }
 
@@ -146,6 +147,7 @@
 }
 
 .ledger {
+  min-width: 0;
   border: 2px solid var(--product-ink, #161618);
   border-radius: var(--radius-sm);
   background: #fff;
@@ -374,7 +376,7 @@
   color: rgb(255 255 255 / 72%);
 }
 
-@media (max-width: 840px) {
+@media (max-width: 1050px) {
   .hero {
     grid-template-columns: 1fr;
   }
@@ -403,8 +405,13 @@
     padding: var(--space-6);
   }
 
+  .productIdentity {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .title {
-    font-size: clamp(2rem, 8.8vw, 2.25rem);
+    font-size: clamp(1.7rem, 7.2vw, 2rem);
   }
 
   .logo {
