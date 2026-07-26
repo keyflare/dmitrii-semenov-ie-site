@@ -17,6 +17,21 @@ import { getRootErrorKind } from "../../app/rootError";
 
 let dom: JSDOM;
 
+function dispatchPointer(
+  target: Element,
+  type: "pointerdown" | "pointermove" | "pointerup" | "pointercancel" | "lostpointercapture",
+  clientX: number,
+  pointerId = 1,
+) {
+  const event = new dom.window.MouseEvent(type, {
+    bubbles: true,
+    cancelable: true,
+    clientX,
+  });
+  Object.defineProperty(event, "pointerId", { value: pointerId });
+  target.dispatchEvent(event);
+}
+
 beforeEach(() => {
   dom = new JSDOM("<!doctype html><html><body></body></html>", {
     url: "http://localhost/",
@@ -107,6 +122,9 @@ describe("tear-off 404 page", () => {
     expect(artworkCss).toMatch(
       /@media \(max-width: 580px\)[\s\S]*?\.sheetTitle\s*{[^}]*font-size: 2\.8rem;/s,
     );
+    expect(artworkCss).toMatch(
+      /\.pullHandle:hover,[\s\S]*?transform: translate\(-50%, -50%\) rotate\(3deg\);/s,
+    );
     expect(pageCss).toMatch(/@media \(max-width: 580px\)[\s\S]*?\.actions\s*{[^}]*width: 100%;/s);
   });
 
@@ -148,6 +166,105 @@ describe("tear-off 404 page", () => {
     });
 
     expect(container.querySelector("h1")?.textContent).toBe("This page isn’t here.");
+
+    await act(async () => {
+      root!.unmount();
+    });
+    container.remove();
+  });
+
+  test("completes a long drag and resets a short drag", async () => {
+    const container = document.createElement("div");
+    document.body.append(container);
+    let root: Root;
+
+    await act(async () => {
+      root = createRoot(container);
+      root.render(createElement(MemoryRouter, null, createElement(NotFoundPage)));
+    });
+
+    const artwork = container.querySelector<HTMLElement>("[data-tear-artwork]")!;
+    const getHandle = () =>
+      container.querySelector<HTMLButtonElement>('[aria-label="Tear away the error poster"]')!;
+    Object.defineProperty(artwork, "getBoundingClientRect", {
+      configurable: true,
+      value: () => ({ width: 1000 }),
+    });
+
+    const prepareCapture = (handle: HTMLButtonElement, pointerId = 1) => {
+      let captured = false;
+      handle.setPointerCapture = vi.fn(() => {
+        captured = true;
+      });
+      handle.hasPointerCapture = vi.fn(() => captured);
+      handle.releasePointerCapture = vi.fn(() => {
+        captured = false;
+        dispatchPointer(artwork, "lostpointercapture", 0, pointerId);
+      });
+    };
+
+    const shortHandle = getHandle();
+    prepareCapture(shortHandle);
+    await act(async () => {
+      dispatchPointer(shortHandle, "pointerdown", 80);
+      dispatchPointer(artwork, "pointermove", 400);
+      dispatchPointer(artwork, "pointerup", 400);
+    });
+
+    expect(container.querySelector("h1")?.textContent).toBe("This page isn’t here.");
+    expect(artwork.style.getPropertyValue("--tear-position")).toBe("8%");
+
+    const longHandle = getHandle();
+    prepareCapture(longHandle, 2);
+    await act(async () => {
+      dispatchPointer(longHandle, "pointerdown", 80, 2);
+      dispatchPointer(artwork, "pointermove", 700, 2);
+      dispatchPointer(artwork, "pointerup", 700, 2);
+    });
+
+    expect(container.querySelector("h1")?.textContent).toBe("Nothing underneath either.");
+
+    await act(async () => {
+      root!.unmount();
+    });
+    container.remove();
+  });
+
+  test("does not swallow activation after a cancelled drag", async () => {
+    const container = document.createElement("div");
+    document.body.append(container);
+    let root: Root;
+
+    await act(async () => {
+      root = createRoot(container);
+      root.render(createElement(MemoryRouter, null, createElement(NotFoundPage)));
+    });
+
+    const artwork = container.querySelector<HTMLElement>("[data-tear-artwork]")!;
+    const handle = container.querySelector<HTMLButtonElement>(
+      '[aria-label="Tear away the error poster"]',
+    )!;
+    Object.defineProperty(artwork, "getBoundingClientRect", {
+      configurable: true,
+      value: () => ({ width: 1000 }),
+    });
+    let captured = false;
+    handle.setPointerCapture = vi.fn(() => {
+      captured = true;
+    });
+    handle.hasPointerCapture = vi.fn(() => captured);
+    handle.releasePointerCapture = vi.fn(() => {
+      captured = false;
+    });
+
+    await act(async () => {
+      dispatchPointer(handle, "pointerdown", 80);
+      dispatchPointer(artwork, "pointermove", 120);
+      dispatchPointer(artwork, "pointercancel", 120);
+      handle.click();
+    });
+
+    expect(container.querySelector("h1")?.textContent).toBe("Nothing underneath either.");
 
     await act(async () => {
       root!.unmount();

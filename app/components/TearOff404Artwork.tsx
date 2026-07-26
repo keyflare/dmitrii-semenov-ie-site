@@ -116,11 +116,11 @@ export const TearOff404Artwork = forwardRef<TearOff404ArtworkHandle, TearOff404A
         return;
       }
 
+      activeDragRef.current = null;
       if (activeDrag.handle.hasPointerCapture(event.pointerId)) {
         activeDrag.handle.releasePointerCapture(event.pointerId);
       }
 
-      activeDragRef.current = null;
       suppressClickRef.current = activeDrag.moved;
       setDragging(false);
 
@@ -138,12 +138,25 @@ export const TearOff404Artwork = forwardRef<TearOff404ArtworkHandle, TearOff404A
         return;
       }
 
+      activeDragRef.current = null;
       if (activeDrag.handle.hasPointerCapture(event.pointerId)) {
         activeDrag.handle.releasePointerCapture(event.pointerId);
       }
 
+      suppressClickRef.current = false;
+      setDragging(false);
+      updateProgress(TEAR_START_PROGRESS);
+    };
+
+    const handleLostPointerCapture = (event: ReactPointerEvent<HTMLDivElement>) => {
+      const activeDrag = activeDragRef.current;
+
+      if (!activeDrag || activeDrag.pointerId !== event.pointerId) {
+        return;
+      }
+
       activeDragRef.current = null;
-      suppressClickRef.current = activeDrag.moved;
+      suppressClickRef.current = false;
       setDragging(false);
       updateProgress(TEAR_START_PROGRESS);
     };
@@ -173,6 +186,7 @@ export const TearOff404Artwork = forwardRef<TearOff404ArtworkHandle, TearOff404A
             open ? styles.open : ""
           }`}
           data-tear-artwork
+          onLostPointerCapture={handleLostPointerCapture}
           onPointerCancel={cancelPointerInteraction}
           onPointerMove={handlePointerMove}
           onPointerUp={finishPointerInteraction}

@@ -298,7 +298,7 @@
 .pullHandle:focus-visible {
   background: var(--color-accent-green);
   box-shadow: 0.25rem 0.25rem 0 var(--color-ink);
-  transform: translate(calc(-50% + 0.7rem), -50%) rotate(3deg);
+  transform: translate(-50%, -50%) rotate(3deg);
 }
 
 .pullHandle:focus-visible {
