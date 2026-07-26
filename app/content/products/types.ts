@@ -17,7 +17,7 @@ export type PrivacyProfile = {
   thirdPartyServices: string[];
 };
 
-export const productCustomOverviewKeys = ["palette-master"] as const;
+export const productCustomOverviewKeys = ["palette-master", "ratebench"] as const;
 
 export type ProductCustomOverviewKey = (typeof productCustomOverviewKeys)[number];
 
@@ -25,6 +25,9 @@ export const productMdxContentKeys = [
   "palette-master-overview",
   "palette-master-support",
   "palette-master-privacy",
+  "ratebench-support",
+  "ratebench-privacy",
+  "ratebench-terms",
 ] as const;
 
 export type ProductMdxContentKey = (typeof productMdxContentKeys)[number];

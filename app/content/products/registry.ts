@@ -67,6 +67,52 @@ export const products: Product[] = [
       thirdPartyServices: ["Google AdMob", "Google User Messaging Platform", "AppMetrica"],
     },
   },
+  {
+    status: "published",
+    slug: "ratebench",
+    name: "Ratebench",
+    type: "mobile-app",
+    shortDescription:
+      "A reference and calculation tool for comparing fiat and crypto exchange outcomes.",
+    platforms: ["android", "ios"],
+    releaseStage: "in-development",
+    supportEmail: "support@keyflare.studio",
+    lastUpdated: "2026-07-26",
+    storeLinks: {},
+    presentation: {
+      overview: { mode: "custom", componentKey: "ratebench" },
+      support: { mode: "mdx", contentKey: "ratebench-support" },
+      privacy: { mode: "mdx", contentKey: "ratebench-privacy" },
+      terms: { mode: "mdx", contentKey: "ratebench-terms" },
+    },
+    theme: {
+      accentPrimary: "#196dff",
+      accentSecondary: "#3cb200",
+      accentTertiary: "#fea00a",
+      ink: "#161618",
+      surface: "#ffffff",
+      gradient: "linear-gradient(90deg, #196dff 0 78%, #3cb200 78% 91%, #fea00a 91%)",
+      visualVolume: "calm",
+    },
+    privacyProfile: {
+      usesAdMob: false,
+      usesAnalytics: true,
+      usesCrashReporting: true,
+      usesSubscriptions: true,
+      hasAccounts: false,
+      collectsPersonalData: true,
+      requiresDataDeletionPage: false,
+      thirdPartyServices: [
+        "AppMetrica",
+        "Render",
+        "CoinGecko",
+        "Frankfurter",
+        "Open Exchange Rates",
+        "Apple App Store",
+        "Google Play",
+      ],
+    },
+  },
 ];
 
 export function getPublishedProducts() {
