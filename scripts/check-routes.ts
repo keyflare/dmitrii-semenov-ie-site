@@ -11,6 +11,7 @@ function routeToBuildFile(route: string) {
 
 const requiredFiles = [
   ...getPrerenderPaths().map(routeToBuildFile),
+  "build/client/404.html",
   "build/client/CNAME",
   "build/client/app-ads.txt",
   "build/client/robots.txt",

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "npm run validate:content && npm run generate:static && react-router build",
+    "build": "npm run validate:content && npm run generate:static && react-router build && tsx scripts/generate-404-page.ts",
     "preview": "serve build/client",
     "typecheck": "react-router typegen && tsc --noEmit",
     "lint": "eslint .",
