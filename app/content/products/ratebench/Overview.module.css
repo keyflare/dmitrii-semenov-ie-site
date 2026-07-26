@@ -91,7 +91,7 @@
 .title {
   max-width: 44rem;
   margin: 0;
-  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  font-size: clamp(2.8rem, 4vw, 4rem);
   font-weight: 800;
   line-height: 0.86;
   overflow-wrap: normal;
@@ -396,7 +396,7 @@
   color: rgb(255 255 255 / 72%);
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1180px) {
   .hero {
     grid-template-columns: 1fr;
   }

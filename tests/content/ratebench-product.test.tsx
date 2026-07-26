@@ -163,7 +163,7 @@ describe("Ratebench product", () => {
     expect(ratebenchOverviewCss).toMatch(
       /\.title\s*\{[^}]*overflow-wrap:\s*normal;[^}]*word-break:\s*normal;/s,
     );
-    expect(ratebenchOverviewCss).toContain("font-size: clamp(2.8rem, 5.5vw, 5rem);");
+    expect(ratebenchOverviewCss).toContain("font-size: clamp(2.8rem, 4vw, 4rem);");
     expect(ratebenchOverviewCss).toContain("font-size: clamp(1.7rem, 7.2vw, 2rem);");
     expect(ratebenchOverviewCss).toMatch(
       /@media \(max-width: 620px\)[\s\S]*\.productIdentity\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*flex-start;/s,
@@ -174,7 +174,7 @@ describe("Ratebench product", () => {
 
   test("stacks the benchmark before the hero identity can overlap it", () => {
     expect(ratebenchOverviewCss).toMatch(
-      /@media \(max-width: 1050px\)\s*\{\s*\.hero\s*\{[^}]*grid-template-columns:\s*1fr;/s,
+      /@media \(max-width: 1180px\)\s*\{\s*\.hero\s*\{[^}]*grid-template-columns:\s*1fr;/s,
     );
   });
 
