@@ -49,6 +49,11 @@ export function ProductSupportContent({ product }: { product: Product }) {
         <p>
           <Link to={`/products/${product.slug}/privacy/`}>Privacy policy</Link>
         </p>
+        {product.presentation.terms ? (
+          <p>
+            <Link to={`/products/${product.slug}/terms/`}>Terms of Service</Link>
+          </p>
+        ) : null}
         {support.mode === "mdx"
           ? createElement(getProductMdxContent(support.contentKey), {
               components: productMdxComponents,

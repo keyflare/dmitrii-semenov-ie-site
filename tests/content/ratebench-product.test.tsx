@@ -13,6 +13,9 @@ import {
 } from "../../app/content/products/registry";
 import { validateProducts } from "../../app/content/products/validate";
 import { ProductOverviewContent } from "../../app/routes/product-overview";
+import { ProductPrivacyContent } from "../../app/routes/product-privacy";
+import { ProductSupportContent } from "../../app/routes/product-support";
+import { ProductTermsContent } from "../../app/routes/product-terms";
 
 function getRatebench() {
   const ratebench = products.find((product) => product.slug === "ratebench");
@@ -121,6 +124,41 @@ describe("Ratebench product", () => {
       expect(html).toContain("/products/ratebench/terms/");
       expect(html).not.toContain("Android coming soon");
       expect(html).not.toContain("iOS coming soon");
+    }
+  });
+
+  test("provides the product Terms document renderer", async () => {
+    const termsRoute = await import("../../app/routes/product-terms");
+
+    expect(termsRoute.ProductTermsContent).toBeTypeOf("function");
+  });
+
+  test("renders factual Privacy, Terms, and Support documents without drafting placeholders", () => {
+    const product = getRatebench();
+    const privacyHtml = renderWithRouter(createElement(ProductPrivacyContent, { product }));
+    const termsHtml = renderWithRouter(createElement(ProductTermsContent, { product }));
+    const supportHtml = renderWithRouter(createElement(ProductSupportContent, { product }));
+
+    expect(privacyHtml).toContain("Information stored on your device");
+    expect(privacyHtml).toContain("AppMetrica");
+    expect(privacyHtml).toContain("Apple");
+    expect(privacyHtml).toContain("Google");
+    expect(privacyHtml).toContain("payment card");
+    expect(privacyHtml).toContain("July 26, 2026");
+
+    expect(termsHtml).toContain("Important financial disclaimer");
+    expect(termsHtml).toContain("Subscriptions and billing");
+    expect(termsHtml).toContain("automatically renew");
+    expect(termsHtml).toContain("July 26, 2026");
+
+    expect(supportHtml).toContain("Restore purchases");
+    expect(supportHtml).toContain("In development");
+    expect(supportHtml).toContain("/products/ratebench/privacy/");
+    expect(supportHtml).toContain("/products/ratebench/terms/");
+
+    for (const html of [privacyHtml, termsHtml, supportHtml]) {
+      expect(html).not.toMatch(/\[(?:[A-Z][A-Z _-]+)\]/);
+      expect(html).not.toContain("Drafting note");
     }
   });
 });
