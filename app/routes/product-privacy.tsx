@@ -2,6 +2,7 @@ import { createElement } from "react";
 import type { Route } from "./+types/product-privacy";
 import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
+import { ProductPageFrame } from "~/components/ProductPageFrame";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
 import { productMdxComponents } from "~/content/products/mdxComponents";
 import { findPublishedProduct } from "~/content/products/registry";
@@ -46,7 +47,7 @@ export function ProductPrivacyContent({ product }: { product: Product }) {
       : null;
 
   return (
-    <>
+    <ProductPageFrame product={product}>
       <PageHeader
         title={`${product.name} Privacy Policy`}
         description={product.shortDescription}
@@ -63,7 +64,7 @@ export function ProductPrivacyContent({ product }: { product: Product }) {
             ))}
         {privacy.mode === "generated-with-mdx" ? privacyMdx : null}
       </DocumentPage>
-    </>
+    </ProductPageFrame>
   );
 }
 

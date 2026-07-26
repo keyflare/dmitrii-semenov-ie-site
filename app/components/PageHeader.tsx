@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import styles from "./PageHeader.module.css";
 
 export function PageHeader({
+  allowTitleWrap = false,
   eyebrow,
   eyebrowAlign = "start",
   icon,
@@ -10,6 +11,7 @@ export function PageHeader({
   description,
   variant = "poster",
 }: {
+  allowTitleWrap?: boolean;
   eyebrow?: string;
   eyebrowAlign?: "start" | "end";
   icon?: ReactNode;
@@ -22,7 +24,13 @@ export function PageHeader({
   const titleLockupClassName = icon
     ? `${styles.titleLockup} ${styles.titleLockupWithIcon}`
     : styles.titleLockup;
-  const titleClassName = icon ? `${styles.title} ${styles.titleWithIcon}` : styles.title;
+  const titleClassName = [
+    styles.title,
+    icon ? styles.titleWithIcon : null,
+    allowTitleWrap ? styles.titleAllowWrap : styles.titleNoWrap,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <header className={`${styles.header} ${styles[variant]}`}>

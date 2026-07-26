@@ -1,6 +1,7 @@
 import { createElement } from "react";
 import type { Route } from "./+types/product-overview";
 import { PageHeader } from "~/components/PageHeader";
+import { ProductPageFrame } from "~/components/ProductPageFrame";
 import { ProductLinks } from "~/components/ProductLinks";
 import { getCustomProductOverview } from "~/content/products/customOverviewPages";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
@@ -54,13 +55,12 @@ export function StandardProductOverview({ product }: { product: Product }) {
 
 export function ProductOverviewContent({ product }: { product: Product }) {
   const overview = product.presentation.overview;
+  let content;
 
   if (overview.mode === "custom") {
-    return createElement(getCustomProductOverview(overview.componentKey), { product });
-  }
-
-  if (overview.mode === "standard-with-mdx") {
-    return (
+    content = createElement(getCustomProductOverview(overview.componentKey), { product });
+  } else if (overview.mode === "standard-with-mdx") {
+    content = (
       <>
         <StandardProductOverview product={product} />
         {createElement(getProductMdxContent(overview.contentKey), {
@@ -68,9 +68,11 @@ export function ProductOverviewContent({ product }: { product: Product }) {
         })}
       </>
     );
+  } else {
+    content = <StandardProductOverview product={product} />;
   }
 
-  return <StandardProductOverview product={product} />;
+  return <ProductPageFrame product={product}>{content}</ProductPageFrame>;
 }
 
 export default function ProductOverviewRoute({ params }: Route.ComponentProps) {

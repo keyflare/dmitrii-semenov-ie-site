@@ -34,17 +34,20 @@ export function ProductCard({ product }: { product: Product }) {
   const feedbackUrl = `mailto:${product.supportEmail}?subject=${encodeURIComponent(
     `${product.name} feedback`,
   )}`;
-  const storeLinks = Object.entries(product.storeLinks)
-    .filter((entry): entry is [ProductPlatform, string] => {
-      const href = entry[1];
+  const isInDevelopment = product.releaseStage === "in-development";
+  const storeLinks = isInDevelopment
+    ? []
+    : Object.entries(product.storeLinks)
+        .filter((entry): entry is [ProductPlatform, string] => {
+          const href = entry[1];
 
-      return typeof href === "string" && href.trim() !== "";
-    })
-    .map(([platform, href]) => [platform, href.trim()] as const);
+          return typeof href === "string" && href.trim() !== "";
+        })
+        .map(([platform, href]) => [platform, href.trim()] as const);
   const linkedPlatforms = new Set(storeLinks.map(([platform]) => platform));
-  const comingSoonPlatforms = product.platforms.filter(
-    (platform) => !linkedPlatforms.has(platform),
-  );
+  const comingSoonPlatforms = isInDevelopment
+    ? []
+    : product.platforms.filter((platform) => !linkedPlatforms.has(platform));
   const renderPlatformActionLabel = (platform: ProductPlatform, suffix = "") => {
     const iconSrc = storeIcons[platform];
 
@@ -64,7 +67,7 @@ export function ProductCard({ product }: { product: Product }) {
         to={`/products/${product.slug}/`}
         aria-label={`Open ${product.name}`}
       />
-      <div className={styles.card}>
+      <div className={`${styles.card} ${preview ? "" : styles.cardWithoutPreview}`}>
         <div className={styles.copy}>
           <div className={styles.marker}>{product.type}</div>
           <h2 className={styles.title}>{product.name}</h2>
@@ -77,6 +80,11 @@ export function ProductCard({ product }: { product: Product }) {
             <PosterButton to={`/products/${product.slug}/privacy/`} size="compact">
               Privacy
             </PosterButton>
+            {product.presentation.terms ? (
+              <PosterButton to={`/products/${product.slug}/terms/`} size="compact">
+                Terms
+              </PosterButton>
+            ) : null}
             <PosterButton to={`/products/${product.slug}/support/`} size="compact">
               Support
             </PosterButton>
@@ -96,6 +104,12 @@ export function ProductCard({ product }: { product: Product }) {
                 {renderPlatformActionLabel(platform)}
               </PosterButton>
             ))}
+            {isInDevelopment ? (
+              <PosterButton size="compact" tone="disabled">
+                In development ·{" "}
+                {product.platforms.map((platform) => platformLabels[platform]).join(" / ")}
+              </PosterButton>
+            ) : null}
             {comingSoonPlatforms.map((platform) => (
               <PosterButton
                 key={platform}

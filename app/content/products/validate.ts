@@ -1,4 +1,9 @@
-import { productCustomOverviewKeys, productMdxContentKeys, type Product } from "./types";
+import {
+  productCustomOverviewKeys,
+  productMdxContentKeys,
+  productPageSurfaces,
+  type Product,
+} from "./types";
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const lastUpdatedPattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -53,6 +58,16 @@ export function validateProducts(products: Product[]): string[] {
       );
     }
 
+    const hasStoreLinks = Object.values(product.storeLinks).some(
+      (storeLink) => typeof storeLink === "string" && storeLink.trim() !== "",
+    );
+
+    if (product.releaseStage === "in-development" && hasStoreLinks) {
+      errors.push(
+        `Published product ${product.slug} is in development and must not define store links`,
+      );
+    }
+
     for (const [platform, storeLink] of Object.entries(product.storeLinks)) {
       if (storeLink === undefined || storeLink.trim() === "") {
         continue;
@@ -93,6 +108,13 @@ function validateProductTheme(product: Product, errors: string[]) {
 
   if (!gradientPattern.test(product.theme.gradient.trim())) {
     errors.push(`${product.slug} theme.gradient must be a CSS gradient value.`);
+  }
+
+  if (
+    product.theme.pageSurface !== undefined &&
+    !productPageSurfaces.includes(product.theme.pageSurface)
+  ) {
+    errors.push(`${product.slug} theme.pageSurface must be a known page surface.`);
   }
 }
 
@@ -147,6 +169,16 @@ function validatePresentation(product: Product, errors: string[]) {
     errors.push(
       `Published product ${product.slug} references unknown MDX content: ${String(
         privacy.contentKey,
+      )}`,
+    );
+  }
+
+  const terms = presentation.terms;
+
+  if (terms?.mode === "mdx" && !hasKnownKey(productMdxContentKeys, terms.contentKey)) {
+    errors.push(
+      `Published product ${product.slug} references unknown MDX content: ${String(
+        terms.contentKey,
       )}`,
     );
   }

@@ -62,6 +62,10 @@ Avoid viewport-width font scaling. Use stable minimum and maximum sizes.
 
 Document pages should use smaller, calmer headings than homepage and product hero pages.
 
+Shared `PageHeader` titles must stay on one line. Size them down at narrow widths instead of
+wrapping or inserting manual breaks. The only approved wrapped page title is the intentional
+two-line Keyflare Studio lockup on the homepage, enabled as an explicit component exception.
+
 ## Color And Graphics
 
 The visual system uses a light warm base with sharp chromatic accents:
@@ -114,7 +118,14 @@ Product theme metadata may define:
 - `ink`;
 - `surface`;
 - `gradient`;
-- `visualVolume` with values such as `calm`, `poster`, and `immersive`.
+- `visualVolume` with values such as `calm`, `poster`, and `immersive`;
+- an optional named `pageSurface` preset for a product-specific full-bleed background.
+
+Page-surface presets must be static, typed, and inspectable. Apply them through the shared product
+page frame so overview, Privacy, Terms, Support, and Data Deletion pages can share one product world
+without mutating `body` or relying on client-side effects. Products without a preset must keep the
+default studio background. The studio header and footer remain unchanged even when the product
+content background is customized.
 
 Custom overview pages may have product-specific composition, theme colors, media rhythm, and visual
 personality. They must still preserve:

@@ -22,6 +22,7 @@ export const products: Product[] = [
       usesAdMob: true,
       usesAnalytics: false,
       usesCrashReporting: false,
+      usesSubscriptions: false,
       hasAccounts: false,
       collectsPersonalData: false,
       requiresDataDeletionPage: false,
@@ -59,10 +60,58 @@ export const products: Product[] = [
       usesAdMob: true,
       usesAnalytics: true,
       usesCrashReporting: true,
+      usesSubscriptions: false,
       hasAccounts: false,
       collectsPersonalData: true,
       requiresDataDeletionPage: false,
       thirdPartyServices: ["Google AdMob", "Google User Messaging Platform", "AppMetrica"],
+    },
+  },
+  {
+    status: "published",
+    slug: "ratebench",
+    name: "Ratebench",
+    type: "mobile-app",
+    shortDescription:
+      "A reference and calculation tool for comparing fiat and crypto exchange outcomes.",
+    platforms: ["android", "ios"],
+    releaseStage: "in-development",
+    supportEmail: "support@keyflare.studio",
+    lastUpdated: "2026-07-26",
+    storeLinks: {},
+    presentation: {
+      overview: { mode: "custom", componentKey: "ratebench" },
+      support: { mode: "mdx", contentKey: "ratebench-support" },
+      privacy: { mode: "mdx", contentKey: "ratebench-privacy" },
+      terms: { mode: "mdx", contentKey: "ratebench-terms" },
+    },
+    theme: {
+      accentPrimary: "#196dff",
+      accentSecondary: "#3cb200",
+      accentTertiary: "#fea00a",
+      ink: "#161618",
+      surface: "#ffffff",
+      gradient: "linear-gradient(90deg, #196dff 0 78%, #3cb200 78% 91%, #fea00a 91%)",
+      visualVolume: "calm",
+      pageSurface: "ledger",
+    },
+    privacyProfile: {
+      usesAdMob: false,
+      usesAnalytics: true,
+      usesCrashReporting: true,
+      usesSubscriptions: true,
+      hasAccounts: false,
+      collectsPersonalData: true,
+      requiresDataDeletionPage: false,
+      thirdPartyServices: [
+        "AppMetrica",
+        "Render",
+        "CoinGecko",
+        "Frankfurter",
+        "Open Exchange Rates",
+        "Apple App Store",
+        "Google Play",
+      ],
     },
   },
 ];
@@ -92,6 +141,10 @@ export function getPrerenderPaths() {
       `/products/${product.slug}/privacy`,
       `/products/${product.slug}/support`,
     ];
+
+    if (product.presentation.terms) {
+      paths.push(`/products/${product.slug}/terms`);
+    }
 
     if (product.privacyProfile.requiresDataDeletionPage) {
       paths.push(`/products/${product.slug}/data-deletion`);

@@ -4,17 +4,20 @@ export type ProductType = "mobile-app" | "mobile-game" | "desktop-app" | "tool" 
 
 export type ProductPlatform = "ios" | "android" | "macos" | "windows" | "linux" | "web";
 
+export type ProductReleaseStage = "in-development";
+
 export type PrivacyProfile = {
   usesAdMob: boolean;
   usesAnalytics: boolean;
   usesCrashReporting: boolean;
+  usesSubscriptions: boolean;
   hasAccounts: boolean;
   collectsPersonalData: boolean;
   requiresDataDeletionPage: boolean;
   thirdPartyServices: string[];
 };
 
-export const productCustomOverviewKeys = ["palette-master"] as const;
+export const productCustomOverviewKeys = ["palette-master", "ratebench"] as const;
 
 export type ProductCustomOverviewKey = (typeof productCustomOverviewKeys)[number];
 
@@ -22,6 +25,9 @@ export const productMdxContentKeys = [
   "palette-master-overview",
   "palette-master-support",
   "palette-master-privacy",
+  "ratebench-support",
+  "ratebench-privacy",
+  "ratebench-terms",
 ] as const;
 
 export type ProductMdxContentKey = (typeof productMdxContentKeys)[number];
@@ -39,13 +45,23 @@ export type ProductPrivacyPresentation =
   | { mode: "generated-with-mdx"; contentKey: ProductMdxContentKey }
   | { mode: "mdx"; contentKey: ProductMdxContentKey };
 
+export type ProductTermsPresentation = {
+  mode: "mdx";
+  contentKey: ProductMdxContentKey;
+};
+
 export type ProductPresentation = {
   overview: ProductOverviewPresentation;
   support: ProductSupportPresentation;
   privacy: ProductPrivacyPresentation;
+  terms?: ProductTermsPresentation;
 };
 
 export type ProductVisualVolume = "calm" | "poster" | "immersive";
+
+export const productPageSurfaces = ["ledger"] as const;
+
+export type ProductPageSurface = (typeof productPageSurfaces)[number];
 
 export type ProductTheme = {
   accentPrimary: string;
@@ -55,6 +71,7 @@ export type ProductTheme = {
   surface: string;
   gradient: string;
   visualVolume: ProductVisualVolume;
+  pageSurface?: ProductPageSurface;
 };
 
 export type Product = {
@@ -64,6 +81,7 @@ export type Product = {
   type: ProductType;
   shortDescription: string;
   platforms: ProductPlatform[];
+  releaseStage?: ProductReleaseStage;
   supportEmail: string;
   lastUpdated: string;
   storeLinks: Partial<Record<ProductPlatform, string>>;

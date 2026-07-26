@@ -21,6 +21,7 @@ const baseProduct: Product = {
     usesAdMob: false,
     usesAnalytics: false,
     usesCrashReporting: false,
+    usesSubscriptions: false,
     hasAccounts: false,
     collectsPersonalData: false,
     requiresDataDeletionPage: false,
@@ -117,6 +118,26 @@ describe("validateProducts", () => {
     );
   });
 
+  test("rejects unknown product page surface metadata", () => {
+    const productWithUnknownPageSurface: Product = {
+      ...baseProduct,
+      theme: {
+        accentPrimary: "#ff4f64",
+        accentSecondary: "#ffb000",
+        accentTertiary: "#19d3a2",
+        ink: "#15111c",
+        surface: "#fff4d7",
+        gradient: "linear-gradient(90deg, #ff4f64, #ffb000, #19d3a2, #2563ff)",
+        visualVolume: "calm",
+        pageSurface: "unknown" as never,
+      },
+    };
+
+    expect(validateProducts([productWithUnknownPageSurface])).toContain(
+      "sample theme.pageSurface must be a known page surface.",
+    );
+  });
+
   test.each(["linear-gradient(", "linear-gradient(foo"])(
     "rejects malformed product theme gradient metadata: %s",
     (gradient) => {
@@ -196,6 +217,20 @@ describe("validateProducts", () => {
     );
   });
 
+  test("rejects store links for in-development products", () => {
+    const inDevelopmentProductWithStoreLink: Product = {
+      ...baseProduct,
+      releaseStage: "in-development",
+      storeLinks: {
+        ios: "https://apps.apple.com/app/sample/id123456789",
+      },
+    };
+
+    expect(validateProducts([inDevelopmentProductWithStoreLink])).toContain(
+      "Published product sample is in development and must not define store links",
+    );
+  });
+
   test("rejects published products with unknown custom overview keys", () => {
     const productWithUnknownCustomOverview: Product = {
       ...baseProduct,
@@ -221,6 +256,20 @@ describe("validateProducts", () => {
 
     expect(validateProducts([productWithUnknownMdxContent])).toContain(
       "Published product sample references unknown MDX content: missing-mdx",
+    );
+  });
+
+  test("rejects published products with unknown Terms MDX content keys", () => {
+    const productWithUnknownTerms: Product = {
+      ...baseProduct,
+      presentation: {
+        ...baseProduct.presentation,
+        terms: { mode: "mdx", contentKey: "missing-terms" as never },
+      },
+    };
+
+    expect(validateProducts([productWithUnknownTerms])).toContain(
+      "Published product sample references unknown MDX content: missing-terms",
     );
   });
 

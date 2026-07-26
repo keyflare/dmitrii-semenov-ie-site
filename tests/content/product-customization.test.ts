@@ -88,6 +88,7 @@ describe("product customization", () => {
         usesAdMob: true,
         usesAnalytics: true,
         usesCrashReporting: true,
+        usesSubscriptions: false,
         hasAccounts: false,
         collectsPersonalData: true,
         requiresDataDeletionPage: false,

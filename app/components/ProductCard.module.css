@@ -44,6 +44,10 @@
   background: var(--gradient-chromatic);
 }
 
+.cardWithoutPreview {
+  grid-template-columns: 1fr;
+}
+
 .card:hover,
 .cardShell:has(.overviewLink:hover) .card,
 .cardShell:has(.overviewLink:focus-visible) .card {
@@ -128,7 +132,7 @@
   box-shadow: 0.28rem 0.28rem 0 var(--color-ink);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 860px) {
   .card {
     grid-template-columns: 1fr;
   }

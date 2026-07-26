@@ -29,6 +29,7 @@ const product: Product = {
     usesAdMob: false,
     usesAnalytics: false,
     usesCrashReporting: false,
+    usesSubscriptions: false,
     hasAccounts: true,
     collectsPersonalData: true,
     requiresDataDeletionPage: true,
@@ -92,9 +93,23 @@ describe("visual components", () => {
   test("PageHeader keeps headings icon-free by default", async () => {
     const { PageHeader } = await import("../../app/components/PageHeader");
     const html = renderToStaticMarkup(createElement(PageHeader, { title: "Products" }));
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
 
     expect(html).toContain(">Products</h1>");
     expect(html).not.toContain("data-page-icon");
+    expect(html).toContain("titleNoWrap");
+    expect(pageHeaderCss).toMatch(/\.titleNoWrap\s*{[^}]*white-space:\s*nowrap;/s);
+  });
+
+  test("PageHeader allows wrapping only when explicitly requested", async () => {
+    const { PageHeader } = await import("../../app/components/PageHeader");
+    const html = renderToStaticMarkup(
+      createElement(PageHeader, { title: "Keyflare Studio", allowTitleWrap: true }),
+    );
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
+
+    expect(html).toContain("titleAllowWrap");
+    expect(pageHeaderCss).toMatch(/\.titleAllowWrap\s*{[^}]*white-space:\s*normal;/s);
   });
 
   test("PageHeader constrains icon title lockups at narrow widths", async () => {
@@ -241,6 +256,7 @@ describe("visual components", () => {
     expect(html).toContain("home-title-studio-word");
     expect(html).toContain("home-title-logo");
     expect(html).toContain("titleLockup");
+    expect(html).toContain("titleAllowWrap");
     expect(html).toContain("eyebrowEnd");
     expect(html).toContain("BY DMITRII SEMENOV");
     expect(html).not.toContain("Independent software studio");
@@ -288,9 +304,52 @@ describe("visual components", () => {
     expect(pageHeaderCss).toContain("margin-top: var(--space-1);");
   });
 
+  test("Document page headings stay within the readable column", () => {
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
+
+    expect(pageHeaderCss).toMatch(
+      /\.header\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);/s,
+    );
+    expect(pageHeaderCss).toMatch(/\.document \.titleLockup\s*\{[^}]*width:\s*100%;/s);
+  });
+
+  test("Poster page headings stay on the canvas at phone widths", () => {
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
+
+    expect(pageHeaderCss).toMatch(
+      /@media \(max-width: 420px\)[\s\S]*\.poster \.title\s*\{[^}]*font-size:\s*clamp\(1\.5rem,\s*8vw,\s*2\.4rem\);/s,
+    );
+    expect(pageHeaderCss).toMatch(
+      /@media \(max-width: 420px\)[\s\S]*\.document \.title\s*\{[^}]*font-size:\s*clamp\(1\.2rem,\s*5vw,\s*2rem\);/s,
+    );
+  });
+
+  test("Catalog grid content cannot widen the page", () => {
+    const globalCss = readFileSync("app/styles/global.css", "utf8");
+
+    expect(globalCss).toMatch(
+      /\.catalog-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);/s,
+    );
+  });
+
+  test("Product grids stack before cards become cramped and keep launch board spacing", () => {
+    const globalCss = readFileSync("app/styles/global.css", "utf8");
+    const productCardCss = readFileSync("app/components/ProductCard.module.css", "utf8");
+
+    expect(globalCss).toMatch(/\.home-products-grid\s*{[^}]*gap:\s*var\(--space-6\);/s);
+    expect(globalCss).toMatch(
+      /@media \(max-width: 1050px\)\s*{\s*\.catalog-grid\s*{[^}]*grid-template-columns:\s*1fr;/s,
+    );
+    expect(productCardCss).toMatch(
+      /@media \(max-width: 860px\)\s*{\s*\.card\s*{[^}]*grid-template-columns:\s*1fr;/s,
+    );
+    expect(productCardCss).toMatch(/\.cardWithoutPreview\s*{[^}]*grid-template-columns:\s*1fr;/s);
+  });
+
   test("SiteShell header brand is mixed case, larger, and unframed", () => {
     const siteShellCss = readFileSync("app/components/SiteShell.module.css", "utf8");
 
+    expect(siteShellCss).toMatch(/\.shell\s*{[^}]*overflow-x:\s*clip;/s);
     expect(siteShellCss).toContain(".brandName");
     expect(siteShellCss).toContain("--studio-logo-size: 2.3rem;");
     expect(siteShellCss).toContain("transform: translateY(-0.12rem);");
@@ -364,8 +423,17 @@ describe("visual components", () => {
     expect(html).toContain("This website does not use analytics");
     expect(html).toContain("If you contact Keyflare Studio by email");
     expect(html).toContain("Product Privacy Policies");
-    expect(html).toContain('href="/products/palette-master/privacy/"');
-    expect(html).toContain("Palette Master Privacy Policy");
+
+    const publishedProducts = products.filter((product) => product.status === "published");
+    const productPrivacyLinks = html.match(/href="\/products\/[^"]+\/privacy\/"/g)?.length ?? 0;
+
+    expect(productPrivacyLinks).toBe(publishedProducts.length);
+
+    for (const publishedProduct of publishedProducts) {
+      expect(html).toContain(`href="/products/${publishedProduct.slug}/privacy/"`);
+      expect(html).toContain(`${publishedProduct.name} Privacy Policy`);
+    }
+
     expect(html).toContain("Last updated: July 2026");
   });
 });
