@@ -197,6 +197,20 @@ describe("validateProducts", () => {
     );
   });
 
+  test("rejects store links for in-development products", () => {
+    const inDevelopmentProductWithStoreLink: Product = {
+      ...baseProduct,
+      releaseStage: "in-development",
+      storeLinks: {
+        ios: "https://apps.apple.com/app/sample/id123456789",
+      },
+    };
+
+    expect(validateProducts([inDevelopmentProductWithStoreLink])).toContain(
+      "Published product sample is in development and must not define store links",
+    );
+  });
+
   test("rejects published products with unknown custom overview keys", () => {
     const productWithUnknownCustomOverview: Product = {
       ...baseProduct,

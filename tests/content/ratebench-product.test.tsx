@@ -141,10 +141,39 @@ describe("Ratebench product", () => {
     }
   });
 
+  test("never renders store links for an in-development product", () => {
+    const productWithConflictingStoreLink = {
+      ...getRatebench(),
+      storeLinks: {
+        ios: "https://apps.apple.com/app/ratebench/id123456789",
+      },
+    };
+    const cardHtml = renderWithRouter(
+      createElement(ProductCard, { product: productWithConflictingStoreLink }),
+    );
+    const linksHtml = renderWithRouter(
+      createElement(ProductLinks, { product: productWithConflictingStoreLink }),
+    );
+
+    for (const html of [cardHtml, linksHtml]) {
+      expect(html).not.toContain("https://apps.apple.com/app/ratebench/id123456789");
+      expect(html).toContain("In development");
+    }
+  });
+
   test("provides the product Terms document renderer", async () => {
     const termsRoute = await import("../../app/routes/product-terms");
 
     expect(termsRoute.ProductTermsContent).toBeTypeOf("function");
+  });
+
+  test("renders one page-level heading per legal document", () => {
+    const product = getRatebench();
+    const privacyHtml = renderWithRouter(createElement(ProductPrivacyContent, { product }));
+    const termsHtml = renderWithRouter(createElement(ProductTermsContent, { product }));
+
+    expect(privacyHtml.match(/<h1\b/g)).toHaveLength(1);
+    expect(termsHtml.match(/<h1\b/g)).toHaveLength(1);
   });
 
   test("renders factual Privacy, Terms, and Support documents without drafting placeholders", () => {
@@ -169,6 +198,11 @@ describe("Ratebench product", () => {
     expect(supportHtml).toContain("In development");
     expect(supportHtml).toContain("/products/ratebench/privacy/");
     expect(supportHtml).toContain("/products/ratebench/terms/");
+    expect(
+      supportHtml.match(/<a[^>]+href="mailto:support@keyflare\.studio[^"]*"[^>]*>/g),
+    ).toHaveLength(1);
+    expect(supportHtml.match(/\/products\/ratebench\/privacy\//g)).toHaveLength(1);
+    expect(supportHtml.match(/\/products\/ratebench\/terms\//g)).toHaveLength(1);
 
     for (const html of [privacyHtml, termsHtml, supportHtml]) {
       expect(html).not.toMatch(/\[(?:[A-Z][A-Z _-]+)\]/);

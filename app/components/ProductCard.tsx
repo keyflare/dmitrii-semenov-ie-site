@@ -34,15 +34,17 @@ export function ProductCard({ product }: { product: Product }) {
   const feedbackUrl = `mailto:${product.supportEmail}?subject=${encodeURIComponent(
     `${product.name} feedback`,
   )}`;
-  const storeLinks = Object.entries(product.storeLinks)
-    .filter((entry): entry is [ProductPlatform, string] => {
-      const href = entry[1];
-
-      return typeof href === "string" && href.trim() !== "";
-    })
-    .map(([platform, href]) => [platform, href.trim()] as const);
-  const linkedPlatforms = new Set(storeLinks.map(([platform]) => platform));
   const isInDevelopment = product.releaseStage === "in-development";
+  const storeLinks = isInDevelopment
+    ? []
+    : Object.entries(product.storeLinks)
+        .filter((entry): entry is [ProductPlatform, string] => {
+          const href = entry[1];
+
+          return typeof href === "string" && href.trim() !== "";
+        })
+        .map(([platform, href]) => [platform, href.trim()] as const);
+  const linkedPlatforms = new Set(storeLinks.map(([platform]) => platform));
   const comingSoonPlatforms = isInDevelopment
     ? []
     : product.platforms.filter((platform) => !linkedPlatforms.has(platform));

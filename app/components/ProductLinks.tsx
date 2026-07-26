@@ -12,16 +12,18 @@ const platformLabels: Record<ProductPlatform, string> = {
 };
 
 export function ProductLinks({ product }: { product: Product }) {
-  const storeLinks = Object.entries(product.storeLinks)
-    .filter((entry): entry is [ProductPlatform, string] => {
-      const href = entry[1];
+  const isInDevelopment = product.releaseStage === "in-development";
+  const storeLinks = isInDevelopment
+    ? []
+    : Object.entries(product.storeLinks)
+        .filter((entry): entry is [ProductPlatform, string] => {
+          const href = entry[1];
 
-      return typeof href === "string" && href.trim() !== "";
-    })
-    .map(([platform, href]) => [platform, href.trim()] as const);
+          return typeof href === "string" && href.trim() !== "";
+        })
+        .map(([platform, href]) => [platform, href.trim()] as const);
 
   const linkedPlatforms = new Set(storeLinks.map(([platform]) => platform));
-  const isInDevelopment = product.releaseStage === "in-development";
   const comingSoonPlatforms = isInDevelopment
     ? []
     : product.platforms.filter((platform) => !linkedPlatforms.has(platform));

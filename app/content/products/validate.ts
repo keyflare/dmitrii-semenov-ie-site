@@ -53,6 +53,16 @@ export function validateProducts(products: Product[]): string[] {
       );
     }
 
+    const hasStoreLinks = Object.values(product.storeLinks).some(
+      (storeLink) => typeof storeLink === "string" && storeLink.trim() !== "",
+    );
+
+    if (product.releaseStage === "in-development" && hasStoreLinks) {
+      errors.push(
+        `Published product ${product.slug} is in development and must not define store links`,
+      );
+    }
+
     for (const [platform, storeLink] of Object.entries(product.storeLinks)) {
       if (storeLink === undefined || storeLink.trim() === "") {
         continue;
