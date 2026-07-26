@@ -134,6 +134,10 @@ describe("Ratebench product", () => {
     expect(html).toContain("EUR / USDT");
     expect(html).toContain("Whole route");
     expect(html).toContain("USD / USDT");
+    expect(html).toContain("<table");
+    expect(html).toContain("<caption");
+    expect(html.match(/scope="col"/g)).toHaveLength(3);
+    expect(html.match(/scope="row"/g)).toHaveLength(3);
     expect(html).not.toContain(">Sent<");
     expect(html).not.toContain("Effective result");
     expect(html).toContain("Fiat &amp; crypto");
@@ -144,8 +148,15 @@ describe("Ratebench product", () => {
     expect(html).toContain("/products/ratebench/terms/");
     expect(html).toContain("/products/ratebench/support/");
     expect(html).toContain("/products/ratebench/ratebench-logo.svg");
+    expect(html).toContain('alt=""');
     expect(html).not.toContain("Android coming soon");
     expect(html).not.toContain("iOS coming soon");
+  });
+
+  test("uses accessible text variants for Ratebench accent colors", () => {
+    expect(ratebenchOverviewCss).toContain("--ratebench-blue-text: #064fbf;");
+    expect(ratebenchOverviewCss).toContain("--ratebench-blue-on-dark: #78a8ff;");
+    expect(ratebenchOverviewCss).toContain("--ratebench-green-text: #267a00;");
   });
 
   test("keeps the mobile display title legible without splitting words", () => {

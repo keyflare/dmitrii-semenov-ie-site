@@ -2,6 +2,9 @@
   --ratebench-blue: var(--product-accent-primary, #196dff);
   --ratebench-green: var(--product-accent-secondary, #3cb200);
   --ratebench-amber: var(--product-accent-tertiary, #fea00a);
+  --ratebench-blue-text: #064fbf;
+  --ratebench-blue-on-dark: #78a8ff;
+  --ratebench-green-text: #267a00;
 
   display: grid;
   gap: var(--space-8);
@@ -143,7 +146,7 @@
 
 .heroLinks .primaryLink {
   color: #fff;
-  background: var(--ratebench-blue);
+  background: var(--ratebench-blue-text);
 }
 
 .ledger {
@@ -197,38 +200,57 @@
   letter-spacing: 0.02em;
 }
 
-.benchmarkGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 4.7rem 4.7rem;
-  gap: var(--space-3);
-  align-items: center;
+.benchmarkTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
-.benchmarkColumns {
+.benchmarkTable caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.rateColumn {
+  width: 5.45rem;
+}
+
+.benchmarkColumns th {
   padding: var(--space-2) var(--space-4);
   border-bottom: 1px solid var(--color-border-soft);
   color: var(--color-ink-muted);
   font-size: 0.68rem;
   font-weight: 800;
+  text-align: left;
   text-transform: uppercase;
 }
 
-.benchmarkColumns span:not(:first-child) {
+.benchmarkColumns th:not(:first-child) {
   text-align: right;
 }
 
-.ledgerRow {
+.ledgerRow th,
+.ledgerRow td,
+.result th,
+.result td {
   padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border-soft);
   font-size: 0.9rem;
 }
 
 .operation {
-  display: grid;
-  gap: 0.15rem;
+  text-align: left;
 }
 
 .operation > span {
+  display: block;
+  margin-bottom: 0.15rem;
   color: var(--color-ink-soft);
   font-size: 0.68rem;
   font-weight: 800;
@@ -245,13 +267,11 @@
 }
 
 .result {
-  padding: var(--space-4);
-  border-bottom: 1px solid var(--color-border-soft);
   background: color-mix(in srgb, var(--ratebench-blue) 8%, #fff);
 }
 
 .result .ledgerValue:last-child {
-  color: var(--ratebench-green);
+  color: var(--ratebench-green-text);
 }
 
 .illustrationNote {
@@ -324,7 +344,7 @@
 }
 
 .availability strong {
-  color: var(--ratebench-blue);
+  color: var(--ratebench-blue-text);
   font-size: 0.8rem;
   text-transform: uppercase;
 }
@@ -358,7 +378,7 @@
 }
 
 .disclaimerMeta span:first-child {
-  color: var(--ratebench-blue);
+  color: var(--ratebench-blue-on-dark);
 }
 
 .disclaimerMeta span:last-child {
@@ -419,9 +439,8 @@
     height: 4.4rem;
   }
 
-  .benchmarkGrid {
-    grid-template-columns: minmax(0, 1fr) 4.35rem 4.35rem;
-    gap: var(--space-2);
+  .rateColumn {
+    width: 4.65rem;
   }
 
   .availability {

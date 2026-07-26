@@ -49,7 +49,7 @@ export function RatebenchOverview({ product }: CustomProductOverviewProps) {
             <img
               className={styles.logo}
               src="/products/ratebench/ratebench-logo.svg"
-              alt="Ratebench logo"
+              alt=""
               loading="eager"
             />
             <div className={styles.brandLockup}>
@@ -83,29 +83,49 @@ export function RatebenchOverview({ product }: CustomProductOverviewProps) {
             <span>Route</span>
             <strong>USD → EUR → USDT</strong>
           </div>
-          <div className={`${styles.benchmarkGrid} ${styles.benchmarkColumns}`}>
-            <span>Operation</span>
-            <span>Market</span>
-            <span>Effective</span>
-          </div>
-          {benchmarkSteps.map((row) => (
-            <div key={row.step} className={`${styles.benchmarkGrid} ${styles.ledgerRow}`}>
-              <div className={styles.operation}>
-                <span>{row.step}</span>
-                <strong>{row.pair}</strong>
-              </div>
-              <strong className={styles.ledgerValue}>{row.market}</strong>
-              <strong className={styles.ledgerValue}>{row.effective}</strong>
-            </div>
-          ))}
-          <div className={`${styles.benchmarkGrid} ${styles.result}`}>
-            <div className={styles.operation}>
-              <span>Whole route</span>
-              <strong>USD / USDT</strong>
-            </div>
-            <strong className={styles.ledgerValue}>0.994</strong>
-            <strong className={styles.ledgerValue}>0.945</strong>
-          </div>
+          <table className={styles.benchmarkTable}>
+            <caption>Market and effective rates for an illustrative exchange route</caption>
+            <colgroup>
+              <col />
+              <col className={styles.rateColumn} />
+              <col className={styles.rateColumn} />
+            </colgroup>
+            <thead>
+              <tr className={styles.benchmarkColumns}>
+                <th scope="col">Operation</th>
+                <th scope="col">Market</th>
+                <th scope="col">Effective</th>
+              </tr>
+            </thead>
+            <tbody>
+              {benchmarkSteps.map((row) => (
+                <tr key={row.step} className={styles.ledgerRow}>
+                  <th className={styles.operation} scope="row">
+                    <span>{row.step}</span>
+                    <strong>{row.pair}</strong>
+                  </th>
+                  <td className={styles.ledgerValue}>
+                    <strong>{row.market}</strong>
+                  </td>
+                  <td className={styles.ledgerValue}>
+                    <strong>{row.effective}</strong>
+                  </td>
+                </tr>
+              ))}
+              <tr className={styles.result}>
+                <th className={styles.operation} scope="row">
+                  <span>Whole route</span>
+                  <strong>USD / USDT</strong>
+                </th>
+                <td className={styles.ledgerValue}>
+                  <strong>0.994</strong>
+                </td>
+                <td className={styles.ledgerValue}>
+                  <strong>0.945</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <p className={styles.illustrationNote}>Illustrative values — not live market data.</p>
         </div>
       </section>

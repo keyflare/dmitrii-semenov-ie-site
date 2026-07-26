@@ -331,6 +331,7 @@ describe("visual components", () => {
   test("SiteShell header brand is mixed case, larger, and unframed", () => {
     const siteShellCss = readFileSync("app/components/SiteShell.module.css", "utf8");
 
+    expect(siteShellCss).toMatch(/\.shell\s*{[^}]*overflow-x:\s*clip;/s);
     expect(siteShellCss).toContain(".brandName");
     expect(siteShellCss).toContain("--studio-logo-size: 2.3rem;");
     expect(siteShellCss).toContain("transform: translateY(-0.12rem);");
