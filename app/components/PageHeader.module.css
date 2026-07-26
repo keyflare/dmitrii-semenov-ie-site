@@ -2,6 +2,7 @@
   position: relative;
   isolation: isolate;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-1);
   max-width: 58rem;
 }
@@ -34,7 +35,8 @@
   max-width: 100%;
 }
 
-.titleLockupWithIcon {
+.titleLockupWithIcon,
+.document .titleLockup {
   width: 100%;
 }
 

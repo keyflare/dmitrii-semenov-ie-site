@@ -78,9 +78,11 @@
 .title {
   max-width: 44rem;
   margin: 0;
-  font-size: clamp(3.4rem, 7.2vw, 7rem);
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
   font-weight: 800;
   line-height: 0.86;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .lede {
@@ -303,7 +305,7 @@
   }
 
   .title {
-    font-size: clamp(3rem, 17vw, 4.5rem);
+    font-size: clamp(2rem, 8.8vw, 2.25rem);
   }
 
   .availability {

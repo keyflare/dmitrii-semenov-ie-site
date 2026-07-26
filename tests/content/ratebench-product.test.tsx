@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { createElement, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
@@ -16,6 +17,11 @@ import { ProductOverviewContent } from "../../app/routes/product-overview";
 import { ProductPrivacyContent } from "../../app/routes/product-privacy";
 import { ProductSupportContent } from "../../app/routes/product-support";
 import { ProductTermsContent } from "../../app/routes/product-terms";
+
+const ratebenchOverviewCss = readFileSync(
+  new URL("../../app/content/products/ratebench/Overview.module.css", import.meta.url),
+  "utf8",
+);
 
 function getRatebench() {
   const ratebench = products.find((product) => product.slug === "ratebench");
@@ -113,6 +119,14 @@ describe("Ratebench product", () => {
     expect(html).toContain("/products/ratebench/ratebench-logo.svg");
     expect(html).not.toContain("Android coming soon");
     expect(html).not.toContain("iOS coming soon");
+  });
+
+  test("keeps the mobile display title legible without splitting words", () => {
+    expect(ratebenchOverviewCss).toMatch(
+      /\.title\s*\{[^}]*overflow-wrap:\s*normal;[^}]*word-break:\s*normal;/s,
+    );
+    expect(ratebenchOverviewCss).toContain("font-size: clamp(2.8rem, 5.5vw, 5rem);");
+    expect(ratebenchOverviewCss).toContain("font-size: clamp(2rem, 8.8vw, 2.25rem);");
   });
 
   test("renders one in-development status in shared product navigation", () => {

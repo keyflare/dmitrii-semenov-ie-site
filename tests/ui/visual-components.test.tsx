@@ -289,6 +289,23 @@ describe("visual components", () => {
     expect(pageHeaderCss).toContain("margin-top: var(--space-1);");
   });
 
+  test("Document page headings stay within the readable column", () => {
+    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
+
+    expect(pageHeaderCss).toMatch(
+      /\.header\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);/s,
+    );
+    expect(pageHeaderCss).toMatch(/\.document \.titleLockup\s*\{[^}]*width:\s*100%;/s);
+  });
+
+  test("Catalog grid content cannot widen the page", () => {
+    const globalCss = readFileSync("app/styles/global.css", "utf8");
+
+    expect(globalCss).toMatch(
+      /\.catalog-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\);/s,
+    );
+  });
+
   test("SiteShell header brand is mixed case, larger, and unframed", () => {
     const siteShellCss = readFileSync("app/components/SiteShell.module.css", "utf8");
 
