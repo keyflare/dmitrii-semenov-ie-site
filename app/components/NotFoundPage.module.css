@@ -1,0 +1,155 @@
+.page {
+  display: grid;
+  grid-template-columns: minmax(17rem, 0.72fr) minmax(30rem, 1.28fr);
+  gap: var(--space-8);
+  align-items: stretch;
+  min-height: min(41rem, calc(100vh - 10rem));
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--space-6);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-xs);
+  background: var(--color-paper-soft);
+  box-shadow: var(--shadow-poster);
+}
+
+.eyebrow {
+  display: inline-block;
+  margin: 0;
+  padding: 0.35rem 0.55rem;
+  border: 2px solid var(--color-ink);
+  background: var(--color-accent-red);
+  color: var(--color-ink);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  transform: rotate(-1deg);
+}
+
+.message {
+  display: grid;
+  gap: var(--space-4);
+  margin-block: auto;
+  padding-block: var(--space-10);
+}
+
+.message h1 {
+  max-width: 10ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 6.3rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.message p {
+  max-width: 27rem;
+  margin: 0;
+  color: var(--color-ink-soft);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.resetButton {
+  min-height: 3.25rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  color: var(--color-ink);
+  background: var(--color-paper-soft);
+  box-shadow: var(--shadow-poster);
+  font: 800 1rem/1 var(--font-sans);
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.resetButton:hover,
+.resetButton:focus-visible {
+  background: var(--color-accent-amber);
+  box-shadow: 0.2rem 0.2rem 0 var(--color-ink);
+  transform: translate(0.08rem, 0.08rem);
+}
+
+.registrationNote {
+  display: grid;
+  gap: var(--space-1);
+  width: 100%;
+  margin-top: var(--space-8);
+  padding-top: var(--space-3);
+  border-top: 2px solid var(--color-ink);
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.registrationNote strong {
+  color: var(--color-ink);
+}
+
+@media (max-width: 980px) {
+  .page {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .copy {
+    min-height: 30rem;
+  }
+
+  .message h1 {
+    max-width: 13ch;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    gap: var(--space-6);
+  }
+
+  .copy {
+    min-height: 27rem;
+    padding: var(--space-5);
+    box-shadow: 0.35rem 0.35rem 0 var(--color-ink);
+  }
+
+  .message {
+    padding-block: var(--space-8);
+  }
+
+  .message h1 {
+    font-size: clamp(2.5rem, 14vw, 4rem);
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions > * {
+    flex: 1 1 100%;
+  }
+
+  .resetButton {
+    box-shadow: 0.35rem 0.35rem 0 var(--color-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resetButton {
+    transition: none;
+  }
+}
