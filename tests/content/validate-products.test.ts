@@ -21,6 +21,7 @@ const baseProduct: Product = {
     usesAdMob: false,
     usesAnalytics: false,
     usesCrashReporting: false,
+    usesSubscriptions: false,
     hasAccounts: false,
     collectsPersonalData: false,
     requiresDataDeletionPage: false,
@@ -221,6 +222,20 @@ describe("validateProducts", () => {
 
     expect(validateProducts([productWithUnknownMdxContent])).toContain(
       "Published product sample references unknown MDX content: missing-mdx",
+    );
+  });
+
+  test("rejects published products with unknown Terms MDX content keys", () => {
+    const productWithUnknownTerms: Product = {
+      ...baseProduct,
+      presentation: {
+        ...baseProduct.presentation,
+        terms: { mode: "mdx", contentKey: "missing-terms" as never },
+      },
+    };
+
+    expect(validateProducts([productWithUnknownTerms])).toContain(
+      "Published product sample references unknown MDX content: missing-terms",
     );
   });
 

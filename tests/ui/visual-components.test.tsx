@@ -29,6 +29,7 @@ const product: Product = {
     usesAdMob: false,
     usesAnalytics: false,
     usesCrashReporting: false,
+    usesSubscriptions: false,
     hasAccounts: true,
     collectsPersonalData: true,
     requiresDataDeletionPage: true,

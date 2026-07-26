@@ -22,6 +22,7 @@ export const products: Product[] = [
       usesAdMob: true,
       usesAnalytics: false,
       usesCrashReporting: false,
+      usesSubscriptions: false,
       hasAccounts: false,
       collectsPersonalData: false,
       requiresDataDeletionPage: false,
@@ -59,6 +60,7 @@ export const products: Product[] = [
       usesAdMob: true,
       usesAnalytics: true,
       usesCrashReporting: true,
+      usesSubscriptions: false,
       hasAccounts: false,
       collectsPersonalData: true,
       requiresDataDeletionPage: false,
@@ -92,6 +94,10 @@ export function getPrerenderPaths() {
       `/products/${product.slug}/privacy`,
       `/products/${product.slug}/support`,
     ];
+
+    if (product.presentation.terms) {
+      paths.push(`/products/${product.slug}/terms`);
+    }
 
     if (product.privacyProfile.requiresDataDeletionPage) {
       paths.push(`/products/${product.slug}/data-deletion`);

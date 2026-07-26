@@ -4,10 +4,13 @@ export type ProductType = "mobile-app" | "mobile-game" | "desktop-app" | "tool" 
 
 export type ProductPlatform = "ios" | "android" | "macos" | "windows" | "linux" | "web";
 
+export type ProductReleaseStage = "in-development";
+
 export type PrivacyProfile = {
   usesAdMob: boolean;
   usesAnalytics: boolean;
   usesCrashReporting: boolean;
+  usesSubscriptions: boolean;
   hasAccounts: boolean;
   collectsPersonalData: boolean;
   requiresDataDeletionPage: boolean;
@@ -39,10 +42,16 @@ export type ProductPrivacyPresentation =
   | { mode: "generated-with-mdx"; contentKey: ProductMdxContentKey }
   | { mode: "mdx"; contentKey: ProductMdxContentKey };
 
+export type ProductTermsPresentation = {
+  mode: "mdx";
+  contentKey: ProductMdxContentKey;
+};
+
 export type ProductPresentation = {
   overview: ProductOverviewPresentation;
   support: ProductSupportPresentation;
   privacy: ProductPrivacyPresentation;
+  terms?: ProductTermsPresentation;
 };
 
 export type ProductVisualVolume = "calm" | "poster" | "immersive";
@@ -64,6 +73,7 @@ export type Product = {
   type: ProductType;
   shortDescription: string;
   platforms: ProductPlatform[];
+  releaseStage?: ProductReleaseStage;
   supportEmail: string;
   lastUpdated: string;
   storeLinks: Partial<Record<ProductPlatform, string>>;

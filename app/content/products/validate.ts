@@ -150,6 +150,16 @@ function validatePresentation(product: Product, errors: string[]) {
       )}`,
     );
   }
+
+  const terms = presentation.terms;
+
+  if (terms?.mode === "mdx" && !hasKnownKey(productMdxContentKeys, terms.contentKey)) {
+    errors.push(
+      `Published product ${product.slug} references unknown MDX content: ${String(
+        terms.contentKey,
+      )}`,
+    );
+  }
 }
 
 function hasKnownKey(keys: readonly string[], key: unknown): key is string {
