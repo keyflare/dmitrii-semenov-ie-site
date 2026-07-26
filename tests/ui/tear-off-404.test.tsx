@@ -6,12 +6,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import {
-  INITIAL_PLATE_OFFSETS,
-  arePlatesAligned,
-  clampPlateOffset,
-  getAmbientOffsets,
-  getPlateZIndices,
-} from "../../app/components/Chromatic404Artwork.logic";
+  TEAR_COMPLETION_THRESHOLD,
+  TEAR_START_PROGRESS,
+  clampTearProgress,
+  getTearProgress,
+  shouldCompleteTear,
+} from "../../app/components/TearOff404Artwork.logic";
 import { NotFoundPage } from "../../app/components/NotFoundPage";
 import { getRootErrorKind } from "../../app/rootError";
 
@@ -43,56 +43,29 @@ afterEach(() => {
   dom.window.close();
 });
 
-describe("chromatic 404 artwork geometry", () => {
-  test("starts visibly out of register", () => {
-    expect(INITIAL_PLATE_OFFSETS.red).toEqual({ x: -24, y: -9 });
-    expect(INITIAL_PLATE_OFFSETS.amber).toEqual({ x: 20, y: 11 });
-    expect(INITIAL_PLATE_OFFSETS.blue).toEqual({ x: 0, y: 0 });
-    expect(arePlatesAligned(INITIAL_PLATE_OFFSETS)).toBe(false);
+describe("tear-off 404 geometry", () => {
+  test("starts with a visible sliver and clamps progress", () => {
+    expect(TEAR_START_PROGRESS).toBe(0.08);
+    expect(clampTearProgress(-1)).toBe(0);
+    expect(clampTearProgress(0.42)).toBe(0.42);
+    expect(clampTearProgress(2)).toBe(1);
   });
 
-  test("clamps dragged plates inside the artwork", () => {
-    expect(clampPlateOffset({ x: 99, y: -80 })).toEqual({ x: 48, y: -48 });
-  });
-
-  test("maps pointer position to small opposing ambient offsets", () => {
-    expect(getAmbientOffsets(1, -1)).toEqual({
-      red: { x: -8, y: 8 },
-      amber: { x: 6, y: -6 },
-      blue: { x: -2, y: 2 },
-    });
-  });
-
-  test("snaps only when every plate is close to registration", () => {
+  test("maps horizontal pointer movement one-to-one across the artwork", () => {
     expect(
-      arePlatesAligned({
-        red: { x: 5, y: 4 },
-        amber: { x: -3, y: 6 },
-        blue: { x: 0, y: 0 },
+      getTearProgress({
+        startProgress: TEAR_START_PROGRESS,
+        startClientX: 100,
+        currentClientX: 300,
+        artworkWidth: 800,
       }),
-    ).toBe(true);
-    expect(
-      arePlatesAligned({
-        red: { x: 10, y: 0 },
-        amber: { x: 0, y: 0 },
-        blue: { x: 0, y: 0 },
-      }),
-    ).toBe(false);
+    ).toBeCloseTo(0.33);
   });
 
-  test("keeps the plate furthest from registration on top", () => {
-    expect(getPlateZIndices(INITIAL_PLATE_OFFSETS)).toEqual({
-      red: 4,
-      amber: 3,
-      blue: 2,
-    });
-    expect(
-      getPlateZIndices({
-        red: { x: 0, y: 0 },
-        amber: { x: 20, y: 11 },
-        blue: { x: 0, y: 0 },
-      }).amber,
-    ).toBe(4);
+  test("completes only at the declared release threshold", () => {
+    expect(TEAR_COMPLETION_THRESHOLD).toBe(0.58);
+    expect(shouldCompleteTear(0.57)).toBe(false);
+    expect(shouldCompleteTear(0.58)).toBe(true);
   });
 });
 
