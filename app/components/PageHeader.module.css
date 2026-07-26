@@ -35,7 +35,10 @@
   max-width: 100%;
 }
 
-.titleLockupWithIcon,
+.titleLockupWithIcon {
+  width: 100%;
+}
+
 .document .titleLockup {
   width: 100%;
 }

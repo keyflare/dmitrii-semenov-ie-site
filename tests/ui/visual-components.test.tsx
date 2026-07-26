@@ -306,6 +306,19 @@ describe("visual components", () => {
     );
   });
 
+  test("Product grids stack before cards become cramped and keep launch board spacing", () => {
+    const globalCss = readFileSync("app/styles/global.css", "utf8");
+    const productCardCss = readFileSync("app/components/ProductCard.module.css", "utf8");
+
+    expect(globalCss).toMatch(/\.home-products-grid\s*{[^}]*gap:\s*var\(--space-6\);/s);
+    expect(globalCss).toMatch(
+      /@media \(max-width: 1050px\)\s*{\s*\.catalog-grid\s*{[^}]*grid-template-columns:\s*1fr;/s,
+    );
+    expect(productCardCss).toMatch(
+      /@media \(max-width: 860px\)\s*{\s*\.card\s*{[^}]*grid-template-columns:\s*1fr;/s,
+    );
+  });
+
   test("SiteShell header brand is mixed case, larger, and unframed", () => {
     const siteShellCss = readFileSync("app/components/SiteShell.module.css", "utf8");
 

@@ -211,6 +211,7 @@ svg {
 .home-products-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
   max-width: min(100%, 58rem);
 }
 
@@ -247,6 +248,12 @@ svg {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
   gap: var(--space-6);
+}
+
+@media (max-width: 1050px) {
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .catalog-empty {
