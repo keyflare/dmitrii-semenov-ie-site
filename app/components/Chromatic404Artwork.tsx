@@ -177,58 +177,74 @@ export const Chromatic404Artwork = forwardRef<Chromatic404ArtworkHandle, Chromat
     };
 
     return (
-      <div
-        className={`${styles.artwork} ${aligned ? styles.aligned : ""}`}
-        onPointerMove={handlePointerMove}
-        onPointerUp={finishPointerInteraction}
-        onPointerCancel={finishPointerInteraction}
-        onPointerLeave={clearAmbientMotion}
-        role="img"
-        aria-label="Error 404 shown as misregistered chromatic printing plates"
-      >
-        <span className={styles.semanticCode}>404</span>
-        <div className={styles.registrationFrame} aria-hidden="true">
-          <span className={`${styles.registrationMark} ${styles.topLeft}`} />
-          <span className={`${styles.registrationMark} ${styles.topRight}`} />
-          <span className={`${styles.registrationMark} ${styles.bottomLeft}`} />
-          <span className={`${styles.registrationMark} ${styles.bottomRight}`} />
-        </div>
-        <div className={styles.layers}>
-          {plateNames.map((plate) => {
-            const plateOffset = plateOffsets[plate];
-            const ambientOffset = ambientOffsets[plate];
-            const plateStyle = {
-              "--plate-x": `${plateOffset.x}px`,
-              "--plate-y": `${plateOffset.y}px`,
-              "--ambient-x": `${ambientOffset.x}px`,
-              "--ambient-y": `${ambientOffset.y}px`,
-              zIndex: activePlate === plate ? 6 : plateZIndices[plate],
-            } as CSSProperties;
+      <div className={styles.stage}>
+        <div
+          className={`${styles.artwork} ${aligned ? styles.aligned : ""}`}
+          onPointerMove={handlePointerMove}
+          onPointerUp={finishPointerInteraction}
+          onPointerCancel={finishPointerInteraction}
+          onPointerLeave={clearAmbientMotion}
+          role="img"
+          aria-label={
+            aligned
+              ? "Error 404 shown as aligned chromatic printing plates"
+              : "Error 404 shown as misregistered chromatic printing plates"
+          }
+        >
+          <span className={styles.semanticCode}>404</span>
+          <div className={styles.registrationFrame} aria-hidden="true">
+            <span className={`${styles.registrationMark} ${styles.topLeft}`} />
+            <span className={`${styles.registrationMark} ${styles.topRight}`} />
+            <span className={`${styles.registrationMark} ${styles.bottomLeft}`} />
+            <span className={`${styles.registrationMark} ${styles.bottomRight}`} />
+          </div>
+          <div className={styles.layers}>
+            {plateNames.map((plate) => {
+              const plateOffset = plateOffsets[plate];
+              const ambientOffset = ambientOffsets[plate];
+              const plateStyle = {
+                "--plate-x": `${plateOffset.x}px`,
+                "--plate-y": `${plateOffset.y}px`,
+                "--ambient-x": `${ambientOffset.x}px`,
+                "--ambient-y": `${ambientOffset.y}px`,
+                zIndex: activePlate === plate ? 6 : plateZIndices[plate],
+              } as CSSProperties;
 
-            return (
-              <span
-                aria-hidden="true"
-                className={`${styles.plate} ${styles[plate]} ${
-                  activePlate === plate ? styles.dragging : ""
-                }`}
-                data-plate={plate}
-                key={plate}
-                onPointerDown={(event) => handlePlatePointerDown(plate, event)}
-                style={plateStyle}
-              >
-                404
-              </span>
-            );
-          })}
+              return (
+                <span
+                  aria-hidden="true"
+                  className={`${styles.plate} ${styles[plate]} ${
+                    activePlate === plate ? styles.dragging : ""
+                  }`}
+                  data-plate={plate}
+                  key={plate}
+                  onPointerDown={(event) => handlePlatePointerDown(plate, event)}
+                  style={plateStyle}
+                >
+                  404
+                </span>
+              );
+            })}
+          </div>
+          <div className={styles.successBand} aria-hidden="true" />
+          <div className={styles.statusStamp} aria-hidden="true">
+            {aligned ? "Reality restored" : "Out of register"}
+          </div>
+          <div className={styles.dragHint} aria-hidden="true">
+            {reducedMotion ? "Static edition" : aligned ? "In register" : "Drag the colour plates"}
+          </div>
+          <div className={styles.ruler} aria-hidden="true" />
         </div>
-        <div className={styles.successBand} aria-hidden="true" />
-        <div className={styles.statusStamp} aria-hidden="true">
-          {aligned ? "Reality restored" : "Out of register"}
-        </div>
-        <div className={styles.dragHint} aria-hidden="true">
-          {reducedMotion ? "Static edition" : aligned ? "In register" : "Drag the colour plates"}
-        </div>
-        <div className={styles.ruler} aria-hidden="true" />
+        {aligned ? null : (
+          <button
+            aria-label="Align colour plates automatically"
+            className={styles.alignButton}
+            onClick={alignPlates}
+            type="button"
+          >
+            Auto-register
+          </button>
+        )}
       </div>
     );
   },

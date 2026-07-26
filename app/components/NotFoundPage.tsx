@@ -32,15 +32,14 @@ export function NotFoundPage() {
             <PosterButton to="/" size="hero" tone="primary">
               Return home
             </PosterButton>
+            <PosterButton to="/products/" size="hero">
+              View products
+            </PosterButton>
             {aligned ? (
               <button className={styles.resetButton} type="button" onClick={resetArtwork}>
                 Play again
               </button>
-            ) : (
-              <PosterButton to="/products/" size="hero">
-                View products
-              </PosterButton>
-            )}
+            ) : null}
           </div>
           <div className={styles.registrationNote}>
             <strong>404 / Chromatic calibration</strong>

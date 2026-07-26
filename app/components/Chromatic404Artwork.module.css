@@ -1,6 +1,12 @@
+.stage {
+  position: relative;
+  min-width: 0;
+}
+
 .artwork {
   position: relative;
   isolation: isolate;
+  height: 100%;
   min-width: 0;
   min-height: 28rem;
   overflow: hidden;
@@ -11,7 +17,6 @@
     linear-gradient(180deg, rgb(21 17 28 / 6%) 1px, transparent 1px), var(--color-paper-soft);
   background-size: 1.4rem 1.4rem;
   box-shadow: var(--shadow-poster);
-  touch-action: none;
   user-select: none;
 }
 
@@ -90,6 +95,7 @@
   letter-spacing: 0;
   line-height: 0.7;
   cursor: grab;
+  touch-action: none;
   transform: translate(
     calc(-50% + var(--plate-x) + var(--ambient-x)),
     calc(-50% + var(--plate-y) + var(--ambient-y))
@@ -200,6 +206,33 @@
   background: repeating-linear-gradient(90deg, var(--color-ink) 0 2px, transparent 2px 0.8rem);
 }
 
+.alignButton {
+  position: absolute;
+  z-index: 8;
+  top: var(--space-6);
+  right: var(--space-6);
+  padding: 0.36rem 0.55rem;
+  border: 2px solid var(--color-ink);
+  color: var(--color-ink);
+  background: var(--color-accent-amber);
+  box-shadow: 0.2rem 0.2rem 0 var(--color-ink);
+  font: 900 0.7rem/1 var(--font-sans);
+  text-transform: uppercase;
+  cursor: pointer;
+  transform: rotate(1deg);
+  transition:
+    background 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.alignButton:hover,
+.alignButton:focus-visible {
+  background: var(--color-accent-green);
+  box-shadow: 0.12rem 0.12rem 0 var(--color-ink);
+  transform: translate(0.08rem, 0.08rem) rotate(1deg);
+}
+
 @media (max-width: 860px) {
   .artwork {
     min-height: 23rem;
@@ -225,6 +258,11 @@
     left: var(--space-4);
   }
 
+  .alignButton {
+    top: var(--space-4);
+    right: var(--space-4);
+  }
+
   .dragHint {
     right: var(--space-4);
     bottom: var(--space-4);
@@ -237,17 +275,21 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .artwork {
-    touch-action: auto;
-  }
-
   .plate,
   .successBand {
     pointer-events: none;
     transition: none;
   }
 
+  .plate {
+    touch-action: auto;
+  }
+
   .dragHint {
     display: none;
+  }
+
+  .alignButton {
+    transition: none;
   }
 }
