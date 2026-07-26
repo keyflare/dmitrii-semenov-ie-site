@@ -139,3 +139,23 @@ platform/store links when available, support and privacy links, and publication 
 Privacy, support, legal, and data deletion pages should preserve generated compliance sections, keep
 text highly readable, use restrained brand accents, and avoid oversized decorative modules inside
 dense policy text.
+
+## Not Found Page
+
+The studio-level 404 page uses a **chromatic print-calibration** metaphor. Its giant `404` is built
+from misregistered red, amber, and blue layers inside the normal warm-paper Chromatic Poster
+system.
+
+Pointer movement may add restrained parallax, and pointer or touch dragging may align the colour
+plates. Alignment can trigger a hard-edged chromatic band, revised copy, and a replay action, but it
+must never redirect automatically.
+
+Keep these guarantees:
+
+- the normal Keyflare Studio header, navigation, footer, and legal identity remain visible;
+- Home and Products links are available immediately without solving the interaction;
+- the page is understandable before JavaScript hydration;
+- decorative layer copies are hidden from assistive technology;
+- reduced-motion users receive an intentional static misprint without parallax or snapping;
+- mobile layouts keep the 404 inside the viewport without horizontal overflow;
+- unexpected non-404 failures use the calm generic error view rather than the playful 404 concept.
