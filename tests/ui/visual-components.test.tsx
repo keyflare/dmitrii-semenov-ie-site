@@ -232,9 +232,10 @@ describe("visual components", () => {
     expect(html).toContain(
       "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&amp;hl=en",
     );
+    expect(html).toContain("https://apps.apple.com/app/id6785084110");
     expect(html).toContain("/products/palette-master/store-icons/google-play.svg");
     expect(html).toContain("/products/palette-master/store-icons/app-store.svg");
-    expect(html).toContain("iOS coming soon");
+    expect(html).not.toContain("iOS coming soon");
     expect(html).not.toContain(">Overview<");
     expect(html).toContain("/products/palette-master/screenshots/palette-master-03.png");
     expect(html).toContain("Palette Master gameplay preview");

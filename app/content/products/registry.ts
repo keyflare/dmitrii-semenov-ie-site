@@ -41,6 +41,7 @@ export const products: Product[] = [
     lastUpdated: "2026-07-08",
     storeLinks: {
       android: "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en",
+      ios: "https://apps.apple.com/app/id6785084110",
     },
     presentation: {
       overview: { mode: "custom", componentKey: "palette-master" },
