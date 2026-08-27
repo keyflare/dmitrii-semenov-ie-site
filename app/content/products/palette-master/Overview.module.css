@@ -252,21 +252,6 @@
   word-break: normal;
 }
 
-.comingSoonCard {
-  background: repeating-linear-gradient(
-    135deg,
-    var(--color-paper-soft) 0,
-    var(--color-paper-soft) 0.7rem,
-    color-mix(in srgb, var(--color-accent-blue) 18%, var(--color-paper-soft)) 0.7rem,
-    color-mix(in srgb, var(--color-accent-blue) 18%, var(--color-paper-soft)) 1.4rem
-  );
-}
-
-.comingSoonCard:hover {
-  box-shadow: 0.3rem 0.3rem 0 var(--color-ink);
-  transform: none;
-}
-
 .details {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }

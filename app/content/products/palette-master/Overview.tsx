@@ -3,9 +3,6 @@ import { Link } from "react-router";
 import type { CustomProductOverviewProps } from "../customOverviewPages";
 import styles from "./Overview.module.css";
 
-const playStoreUrl =
-  "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en";
-
 const feedbackUrl = "mailto:support@keyflare.studio?subject=Palette%20Master%20feedback";
 
 const screenshots = [
@@ -49,6 +46,8 @@ const carouselIntervalMs = 2000;
 let carouselAutoplayRunId = 0;
 
 export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
+  const playStoreUrl = product.storeLinks.android;
+  const appStoreUrl = product.storeLinks.ios;
   const [activeScreenshot, setActiveScreenshot] = useState(0);
   const activeScreenshotRef = useRef(0);
   const carouselTimerRef = useRef<number | undefined>(undefined);
@@ -156,7 +155,7 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
           <div className={styles.kicker}>
             <span>Mobile Game</span>
             <span>Android</span>
-            <strong>iOS Coming Soon</strong>
+            <strong>iOS</strong>
           </div>
           <h1 className={styles.title}>{product.name}</h1>
           <p className={styles.tagline}>
@@ -203,7 +202,7 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
             <strong>Android · Google Play</strong>
           </span>
         </a>
-        <div className={`${styles.platformCard} ${styles.comingSoonCard}`}>
+        <a className={styles.platformCard} href={appStoreUrl} rel="noreferrer" target="_blank">
           <img
             className={styles.storeLogo}
             src="/products/palette-master/store-icons/app-store.svg"
@@ -211,10 +210,10 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
             loading="lazy"
           />
           <span className={styles.platformCopy}>
-            <span>Coming soon</span>
+            <span>Available now</span>
             <strong>iOS · App Store</strong>
           </span>
-        </div>
+        </a>
       </section>
       <section className={styles.details} aria-label="Gameplay highlights">
         {facts.map(([title, body]) => (

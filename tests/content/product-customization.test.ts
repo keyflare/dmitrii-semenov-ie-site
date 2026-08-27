@@ -73,7 +73,7 @@ describe("product customization", () => {
     expect(productMdxContent).toHaveProperty("palette-master-privacy");
   });
 
-  test("Palette Master is published with Android availability and iOS coming soon", () => {
+  test("Palette Master is published with Android and iOS availability", () => {
     const paletteMaster = products.find((product) => product.slug === "palette-master");
 
     expect(paletteMaster).toMatchObject({
@@ -83,6 +83,7 @@ describe("product customization", () => {
       supportEmail: "support@keyflare.studio",
       storeLinks: {
         android: "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en",
+        ios: "https://apps.apple.com/app/id6785084110",
       },
       privacyProfile: {
         usesAdMob: true,
@@ -132,9 +133,11 @@ describe("product customization", () => {
     expect(html).toContain("Available now");
     expect(html).toContain("/products/palette-master/store-icons/google-play.svg");
     expect(html).toContain("Android · Google Play");
-    expect(html).toContain("Coming soon");
+    expect(html).toContain("https://apps.apple.com/app/id6785084110");
     expect(html).toContain("/products/palette-master/store-icons/app-store.svg");
     expect(html).toContain("iOS · App Store");
+    expect(html).not.toContain("Coming soon");
+    expect(html).not.toContain("iOS Coming Soon");
     expect(html).toContain("200+ levels");
     expect(html).toContain("No timers");
     expect(html).toContain("mailto:support@keyflare.studio?subject=Palette%20Master%20feedback");
@@ -154,7 +157,6 @@ describe("product customization", () => {
       'href="/products/palette-master/" data-discover="true">Overview</a>',
     );
     expect(html).not.toContain(">Android</a>");
-    expect(html).not.toContain("iOS coming soon</span>");
     expect(html).not.toContain("Get it on Android");
   });
 
