@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "npm run validate:content && npm run generate:static && react-router build && tsx scripts/generate-404-page.ts",
+    "build": "npm run validate:content && npm run generate:static && react-router build && tsx scripts/generate-404-page.ts && tsx scripts/stage-product-sites.ts",
     "preview": "serve build/client",
     "typecheck": "react-router typegen && tsc --noEmit",
     "lint": "eslint .",
@@ -39,6 +39,7 @@
     "jsdom": "^27.0.1",
     "prettier": "^3.9.4",
     "serve": "^14.2.6",
+    "sirv": "^3.0.2",
     "tsx": "^4.23.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.62.1",

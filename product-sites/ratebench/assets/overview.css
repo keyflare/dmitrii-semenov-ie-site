@@ -1,14 +1,14 @@
 .overview {
-  --ratebench-blue: var(--product-accent-primary, #196dff);
-  --ratebench-green: var(--product-accent-secondary, #3cb200);
-  --ratebench-amber: var(--product-accent-tertiary, #fea00a);
+  --ratebench-blue: #196dff;
+  --ratebench-green: #3cb200;
+  --ratebench-amber: #fea00a;
   --ratebench-blue-text: #064fbf;
   --ratebench-blue-on-dark: #78a8ff;
   --ratebench-green-text: #267a00;
 
   display: grid;
   gap: var(--space-8);
-  color: var(--product-ink, #161618);
+  color: #161618;
 }
 
 .hero {
@@ -19,9 +19,9 @@
   align-items: center;
   padding: clamp(var(--space-6), 5vw, var(--space-8));
   overflow: hidden;
-  border: 2px solid var(--product-ink, #161618);
+  border: 2px solid #161618;
   border-radius: var(--radius-md);
-  background: var(--product-surface, #fff);
+  background: #fff;
   box-shadow: var(--shadow-poster);
 }
 
@@ -29,9 +29,11 @@
   position: absolute;
   inset: 0 0 auto;
   height: 0.65rem;
-  background: var(
-    --product-gradient,
-    linear-gradient(90deg, #196dff 0 78%, #3cb200 78% 91%, #fea00a 91%)
+  background: linear-gradient(
+    90deg,
+    #196dff 0 78%,
+    #3cb200 78% 91%,
+    #fea00a 91%
   );
   content: "";
 }
@@ -127,9 +129,9 @@
   align-items: center;
   justify-content: center;
   padding: 0.62rem 0.9rem;
-  border: 1px solid var(--product-ink, #161618);
+  border: 1px solid #161618;
   border-radius: var(--radius-sm);
-  color: var(--product-ink, #161618);
+  color: #161618;
   background: #fff;
   font-weight: 800;
   text-decoration: none;
@@ -141,7 +143,7 @@
 .heroLinks a:hover,
 .heroLinks a:focus-visible {
   color: #fff;
-  background: var(--product-ink, #161618);
+  background: #161618;
 }
 
 .heroLinks .primaryLink {
@@ -151,10 +153,10 @@
 
 .ledger {
   min-width: 0;
-  border: 2px solid var(--product-ink, #161618);
+  border: 2px solid #161618;
   border-radius: var(--radius-sm);
   background: #fff;
-  box-shadow: 0.35rem 0.35rem 0 var(--product-ink, #161618);
+  box-shadow: 0.35rem 0.35rem 0 #161618;
 }
 
 .ledgerHeader {
@@ -286,7 +288,7 @@
   display: grid;
   border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-md);
-  background: var(--product-surface, #fff);
+  background: #fff;
 }
 
 .features {
@@ -353,11 +355,11 @@
   display: grid;
   gap: var(--space-5);
   padding: var(--space-6);
-  border: 2px solid var(--product-ink, #161618);
+  border: 2px solid #161618;
   border-top: 0.55rem solid var(--ratebench-blue);
   border-radius: var(--radius-md);
   color: #fff;
-  background: var(--product-ink, #161618);
+  background: #161618;
   box-shadow: var(--shadow-soft);
 }
 

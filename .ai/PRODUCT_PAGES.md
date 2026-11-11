@@ -13,7 +13,7 @@ The product registry is the source of truth for:
 - support/privacy/data deletion links;
 - store links;
 - product metadata and privacy profile;
-- product presentation mode.
+- page ownership and presentation mode.
 
 Public registry status and customer-facing release stage are separate concerns. A product may use
 the optional `releaseStage: "in-development"` value while remaining `published` so its overview and
@@ -26,20 +26,18 @@ Published products must be complete and pass validation.
 
 Product statuses:
 
-- `published`: public, included in product routes, prerender output, sitemap, and route checks.
+- `published`: public, included in the catalog, build output, sitemap, and route checks.
 - `draft`: not public.
 - `fixture`: development/test-only and not public.
 
 Never let `draft` or `fixture` products render through public product routes.
 
-Public product routes must use `findPublishedProduct()` or an equivalent published-only guard.
+Studio-rendered product routes use `findPublishedLocalProduct()`. Imported sites are staged for
+products selected by `getPublishedStaticProducts()`.
 
-`getPrerenderPaths()` must include:
-
-- static public routes;
-- product routes for `published` products only.
-
-It must not include draft or fixture product paths.
+`getPrerenderPaths()` includes studio pages and studio-rendered published product pages.
+`getPublicPaths()` also includes the declared pages of published imported sites. Use it for the
+sitemap and final build-output checks. Both functions exclude draft and fixture products.
 
 ## Public Product Routes
 
@@ -70,14 +68,33 @@ published product. Keep that index registry-driven with `getPublishedProducts()`
 separate manual list. Its focused test must enumerate the current published registry and assert
 exactly one `/products/:slug/privacy/` link and policy label for every published product.
 
-Terms of Service are an optional product capability. A product with `presentation.terms` gets a
-statically prerendered `/products/:slug/terms/` route and conditional Terms links. Products without
-configured Terms content return `404` at that route.
+A studio-rendered product with `presentation.terms` or an imported product with
+`staticSite.hasTerms` has a public `/products/:slug/terms/` page and conditional Terms links.
+Products without Terms return `404` at that route.
 
 The product overview page should link to privacy, support, and data deletion pages when applicable.
 It should not duplicate full privacy or support content.
 
-## Customization Model
+## Project-Owned Static Sites
+
+Each project owns its source, design system, assets and build. It delivers a complete static export
+with `index.html`, `privacy/index.html` and `support/index.html`. Include `terms/index.html` and
+`data-deletion/index.html` when configured for the product. Use relative URLs for product assets and
+navigation so the export can run on its own and at `/products/:slug/`.
+
+Keyflare keeps the catalog entry and publication status. A `staticSite` entry records the source
+repository, full commit SHA and optional Terms page. Place the finished export in
+`product-sites/<slug>/`. The studio build validates and copies it into its product directory after
+React Router prerenders the studio pages. The final Pages upload contains both sets of pages.
+Studio links into an imported site use document navigation.
+
+Ratebench is maintained in `keyflare/exchange` under `site/`. To update it, build the export from a
+committed Exchange revision with `node site/build.mjs`. Replace the contents of
+`product-sites/ratebench/` with the contents of Exchange's `site/dist/`, update the recorded
+revision, and run `npm run check`. Submit the export and registry revision together so a revert
+restores the matching release. Palette Master uses the studio-rendered model below.
+
+## Studio-Rendered Products
 
 Products support three overview levels:
 

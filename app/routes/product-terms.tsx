@@ -5,12 +5,12 @@ import { PageHeader } from "~/components/PageHeader";
 import { ProductPageFrame } from "~/components/ProductPageFrame";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
 import { productMdxComponents } from "~/content/products/mdxComponents";
-import { findPublishedProduct } from "~/content/products/registry";
-import type { Product } from "~/content/products/types";
+import { findPublishedLocalProduct } from "~/content/products/registry";
+import type { LocalProduct } from "~/content/products/types";
 import { siteConfig } from "~/content/site";
 
 export const meta: Route.MetaFunction = ({ params }) => {
-  const product = findPublishedProduct(params.slug);
+  const product = findPublishedLocalProduct(params.slug);
 
   return [
     {
@@ -26,7 +26,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export function getProductTermsProduct(slug: string) {
-  const product = findPublishedProduct(slug);
+  const product = findPublishedLocalProduct(slug);
 
   if (!product?.presentation.terms) {
     throw new Response("Product terms not found", { status: 404 });
@@ -35,7 +35,7 @@ export function getProductTermsProduct(slug: string) {
   return product;
 }
 
-export function ProductTermsContent({ product }: { product: Product }) {
+export function ProductTermsContent({ product }: { product: LocalProduct }) {
   const terms = product.presentation.terms;
 
   if (!terms) {

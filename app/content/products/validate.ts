@@ -2,6 +2,7 @@ import {
   productCustomOverviewKeys,
   productMdxContentKeys,
   productPageSurfaces,
+  type LocalProduct,
   type Product,
 } from "./types";
 
@@ -81,7 +82,19 @@ export function validateProducts(products: Product[]): string[] {
     }
 
     validateProductTheme(product, errors);
-    validatePresentation(product, errors);
+    if (product.staticSite) {
+      const { repository, revision } = product.staticSite;
+      if (
+        !/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(repository) ||
+        !/^[0-9a-f]{40}$/.test(revision)
+      ) {
+        errors.push(
+          `Published product ${product.slug} must identify the static site's repository and commit SHA`,
+        );
+      }
+    } else {
+      validatePresentation(product, errors);
+    }
   }
 
   return errors;
@@ -118,7 +131,7 @@ function validateProductTheme(product: Product, errors: string[]) {
   }
 }
 
-function validatePresentation(product: Product, errors: string[]) {
+function validatePresentation(product: LocalProduct, errors: string[]) {
   const presentation = product.presentation;
 
   if (!presentation) {

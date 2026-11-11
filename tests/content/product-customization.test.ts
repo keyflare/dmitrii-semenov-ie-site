@@ -11,7 +11,7 @@ import {
   getPublishedProducts,
   products,
 } from "../../app/content/products/registry";
-import type { Product } from "../../app/content/products/types";
+import type { LocalProduct } from "../../app/content/products/types";
 import { getProductDataDeletionProduct } from "../../app/routes/product-data-deletion";
 import {
   getProductOverviewProduct,
@@ -25,10 +25,10 @@ const paletteMasterOverviewSource = readFileSync(
   "utf8",
 );
 
-function getRegistryProduct(slug: string): Product {
+function getRegistryProduct(slug: string): LocalProduct {
   const product = products.find((entry) => entry.slug === slug);
 
-  if (!product) {
+  if (!product || product.staticSite) {
     throw new Error(`Missing test product: ${slug}`);
   }
 
@@ -172,7 +172,7 @@ describe("product customization", () => {
   });
 
   test("renders standard overview with appended MDX content when configured", () => {
-    const product: Product = {
+    const product: LocalProduct = {
       ...getRegistryProduct("palette-master"),
       slug: "palette-master-standard",
       presentation: {

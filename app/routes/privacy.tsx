@@ -60,7 +60,12 @@ export default function PrivacyRoute() {
           <ul>
             {products.map((product) => (
               <li key={product.slug}>
-                <Link to={`/products/${product.slug}/privacy/`}>{product.name} Privacy Policy</Link>
+                <Link
+                  reloadDocument={Boolean(product.staticSite)}
+                  to={`/products/${product.slug}/privacy/`}
+                >
+                  {product.name} Privacy Policy
+                </Link>
               </li>
             ))}
           </ul>

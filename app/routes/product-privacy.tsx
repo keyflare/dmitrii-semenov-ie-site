@@ -5,13 +5,13 @@ import { PageHeader } from "~/components/PageHeader";
 import { ProductPageFrame } from "~/components/ProductPageFrame";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
 import { productMdxComponents } from "~/content/products/mdxComponents";
-import { findPublishedProduct } from "~/content/products/registry";
+import { findPublishedLocalProduct } from "~/content/products/registry";
 import { getPrivacySections } from "~/content/products/privacyBlocks";
-import type { Product } from "~/content/products/types";
+import type { LocalProduct } from "~/content/products/types";
 import { siteConfig } from "~/content/site";
 
 export const meta: Route.MetaFunction = ({ params }) => {
-  const product = findPublishedProduct(params.slug);
+  const product = findPublishedLocalProduct(params.slug);
 
   return [
     {
@@ -27,7 +27,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export function getProductPrivacyProduct(slug: string) {
-  const product = findPublishedProduct(slug);
+  const product = findPublishedLocalProduct(slug);
 
   if (!product) {
     throw new Response("Product not found", { status: 404 });
@@ -36,7 +36,7 @@ export function getProductPrivacyProduct(slug: string) {
   return product;
 }
 
-export function ProductPrivacyContent({ product }: { product: Product }) {
+export function ProductPrivacyContent({ product }: { product: LocalProduct }) {
   const sections = getPrivacySections(product);
   const privacy = product.presentation.privacy;
   const privacyMdx =

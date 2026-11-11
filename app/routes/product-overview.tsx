@@ -6,12 +6,12 @@ import { ProductLinks } from "~/components/ProductLinks";
 import { getCustomProductOverview } from "~/content/products/customOverviewPages";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
 import { productMdxComponents } from "~/content/products/mdxComponents";
-import { findPublishedProduct } from "~/content/products/registry";
-import type { Product } from "~/content/products/types";
+import { findPublishedLocalProduct } from "~/content/products/registry";
+import type { LocalProduct } from "~/content/products/types";
 import { siteConfig } from "~/content/site";
 
 export const meta: Route.MetaFunction = ({ params }) => {
-  const product = findPublishedProduct(params.slug);
+  const product = findPublishedLocalProduct(params.slug);
 
   return [
     {
@@ -24,7 +24,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export function getProductOverviewProduct(slug: string) {
-  const product = findPublishedProduct(slug);
+  const product = findPublishedLocalProduct(slug);
 
   if (!product) {
     throw new Response("Product not found", { status: 404 });
@@ -33,7 +33,7 @@ export function getProductOverviewProduct(slug: string) {
   return product;
 }
 
-export function StandardProductOverview({ product }: { product: Product }) {
+export function StandardProductOverview({ product }: { product: LocalProduct }) {
   return (
     <article className="product-overview">
       <PageHeader
@@ -53,7 +53,7 @@ export function StandardProductOverview({ product }: { product: Product }) {
   );
 }
 
-export function ProductOverviewContent({ product }: { product: Product }) {
+export function ProductOverviewContent({ product }: { product: LocalProduct }) {
   const overview = product.presentation.overview;
   let content;
 

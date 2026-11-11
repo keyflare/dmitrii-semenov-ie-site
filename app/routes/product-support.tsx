@@ -6,12 +6,12 @@ import { PageHeader } from "~/components/PageHeader";
 import { ProductPageFrame } from "~/components/ProductPageFrame";
 import { getProductMdxContent } from "~/content/products/customMdxContent";
 import { productMdxComponents } from "~/content/products/mdxComponents";
-import { findPublishedProduct } from "~/content/products/registry";
-import type { Product } from "~/content/products/types";
+import { findPublishedLocalProduct } from "~/content/products/registry";
+import type { LocalProduct } from "~/content/products/types";
 import { siteConfig } from "~/content/site";
 
 export const meta: Route.MetaFunction = ({ params }) => {
-  const product = findPublishedProduct(params.slug);
+  const product = findPublishedLocalProduct(params.slug);
 
   return [
     {
@@ -24,7 +24,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export function getProductSupportProduct(slug: string) {
-  const product = findPublishedProduct(slug);
+  const product = findPublishedLocalProduct(slug);
 
   if (!product) {
     throw new Response("Product not found", { status: 404 });
@@ -33,7 +33,7 @@ export function getProductSupportProduct(slug: string) {
   return product;
 }
 
-export function ProductSupportContent({ product }: { product: Product }) {
+export function ProductSupportContent({ product }: { product: LocalProduct }) {
   const support = product.presentation.support;
 
   return (

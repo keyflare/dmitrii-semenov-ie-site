@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import type { Product, ProductPlatform } from "~/content/products/types";
+import { hasProductTerms, type Product, type ProductPlatform } from "~/content/products/types";
 import { PosterButton } from "./PosterButton";
 import styles from "./ProductCard.module.css";
 
@@ -34,6 +34,7 @@ export function ProductCard({ product }: { product: Product }) {
   const feedbackUrl = `mailto:${product.supportEmail}?subject=${encodeURIComponent(
     `${product.name} feedback`,
   )}`;
+  const reloadDocument = Boolean(product.staticSite);
   const isInDevelopment = product.releaseStage === "in-development";
   const storeLinks = isInDevelopment
     ? []
@@ -63,6 +64,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className={styles.cardShell}>
       <Link
+        reloadDocument={reloadDocument}
         className={styles.overviewLink}
         to={`/products/${product.slug}/`}
         aria-label={`Open ${product.name}`}
@@ -77,19 +79,35 @@ export function ProductCard({ product }: { product: Product }) {
             <PosterButton href={feedbackUrl} size="compact" tone="primary">
               Send feedback
             </PosterButton>
-            <PosterButton to={`/products/${product.slug}/privacy/`} size="compact">
+            <PosterButton
+              reloadDocument={reloadDocument}
+              to={`/products/${product.slug}/privacy/`}
+              size="compact"
+            >
               Privacy
             </PosterButton>
-            {product.presentation.terms ? (
-              <PosterButton to={`/products/${product.slug}/terms/`} size="compact">
+            {hasProductTerms(product) ? (
+              <PosterButton
+                reloadDocument={reloadDocument}
+                to={`/products/${product.slug}/terms/`}
+                size="compact"
+              >
                 Terms
               </PosterButton>
             ) : null}
-            <PosterButton to={`/products/${product.slug}/support/`} size="compact">
+            <PosterButton
+              reloadDocument={reloadDocument}
+              to={`/products/${product.slug}/support/`}
+              size="compact"
+            >
               Support
             </PosterButton>
             {product.privacyProfile.requiresDataDeletionPage ? (
-              <PosterButton to={`/products/${product.slug}/data-deletion/`} size="compact">
+              <PosterButton
+                reloadDocument={reloadDocument}
+                to={`/products/${product.slug}/data-deletion/`}
+                size="compact"
+              >
                 Data deletion
               </PosterButton>
             ) : null}
