@@ -1,5 +1,5 @@
 import { access } from "node:fs/promises";
-import { getPrerenderPaths } from "../app/content/products/registry";
+import { getPublicPaths } from "../app/content/products/registry";
 
 function routeToBuildFile(route: string) {
   if (route === "/") {
@@ -10,7 +10,7 @@ function routeToBuildFile(route: string) {
 }
 
 const requiredFiles = [
-  ...getPrerenderPaths().map(routeToBuildFile),
+  ...getPublicPaths().map(routeToBuildFile),
   "build/client/404.html",
   "build/client/CNAME",
   "build/client/app-ads.txt",

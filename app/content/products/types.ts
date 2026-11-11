@@ -17,7 +17,7 @@ export type PrivacyProfile = {
   thirdPartyServices: string[];
 };
 
-export const productCustomOverviewKeys = ["palette-master", "ratebench"] as const;
+export const productCustomOverviewKeys = ["palette-master"] as const;
 
 export type ProductCustomOverviewKey = (typeof productCustomOverviewKeys)[number];
 
@@ -25,9 +25,6 @@ export const productMdxContentKeys = [
   "palette-master-overview",
   "palette-master-support",
   "palette-master-privacy",
-  "ratebench-support",
-  "ratebench-privacy",
-  "ratebench-terms",
 ] as const;
 
 export type ProductMdxContentKey = (typeof productMdxContentKeys)[number];
@@ -74,7 +71,7 @@ export type ProductTheme = {
   pageSurface?: ProductPageSurface;
 };
 
-export type Product = {
+type ProductMetadata = {
   status: ProductStatus;
   slug: string;
   name: string;
@@ -85,7 +82,24 @@ export type Product = {
   supportEmail: string;
   lastUpdated: string;
   storeLinks: Partial<Record<ProductPlatform, string>>;
-  presentation: ProductPresentation;
   theme?: ProductTheme;
   privacyProfile: PrivacyProfile;
 };
+
+export type LocalProduct = ProductMetadata & {
+  presentation: ProductPresentation;
+  staticSite?: never;
+};
+
+export type StaticProduct = ProductMetadata & {
+  staticSite: {
+    hasTerms?: boolean;
+  };
+  presentation?: never;
+};
+
+export type Product = LocalProduct | StaticProduct;
+
+export function hasProductTerms(product: Product): boolean {
+  return Boolean(product.staticSite?.hasTerms || product.presentation?.terms);
+}

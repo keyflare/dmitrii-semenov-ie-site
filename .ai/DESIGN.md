@@ -1,5 +1,8 @@
 # Design Guidance
 
+This guidance applies to the studio and the product pages it renders. Project-owned static sites
+define and ship their own design systems, layouts, fonts and assets.
+
 ## Direction
 
 The approved direction is **Studio System + Themed Product Chassis**.

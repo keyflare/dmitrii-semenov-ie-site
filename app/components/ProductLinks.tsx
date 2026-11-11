@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import type { Product, ProductPlatform } from "~/content/products/types";
+import { hasProductTerms, type Product, type ProductPlatform } from "~/content/products/types";
 import styles from "./ProductLinks.module.css";
 
 const platformLabels: Record<ProductPlatform, string> = {
@@ -12,6 +12,7 @@ const platformLabels: Record<ProductPlatform, string> = {
 };
 
 export function ProductLinks({ product }: { product: Product }) {
+  const reloadDocument = Boolean(product.staticSite);
   const isInDevelopment = product.releaseStage === "in-development";
   const storeLinks = isInDevelopment
     ? []
@@ -30,16 +31,28 @@ export function ProductLinks({ product }: { product: Product }) {
 
   return (
     <nav className={styles.links} aria-label={`${product.name} links`}>
-      <Link className={styles.primaryLink} to={`/products/${product.slug}/`}>
+      <Link
+        reloadDocument={reloadDocument}
+        className={styles.primaryLink}
+        to={`/products/${product.slug}/`}
+      >
         Overview
       </Link>
-      <Link to={`/products/${product.slug}/privacy/`}>Privacy</Link>
-      {product.presentation.terms ? (
-        <Link to={`/products/${product.slug}/terms/`}>Terms</Link>
+      <Link reloadDocument={reloadDocument} to={`/products/${product.slug}/privacy/`}>
+        Privacy
+      </Link>
+      {hasProductTerms(product) ? (
+        <Link reloadDocument={reloadDocument} to={`/products/${product.slug}/terms/`}>
+          Terms
+        </Link>
       ) : null}
-      <Link to={`/products/${product.slug}/support/`}>Support</Link>
+      <Link reloadDocument={reloadDocument} to={`/products/${product.slug}/support/`}>
+        Support
+      </Link>
       {product.privacyProfile.requiresDataDeletionPage ? (
-        <Link to={`/products/${product.slug}/data-deletion/`}>Data deletion</Link>
+        <Link reloadDocument={reloadDocument} to={`/products/${product.slug}/data-deletion/`}>
+          Data deletion
+        </Link>
       ) : null}
       {storeLinks.map(([platform, href]) => (
         <a key={platform} href={href} rel="noreferrer" target="_blank">

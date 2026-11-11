@@ -2,11 +2,11 @@ import type { Route } from "./+types/product-data-deletion";
 import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
 import { ProductPageFrame } from "~/components/ProductPageFrame";
-import { findPublishedProduct } from "~/content/products/registry";
+import { findPublishedLocalProduct } from "~/content/products/registry";
 import { siteConfig } from "~/content/site";
 
 export const meta: Route.MetaFunction = ({ params }) => {
-  const product = findPublishedProduct(params.slug);
+  const product = findPublishedLocalProduct(params.slug);
 
   return [
     {
@@ -22,7 +22,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export function getProductDataDeletionProduct(slug: string) {
-  const product = findPublishedProduct(slug);
+  const product = findPublishedLocalProduct(slug);
 
   if (!product || !product.privacyProfile.requiresDataDeletionPage) {
     throw new Response("Data deletion page not found", { status: 404 });

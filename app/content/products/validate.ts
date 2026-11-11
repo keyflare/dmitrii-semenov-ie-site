@@ -2,6 +2,7 @@ import {
   productCustomOverviewKeys,
   productMdxContentKeys,
   productPageSurfaces,
+  type LocalProduct,
   type Product,
 } from "./types";
 
@@ -81,7 +82,9 @@ export function validateProducts(products: Product[]): string[] {
     }
 
     validateProductTheme(product, errors);
-    validatePresentation(product, errors);
+    if (!product.staticSite) {
+      validatePresentation(product, errors);
+    }
   }
 
   return errors;
@@ -118,7 +121,7 @@ function validateProductTheme(product: Product, errors: string[]) {
   }
 }
 
-function validatePresentation(product: Product, errors: string[]) {
+function validatePresentation(product: LocalProduct, errors: string[]) {
   const presentation = product.presentation;
 
   if (!presentation) {

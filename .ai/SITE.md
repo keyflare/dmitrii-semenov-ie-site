@@ -34,7 +34,8 @@ configured in `app/content/site.ts`.
 The website is a fully static React application:
 
 - React + TypeScript.
-- React Router framework mode with static prerendering.
+- React Router framework mode with static prerendering for studio-rendered pages.
+- Project-owned static exports copied into their product paths during the build.
 - Vite-based build tooling.
 - CSS Modules and global CSS design tokens.
 - GitHub Pages hosting.
@@ -50,7 +51,8 @@ Do not add:
 - hash-based public URLs;
 - client-only routing for store-facing or compliance-facing pages.
 
-All source content should remain versioned in git.
+Source content is versioned in git in the repository that owns it. The studio records the source
+tag and exact export commit in `product-sites.json`.
 
 ## Public URL Model
 
@@ -80,7 +82,7 @@ content until localization is explicitly implemented.
 
 ## Metadata And Static Output
 
-`robots.txt` and `sitemap.xml` are generated from site config and prerender paths.
+`robots.txt` and `sitemap.xml` are generated from site config and the complete public path list.
 
 Use:
 

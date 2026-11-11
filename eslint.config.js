@@ -15,6 +15,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["build/**", ".react-router/**", "node_modules/**"],
+    ignores: ["build/**", ".react-router/**", "node_modules/**", ".product-sites/**"],
   },
 );

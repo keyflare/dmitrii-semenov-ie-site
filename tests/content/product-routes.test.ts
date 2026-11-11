@@ -68,7 +68,7 @@ describe("product route paths", () => {
   test("prerenders Terms only when a published product configures them", () => {
     const paletteMaster = products.find((product) => product.slug === "palette-master");
 
-    if (!paletteMaster) {
+    if (!paletteMaster || paletteMaster.staticSite) {
       throw new Error("Missing Palette Master test product");
     }
 

@@ -1,4 +1,4 @@
-import type { Product } from "./types";
+import { hasProductTerms, type LocalProduct, type Product, type StaticProduct } from "./types";
 
 const staticPrerenderPaths = ["/", "/products", "/contact", "/privacy", "/legal"];
 
@@ -80,21 +80,8 @@ export const products: Product[] = [
     supportEmail: "support@keyflare.studio",
     lastUpdated: "2026-07-26",
     storeLinks: {},
-    presentation: {
-      overview: { mode: "custom", componentKey: "ratebench" },
-      support: { mode: "mdx", contentKey: "ratebench-support" },
-      privacy: { mode: "mdx", contentKey: "ratebench-privacy" },
-      terms: { mode: "mdx", contentKey: "ratebench-terms" },
-    },
-    theme: {
-      accentPrimary: "#196dff",
-      accentSecondary: "#3cb200",
-      accentTertiary: "#fea00a",
-      ink: "#161618",
-      surface: "#ffffff",
-      gradient: "linear-gradient(90deg, #196dff 0 78%, #3cb200 78% 91%, #fea00a 91%)",
-      visualVolume: "calm",
-      pageSurface: "ledger",
+    staticSite: {
+      hasTerms: true,
     },
     privacyProfile: {
       usesAdMob: false,
@@ -135,24 +122,38 @@ export function findRoutableProduct(slug: string) {
   return getRoutableProducts().find((product) => product.slug === slug);
 }
 
+export function findPublishedLocalProduct(slug: string): LocalProduct | undefined {
+  const product = findPublishedProduct(slug);
+  return product?.staticSite ? undefined : product;
+}
+
+export function getPublishedStaticProducts(registry = products): StaticProduct[] {
+  return registry.filter(
+    (product): product is StaticProduct =>
+      product.status === "published" && Boolean(product.staticSite),
+  );
+}
+
+export function getProductPaths(product: Product): string[] {
+  const base = `/products/${product.slug}`;
+  const paths = [base, `${base}/privacy`, `${base}/support`];
+
+  if (hasProductTerms(product)) {
+    paths.push(`${base}/terms`);
+  }
+
+  if (product.privacyProfile.requiresDataDeletionPage) {
+    paths.push(`${base}/data-deletion`);
+  }
+
+  return paths;
+}
+
 export function getPrerenderPaths() {
-  const productPaths = getPublishedProducts().flatMap((product) => {
-    const paths = [
-      `/products/${product.slug}`,
-      `/products/${product.slug}/privacy`,
-      `/products/${product.slug}/support`,
-    ];
+  const localProducts = getPublishedProducts().filter((product) => !product.staticSite);
+  return [...staticPrerenderPaths, ...localProducts.flatMap(getProductPaths)];
+}
 
-    if (product.presentation.terms) {
-      paths.push(`/products/${product.slug}/terms`);
-    }
-
-    if (product.privacyProfile.requiresDataDeletionPage) {
-      paths.push(`/products/${product.slug}/data-deletion`);
-    }
-
-    return paths;
-  });
-
-  return [...staticPrerenderPaths, ...productPaths];
+export function getPublicPaths() {
+  return [...staticPrerenderPaths, ...getPublishedProducts().flatMap(getProductPaths)];
 }

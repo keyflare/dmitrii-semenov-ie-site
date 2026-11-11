@@ -1,0 +1,8 @@
+{
+  "ratebench": {
+    "repository": "keyflare/exchange",
+    "tag": "site-v1.0.1",
+    "commit": "3f5a00b11b4acafc88db261fbbf36d0742f31765",
+    "directory": "site/public"
+  }
+}

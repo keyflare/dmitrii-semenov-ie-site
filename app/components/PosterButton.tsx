@@ -7,6 +7,7 @@ type PosterButtonProps = {
   children: ReactNode;
   className?: string;
   href?: string;
+  reloadDocument?: boolean;
   rel?: string;
   size?: "compact" | "hero";
   target?: string;
@@ -19,6 +20,7 @@ export function PosterButton({
   children,
   className,
   href,
+  reloadDocument,
   rel,
   size = "compact",
   target,
@@ -38,7 +40,7 @@ export function PosterButton({
 
   if (to) {
     return (
-      <Link className={classes} to={to} aria-label={ariaLabel}>
+      <Link className={classes} to={to} reloadDocument={reloadDocument} aria-label={ariaLabel}>
         {children}
       </Link>
     );

@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { siteConfig } from "../app/content/site";
-import { getPrerenderPaths } from "../app/content/products/registry";
+import { getPublicPaths } from "../app/content/products/registry";
 
 const publicDir = new URL("../public/", import.meta.url);
 
@@ -44,7 +44,7 @@ export async function writeStaticMetadata() {
 
   await writeFile(
     new URL("sitemap.xml", publicDir),
-    buildSitemapXml(siteConfig.canonicalOrigin, getPrerenderPaths()),
+    buildSitemapXml(siteConfig.canonicalOrigin, getPublicPaths()),
   );
 }
 
