@@ -17,7 +17,7 @@ const run = promisify(execFile);
 
 export async function fetchProductSite(
   remote: string,
-  { tag, commit }: Pick<ProductSiteSource, "tag" | "commit">,
+  { tag, commit, directory }: Omit<ProductSiteSource, "repository">,
   output: string,
 ) {
   const destination = resolve(output);
@@ -45,12 +45,13 @@ export async function fetchProductSite(
       return;
     }
 
-    const entries = (await git("ls-tree", "-r", "-z", actual)).stdout.split("\0");
+    const tree = directory ? `${actual}:${directory}` : actual;
+    const entries = (await git("ls-tree", "-r", "-z", tree)).stdout.split("\0");
     if (entries.some((entry) => entry && !/^100(?:644|755) blob /.test(entry))) {
       throw new Error(`Tag ${tag} contains entries other than regular files.`);
     }
 
-    await git("archive", "--format=tar", `--output=${archive}`, actual);
+    await git("archive", "--format=tar", `--output=${archive}`, tree);
     await mkdir(exportDirectory);
     await run("tar", ["-xf", archive, "-C", exportDirectory]);
     try {

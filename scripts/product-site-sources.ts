@@ -1,14 +1,22 @@
+import { createHash } from "node:crypto";
 import { join } from "node:path";
 import sources from "../product-sites.json";
 import { getPublishedStaticProducts } from "../app/content/products/registry";
 import type { Product } from "../app/content/products/types";
 
-export type ProductSiteSource = { repository: string; tag: string; commit: string };
+export type ProductSiteSource = {
+  repository: string;
+  tag: string;
+  commit: string;
+  directory?: string;
+};
 export const productSiteSources: Record<string, ProductSiteSource> = sources;
 export const productSiteCache = ".product-sites";
 
 export function getProductSiteDirectory(cache: string, slug: string) {
-  return join(cache, slug, productSiteSources[slug].commit);
+  const { commit, directory } = productSiteSources[slug];
+  const tree = directory ? createHash("sha256").update(directory).digest("hex") : "root";
+  return join(cache, slug, commit, tree);
 }
 
 export function validateProductSiteSources(registry: Product[]) {
@@ -32,6 +40,13 @@ export function validateProductSiteSources(registry: Product[]) {
       errors.push(
         `Product site source ${slug} must specify a GitHub owner/repository, tag and full commit SHA.`,
       );
+    } else if (
+      source.directory !== undefined &&
+      (typeof source.directory !== "string" ||
+        source.directory.includes("\\") ||
+        source.directory.split("/").some((part) => part === "" || part === "." || part === ".."))
+    ) {
+      errors.push(`Product site source ${slug} needs a repository-relative directory.`);
     }
   }
 

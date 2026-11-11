@@ -88,7 +88,7 @@ describe("Ratebench product", () => {
   });
 
   test("pins the Exchange website release", () => {
-    expect(productSiteSources.ratebench).toEqual({
+    expect(productSiteSources.ratebench).toMatchObject({
       repository: "keyflare/exchange",
       tag: expect.stringMatching(/^site-v/),
       commit: expect.stringMatching(/^[0-9a-f]{40}$/),

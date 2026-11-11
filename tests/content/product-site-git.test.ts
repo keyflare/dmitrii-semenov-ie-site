@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { afterEach, expect, test } from "vitest";
@@ -34,7 +34,7 @@ async function fixture() {
 
   await writeFile(join(root, "index.html"), "Unreleased change");
   git("commit", "--quiet", "-am", "Unreleased change");
-  return { root, commit, output: join(root, "export") };
+  return { root, commit, output: join(root, "export"), git };
 }
 
 test("fetches the exact annotated tag and exports only its files", async () => {
@@ -53,4 +53,23 @@ test("rejects a tag whose commit differs from the pinned commit", async () => {
     fetchProductSite(root, { tag: "site-v1.0.0", commit: "a".repeat(40) }, output),
   ).rejects.toThrow("site-v1.0.0");
   await expect(readFile(join(output, "index.html"))).rejects.toMatchObject({ code: "ENOENT" });
+});
+
+test("exports the website subtree from a monorepo release tag", async () => {
+  const { root, output, git } = await fixture();
+  const directory = "site/public";
+  await mkdir(join(root, directory), { recursive: true });
+  await writeFile(join(root, directory, "index.html"), "Website stored on trunk");
+  await writeFile(join(root, "mobile.txt"), "Mobile application source");
+  git("add", directory, "mobile.txt");
+  git("commit", "--quiet", "-m", "Add website directory to trunk");
+  const commit = git("rev-parse", "HEAD");
+  git("tag", "-a", "site-v1.0.1", "-m", "Website release from trunk");
+
+  await fetchProductSite(root, { tag: "site-v1.0.1", commit, directory }, output);
+
+  await expect(readFile(join(output, "index.html"), "utf8")).resolves.toBe(
+    "Website stored on trunk",
+  );
+  await expect(readFile(join(output, "mobile.txt"))).rejects.toMatchObject({ code: "ENOENT" });
 });

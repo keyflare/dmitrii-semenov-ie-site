@@ -52,7 +52,8 @@ Merging to `main` is the release action.
 ## Product website releases
 
 Each published project-owned website is pinned in `product-sites.json` by GitHub repository,
-release tag, and the tag's dereferenced commit SHA. See
+release tag, and the tag's dereferenced commit SHA. The optional `directory` selects the
+publishable subtree inside a tagged commit. See
 [product page guidance](.ai/PRODUCT_PAGES.md#project-owned-static-sites) for the static export contract.
 
 The deploy workflow reads private project repositories using the `PRODUCT_SITES_READ_TOKEN`

@@ -84,17 +84,20 @@ navigation so the export can run on its own and at `/products/:slug/`.
 
 Keyflare keeps the catalog entry and publication status. For every published product with a
 `staticSite` entry, `product-sites.json` identifies the GitHub `owner/repository`, tag, and full
-SHA of the commit pointed to by the tag. The root of the tagged tree holds the finished export.
+SHA of the commit pointed to by the tag. Set `directory` to the path of the finished export in
+that commit, or omit it for releases that store the export at the root.
 
 `npm run sync:product-sites` fetches each published product's selected tag and checks its commit
 before extracting the tree to the generated `.product-sites/` directory. Dev and build both run
 this step. The studio build validates the expected HTML and copies the export into its product
 directory. Studio links into an imported site use document navigation.
 
-Ratebench is maintained in `keyflare/exchange` under `site/`. Create a site release with
-`node site/release.mjs site-v1.0.0` (use the next version), push the tag, and update the tag and
-export commit in `product-sites.json`. Run `npm run check` and submit the Keyflare change in a PR.
-To roll back, revert the config change. Palette Master uses the studio-rendered model below.
+Ratebench is maintained in `keyflare/exchange` under `site/public/`. After the changes are on
+Exchange's `main`, run `node site/release.mjs site-v1.0.1` (use the next version) and push the tag.
+Select the tag and its Exchange commit in `product-sites.json`. When upgrading from the original
+root export `site-v1.0.0`, also set `"directory": "site/public"`. Run `npm run check` and submit
+the Keyflare change in a PR. To roll back, revert the config change. Palette Master uses the
+studio-rendered model below.
 
 ## Studio-Rendered Products
 
