@@ -1,5 +1,3 @@
-import { existsSync, readFileSync } from "node:fs";
-import { JSDOM } from "jsdom";
 import { createElement, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
@@ -11,9 +9,7 @@ import { getProductOverviewProduct } from "../../app/routes/product-overview";
 import { getProductPrivacyProduct } from "../../app/routes/product-privacy";
 import { getProductSupportProduct } from "../../app/routes/product-support";
 import { getProductTermsProduct } from "../../app/routes/product-terms";
-
-const exportRoot = new URL("../../product-sites/ratebench/", import.meta.url);
-const publicUrl = "https://www.keyflare.studio/products/ratebench/";
+import { productSiteSources } from "../../scripts/product-site-sources";
 
 function getRatebench() {
   const ratebench = findPublishedProduct("ratebench");
@@ -38,8 +34,6 @@ describe("Ratebench product", () => {
       supportEmail: "support@keyflare.studio",
       storeLinks: {},
       staticSite: {
-        repository: "keyflare/exchange",
-        revision: expect.stringMatching(/^[0-9a-f]{40}$/),
         hasTerms: true,
       },
       privacyProfile: {
@@ -93,50 +87,11 @@ describe("Ratebench product", () => {
     }
   });
 
-  test.each([
-    ["", "Ratebench", ["Compare every step.", "USD → EUR → USDT", "Reference, not advice"]],
-    [
-      "privacy/",
-      "Ratebench Privacy Policy",
-      ["Information stored on your device", "AppMetrica", "payment card", "July 26, 2026"],
-    ],
-    [
-      "terms/",
-      "Ratebench Terms of Service",
-      ["Important financial disclaimer", "Subscriptions and billing", "July 26, 2026"],
-    ],
-    ["support/", "Ratebench Support", ["Restore purchases", "In development"]],
-  ])("ships a complete standalone HTML page at %s", (path, heading, content) => {
-    const url = new URL(path, publicUrl);
-    const html = readFileSync(new URL(`${path}index.html`, exportRoot), "utf8");
-    const dom = new JSDOM(html, { url: url.href });
-    const document = dom.window.document;
-
-    expect(document.querySelector("link[rel=canonical]")?.getAttribute("href")).toBe(url.href);
-    expect([...document.querySelectorAll("h1")].map((element) => element.textContent)).toEqual([
-      heading,
-    ]);
-    for (const text of content) {
-      expect(document.querySelector("main")?.textContent).toContain(text);
-    }
-    expect(document.scripts).toHaveLength(0);
-    expect(html).not.toMatch(/\[(?:[A-Z][A-Z _-]+)\]|Drafting note/);
-
-    for (const element of document.querySelectorAll(
-      "link[rel=stylesheet], link[rel=icon], img, a",
-    )) {
-      const target = new URL(element.getAttribute("src") ?? element.getAttribute("href")!, url);
-      if (element.tagName === "A" && !target.href.startsWith(publicUrl)) {
-        continue;
-      }
-      expect(target.href.startsWith(publicUrl)).toBe(true);
-      const relativePath = target.href.slice(publicUrl.length);
-      const file =
-        relativePath === "" || relativePath.endsWith("/")
-          ? `${relativePath}index.html`
-          : relativePath;
-      expect(existsSync(new URL(file, exportRoot))).toBe(true);
-    }
-    dom.window.close();
+  test("pins the Exchange website release", () => {
+    expect(productSiteSources.ratebench).toEqual({
+      repository: "keyflare/exchange",
+      tag: expect.stringMatching(/^site-v/),
+      commit: expect.stringMatching(/^[0-9a-f]{40}$/),
+    });
   });
 });

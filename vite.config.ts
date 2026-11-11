@@ -5,6 +5,7 @@ import sirv from "sirv";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig, type Plugin } from "vite";
 import { getProductPaths, getPublishedStaticProducts } from "./app/content/products/registry";
+import { getProductSiteDirectory, productSiteCache } from "./scripts/product-site-sources";
 
 function staticProductSites(): Plugin {
   return {
@@ -13,7 +14,10 @@ function staticProductSites(): Plugin {
       for (const product of getPublishedStaticProducts()) {
         const mount = `/products/${product.slug}`;
         const pagePaths = new Set(getProductPaths(product));
-        const directory = resolve(server.config.root, "product-sites", product.slug);
+        const directory = getProductSiteDirectory(
+          resolve(server.config.root, productSiteCache),
+          product.slug,
+        );
         const serveSite = sirv(directory, { dev: true });
 
         server.middlewares.use(mount, (request, response, next) => {

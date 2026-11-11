@@ -81,8 +81,6 @@ export const products: Product[] = [
     lastUpdated: "2026-07-26",
     storeLinks: {},
     staticSite: {
-      repository: "keyflare/exchange",
-      revision: "30f8cfd217182a36a2e3e02700fe34f1953fddec",
       hasTerms: true,
     },
     privacyProfile: {

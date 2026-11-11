@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { afterEach, describe, expect, test } from "vitest";
 import { products } from "../../app/content/products/registry";
+import { getProductSiteDirectory } from "../../scripts/product-site-sources";
 import { stageProductSites } from "../../scripts/stage-product-sites";
 
 const tempDirectories: string[] = [];
@@ -22,7 +23,7 @@ async function prepareExport(files = pages) {
   const output = join(directory, "output");
 
   for (const file of files) {
-    const path = join(source, "ratebench", file);
+    const path = join(getProductSiteDirectory(source, "ratebench"), file);
     await mkdir(dirname(path), { recursive: true });
     await writeFile(path, file);
   }

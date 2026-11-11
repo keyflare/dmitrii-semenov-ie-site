@@ -52,7 +52,7 @@ Do not add:
 - client-only routing for store-facing or compliance-facing pages.
 
 Source content is versioned in git in the repository that owns it. The studio records the source
-revision alongside each imported export.
+tag and exact export commit in `product-sites.json`.
 
 ## Public URL Model
 

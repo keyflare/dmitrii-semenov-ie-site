@@ -17,6 +17,8 @@ concurrency:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
+    environment: github-pages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +27,16 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run check
+      - name: Check and build the studio with tagged product sites
+        env:
+          GH_TOKEN: ${{ secrets.PRODUCT_SITES_READ_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Set PRODUCT_SITES_READ_TOKEN in the github-pages environment."
+            exit 1
+          fi
+          gh auth setup-git --hostname github.com
+          npm run check
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

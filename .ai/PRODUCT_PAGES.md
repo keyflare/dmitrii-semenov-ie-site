@@ -82,17 +82,19 @@ with `index.html`, `privacy/index.html` and `support/index.html`. Include `terms
 `data-deletion/index.html` when configured for the product. Use relative URLs for product assets and
 navigation so the export can run on its own and at `/products/:slug/`.
 
-Keyflare keeps the catalog entry and publication status. A `staticSite` entry records the source
-repository, full commit SHA and optional Terms page. Place the finished export in
-`product-sites/<slug>/`. The studio build validates and copies it into its product directory after
-React Router prerenders the studio pages. The final Pages upload contains both sets of pages.
-Studio links into an imported site use document navigation.
+Keyflare keeps the catalog entry and publication status. For every published product with a
+`staticSite` entry, `product-sites.json` identifies the GitHub `owner/repository`, tag, and full
+SHA of the commit pointed to by the tag. The root of the tagged tree holds the finished export.
 
-Ratebench is maintained in `keyflare/exchange` under `site/`. To update it, build the export from a
-committed Exchange revision with `node site/build.mjs`. Replace the contents of
-`product-sites/ratebench/` with the contents of Exchange's `site/dist/`, update the recorded
-revision, and run `npm run check`. Submit the export and registry revision together so a revert
-restores the matching release. Palette Master uses the studio-rendered model below.
+`npm run sync:product-sites` fetches each published product's selected tag and checks its commit
+before extracting the tree to the generated `.product-sites/` directory. Dev and build both run
+this step. The studio build validates the expected HTML and copies the export into its product
+directory. Studio links into an imported site use document navigation.
+
+Ratebench is maintained in `keyflare/exchange` under `site/`. Create a site release with
+`node site/release.mjs site-v1.0.0` (use the next version), push the tag, and update the tag and
+export commit in `product-sites.json`. Run `npm run check` and submit the Keyflare change in a PR.
+To roll back, revert the config change. Palette Master uses the studio-rendered model below.
 
 ## Studio-Rendered Products
 

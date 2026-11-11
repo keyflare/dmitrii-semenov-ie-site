@@ -93,8 +93,6 @@ export type LocalProduct = ProductMetadata & {
 
 export type StaticProduct = ProductMetadata & {
   staticSite: {
-    repository: string;
-    revision: string;
     hasTerms?: boolean;
   };
   presentation?: never;

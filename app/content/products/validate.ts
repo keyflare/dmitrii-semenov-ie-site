@@ -82,17 +82,7 @@ export function validateProducts(products: Product[]): string[] {
     }
 
     validateProductTheme(product, errors);
-    if (product.staticSite) {
-      const { repository, revision } = product.staticSite;
-      if (
-        !/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(repository) ||
-        !/^[0-9a-f]{40}$/.test(revision)
-      ) {
-        errors.push(
-          `Published product ${product.slug} must identify the static site's repository and commit SHA`,
-        );
-      }
-    } else {
+    if (!product.staticSite) {
       validatePresentation(product, errors);
     }
   }

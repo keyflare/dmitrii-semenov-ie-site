@@ -1,7 +1,9 @@
 import { products } from "../app/content/products/registry";
 import { validateProducts } from "../app/content/products/validate";
 
-const errors = validateProducts(products);
+import { validateProductSiteSources } from "./product-site-sources";
+
+const errors = [...validateProducts(products), ...validateProductSiteSources(products)];
 
 if (errors.length > 0) {
   console.error("Content validation failed:");

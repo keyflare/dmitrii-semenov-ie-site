@@ -8,6 +8,7 @@ import {
   products,
 } from "../app/content/products/registry";
 import type { Product, StaticProduct } from "../app/content/products/types";
+import { getProductSiteDirectory, productSiteCache } from "./product-site-sources";
 
 async function listFiles(root: string, directory = ""): Promise<string[]> {
   const entries = await readdir(join(root, directory), { withFileTypes: true });
@@ -57,7 +58,7 @@ export async function stageProductSites(
   buildRoot: string,
 ) {
   for (const product of getPublishedStaticProducts(registry)) {
-    const source = join(sourceRoot, product.slug);
+    const source = getProductSiteDirectory(sourceRoot, product.slug);
     const destination = join(buildRoot, "products", product.slug);
 
     await validateExport(product, source);
@@ -71,6 +72,6 @@ export async function stageProductSites(
 
 const entrypoint = process.argv[1];
 if (entrypoint && import.meta.url === pathToFileURL(entrypoint).href) {
-  await stageProductSites(products, "product-sites", "build/client");
+  await stageProductSites(products, productSiteCache, "build/client");
   console.log("Staged published static product sites.");
 }
