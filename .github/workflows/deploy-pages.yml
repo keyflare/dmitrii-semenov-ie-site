@@ -30,12 +30,24 @@ jobs:
       - name: Check and build the studio with tagged product sites
         env:
           GH_TOKEN: ${{ secrets.PRODUCT_SITES_READ_TOKEN }}
+          EXCHANGE_SITE_READ_KEY: ${{ secrets.EXCHANGE_SITE_READ_KEY }}
         run: |
-          if [ -z "$GH_TOKEN" ]; then
-            echo "::error::Set PRODUCT_SITES_READ_TOKEN in the github-pages environment."
+          if [ -n "$GH_TOKEN" ]; then
+            gh auth setup-git --hostname github.com
+          elif [ -n "$EXCHANGE_SITE_READ_KEY" ]; then
+            key_dir=$(mktemp -d "$RUNNER_TEMP/keyflare-site.XXXXXX")
+            trap 'rm -- "$key_dir/key" "$key_dir/known_hosts" && rmdir -- "$key_dir"' EXIT
+            (umask 077; printf '%s\n' "$EXCHANGE_SITE_READ_KEY" > "$key_dir/key")
+            printf '%s\n' 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > "$key_dir/known_hosts"
+            export GIT_SSH_COMMAND="ssh -F /dev/null -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=\"$key_dir/known_hosts\" -i \"$key_dir/key\""
+            export GIT_CONFIG_COUNT=1
+            export GIT_CONFIG_KEY_0=url.ssh://git@github.com/keyflare/exchange.git.insteadOf
+            export GIT_CONFIG_VALUE_0=https://github.com/keyflare/exchange.git
+          else
+            echo "::error::Set EXCHANGE_SITE_READ_KEY or PRODUCT_SITES_READ_TOKEN in the github-pages environment."
             exit 1
           fi
-          gh auth setup-git --hostname github.com
+          unset EXCHANGE_SITE_READ_KEY
           npm run check
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4

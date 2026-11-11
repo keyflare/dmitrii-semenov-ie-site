@@ -56,9 +56,10 @@ release tag, and the tag's dereferenced commit SHA. The optional `directory` sel
 publishable subtree inside a tagged commit. See
 [product page guidance](.ai/PRODUCT_PAGES.md#project-owned-static-sites) for the static export contract.
 
-The deploy workflow reads private project repositories using the `PRODUCT_SITES_READ_TOKEN`
-secret in the `github-pages` environment. Create a fine-grained token for the `keyflare` account,
-select the private project repositories, and grant repository **Contents: Read-only**. The
+The deploy workflow uses `EXCHANGE_SITE_READ_KEY` in the `github-pages` environment to read
+Exchange over SSH. The matching deploy key on `keyflare/exchange` grants read-only access. For
+multiple private project repositories, the workflow also accepts `PRODUCT_SITES_READ_TOKEN`, a
+fine-grained token scoped to the selected repositories with read-only Contents access. The
 `github-pages` environment grants access on `main`.
 
 Branch and PR checks run `npm run check:code`, which includes Git import tests with local fixture
