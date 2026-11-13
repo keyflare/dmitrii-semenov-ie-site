@@ -102,6 +102,29 @@ export const products: Product[] = [
       ],
     },
   },
+  {
+    status: "draft",
+    slug: "wgportal",
+    name: "WG Portal",
+    type: "software",
+    shortDescription: "Bring your own WireGuard or AmneziaWG VPN profile to Apple TV.",
+    platforms: ["tvos"],
+    releaseStage: "in-development",
+    supportEmail: "support@keyflare.studio",
+    lastUpdated: "2026-11-13",
+    storeLinks: {},
+    staticSite: { hasTerms: true },
+    privacyProfile: {
+      usesAdMob: false,
+      usesAnalytics: false,
+      usesCrashReporting: false,
+      usesSubscriptions: false,
+      hasAccounts: false,
+      collectsPersonalData: true,
+      requiresDataDeletionPage: false,
+      thirdPartyServices: ["Apple App Store", "Amnezia Premium (optional)"],
+    },
+  },
 ];
 
 export function getPublishedProducts() {

@@ -2,7 +2,7 @@ export type ProductStatus = "published" | "draft" | "fixture";
 
 export type ProductType = "mobile-app" | "mobile-game" | "desktop-app" | "tool" | "software";
 
-export type ProductPlatform = "ios" | "android" | "macos" | "windows" | "linux" | "web";
+export type ProductPlatform = "tvos" | "ios" | "android" | "macos" | "windows" | "linux" | "web";
 
 export type ProductReleaseStage = "in-development";
 
