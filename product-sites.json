@@ -4,5 +4,11 @@
     "tag": "site-v1.0.3",
     "commit": "04dc8e39f020db0409c9b30334cf2b7577d2efce",
     "directory": "site/public"
+  },
+  "wgportal": {
+    "repository": "keyflare/WGPortal",
+    "tag": "site-v1.0.0",
+    "commit": "83617869647da59f305d082a7baceca92a0dbc43",
+    "directory": "site/public"
   }
 }

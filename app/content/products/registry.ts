@@ -103,7 +103,7 @@ export const products: Product[] = [
     },
   },
   {
-    status: "draft",
+    status: "published",
     slug: "wgportal",
     name: "WG Portal",
     type: "software",

@@ -31,23 +31,41 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PRODUCT_SITES_READ_TOKEN }}
           EXCHANGE_SITE_READ_KEY: ${{ secrets.EXCHANGE_SITE_READ_KEY }}
+          WGPORTAL_SITE_READ_KEY: ${{ secrets.WGPORTAL_SITE_READ_KEY }}
         run: |
           if [ -n "$GH_TOKEN" ]; then
             gh auth setup-git --hostname github.com
-          elif [ -n "$EXCHANGE_SITE_READ_KEY" ]; then
+          elif [ -n "$EXCHANGE_SITE_READ_KEY" ] && [ -n "$WGPORTAL_SITE_READ_KEY" ]; then
+            umask 077
             key_dir=$(mktemp -d "$RUNNER_TEMP/keyflare-site.XXXXXX")
-            trap 'rm -- "$key_dir/key" "$key_dir/known_hosts" && rmdir -- "$key_dir"' EXIT
-            (umask 077; printf '%s\n' "$EXCHANGE_SITE_READ_KEY" > "$key_dir/key")
+            trap 'rm -- "$key_dir/exchange" "$key_dir/wgportal" "$key_dir/config" "$key_dir/known_hosts"; rmdir -- "$key_dir"' EXIT
+            printf '%s\n' "$EXCHANGE_SITE_READ_KEY" > "$key_dir/exchange"
+            printf '%s\n' "$WGPORTAL_SITE_READ_KEY" > "$key_dir/wgportal"
             printf '%s\n' 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > "$key_dir/known_hosts"
-            export GIT_SSH_COMMAND="ssh -F /dev/null -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=\"$key_dir/known_hosts\" -i \"$key_dir/key\""
-            export GIT_CONFIG_COUNT=1
-            export GIT_CONFIG_KEY_0=url.ssh://git@github.com/keyflare/exchange.git.insteadOf
+            cat > "$key_dir/config" <<EOF
+          Host exchange-product-site
+            IdentityFile "$key_dir/exchange"
+          Host wgportal-product-site
+            IdentityFile "$key_dir/wgportal"
+          Host *
+            HostName github.com
+            HostKeyAlias github.com
+            BatchMode yes
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            UserKnownHostsFile "$key_dir/known_hosts"
+          EOF
+            export GIT_SSH_COMMAND="ssh -F \"$key_dir/config\""
+            export GIT_CONFIG_COUNT=2
+            export GIT_CONFIG_KEY_0=url.ssh://git@exchange-product-site/keyflare/exchange.git.insteadOf
             export GIT_CONFIG_VALUE_0=https://github.com/keyflare/exchange.git
+            export GIT_CONFIG_KEY_1=url.ssh://git@wgportal-product-site/keyflare/WGPortal.git.insteadOf
+            export GIT_CONFIG_VALUE_1=https://github.com/keyflare/WGPortal.git
           else
-            echo "::error::Set EXCHANGE_SITE_READ_KEY or PRODUCT_SITES_READ_TOKEN in the github-pages environment."
+            echo "::error::Set both product site deploy keys or PRODUCT_SITES_READ_TOKEN in the github-pages environment."
             exit 1
           fi
-          unset EXCHANGE_SITE_READ_KEY
+          unset EXCHANGE_SITE_READ_KEY WGPORTAL_SITE_READ_KEY
           npm run check
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
