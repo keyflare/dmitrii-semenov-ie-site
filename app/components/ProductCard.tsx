@@ -6,6 +6,7 @@ import styles from "./ProductCard.module.css";
 const platformLabels: Record<ProductPlatform, string> = {
   android: "Android",
   ios: "iOS",
+  tvos: "Apple TV",
   macos: "macOS",
   windows: "Windows",
   linux: "Linux",
