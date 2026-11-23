@@ -112,7 +112,10 @@ export const products: Product[] = [
     supportEmail: "support@keyflare.studio",
     lastUpdated: "2026-11-13",
     storeLinks: { tvos: "https://apps.apple.com/app/id6835040683" },
-    staticSite: { hasTerms: true },
+    staticSite: {
+      hasTerms: true,
+      additionalPages: ["blog", "blog/bring-your-own-vpn-to-apple-tv"],
+    },
     privacyProfile: {
       usesAdMob: false,
       usesAnalytics: false,
