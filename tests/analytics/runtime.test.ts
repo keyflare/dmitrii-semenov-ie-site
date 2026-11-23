@@ -6,11 +6,12 @@ import { getPublicPaths, products } from "../../app/content/products/registry";
 
 const origin = "https://www.keyflare.studio";
 const doms: JSDOM[] = [];
-function browser(path = "/", base = origin, html = "") {
+function browser(path = "/", base = origin, html = "", referrer?: string) {
   const dom = new JSDOM(
     `<!doctype html><html><head><title>Page</title></head><body>${html}</body></html>`,
     {
       url: `${base}${path}`,
+      referrer,
     },
   );
   doms.push(dom);
@@ -96,6 +97,31 @@ describe("website analytics ownership", () => {
 });
 
 describe("shared browser runtime", () => {
+  test("preserves empty referrers for direct product entries and uses the previous page only after navigation", () => {
+    const { win, calls } = browser("/products/ratebench/");
+    installAnalytics(win, analyticsConfig);
+    expect(commands(calls, "init")[0][2]).toMatchObject({ referrer: "" });
+    expect(commands(calls, "hit")[0][3]).toMatchObject({ referer: "" });
+    win.history.pushState(null, "", "/products/ratebench/privacy/");
+    expect(commands(calls, "hit")[1][3]).toMatchObject({
+      referer: `${origin}/products/ratebench/`,
+    });
+  });
+  test("sanitizes a nonempty initial referrer without inventing one", () => {
+    const { win, calls } = browser(
+      "/products/ratebench/",
+      origin,
+      "",
+      "https://search.example/path?utm_source=search&email=private#secret",
+    );
+    installAnalytics(win, analyticsConfig);
+    expect(commands(calls, "init")[0][2]).toMatchObject({
+      referrer: "https://search.example/path?utm_source=search",
+    });
+    expect(commands(calls, "hit")[0][3]).toMatchObject({
+      referer: "https://search.example/path?utm_source=search",
+    });
+  });
   test("initializes one owning counter once and sends one sanitized initial hit", () => {
     const { win, calls, doc } = browser(
       "/products/ratebench/?utm_source=launch&utm_campaign=release&email=private#secret",

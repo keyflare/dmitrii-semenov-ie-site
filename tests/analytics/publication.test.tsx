@@ -2,7 +2,8 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { act, createElement, Fragment } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot, type Root } from "react-dom/client";
+import { renderToString } from "react-dom/server";
 import { createBrowserRouter, MemoryRouter, RouterProvider } from "react-router";
 import { JSDOM } from "jsdom";
 import { describe, expect, test, vi } from "vitest";
@@ -123,6 +124,84 @@ describe("asynchronous router interactions", () => {
       finish();
       router.dispose();
       await act(async () => root.unmount());
+      vi.unstubAllGlobals();
+      dom.window.close();
+    }
+  });
+});
+
+describe("document hydration event order", () => {
+  test("reports after React handlers when analytics installs before document hydration", async () => {
+    const sequence: string[] = [];
+    const tree = createElement(
+      "html",
+      null,
+      createElement(
+        "head",
+        null,
+        createElement("script", { async: true, src: "https://mc.yandex.ru/metrika/tag.js" }),
+      ),
+      createElement(
+        "body",
+        null,
+        createElement(
+          "a",
+          {
+            href: "/products/",
+            onClick: (event) => {
+              sequence.push("React cancelled");
+              event.preventDefault();
+            },
+          },
+          "Cancelled",
+        ),
+        createElement("button", { onClick: () => sequence.push("React button") }, "Button"),
+        createElement(
+          MemoryRouter,
+          null,
+          createElement(
+            SiteLink,
+            { to: "/products/", onClick: () => sequence.push("React navigation") },
+            "Products",
+          ),
+        ),
+      ),
+    );
+    const dom = new JSDOM(`<!doctype html>${renderToString(tree)}`, {
+      url: "https://www.keyflare.studio/",
+    });
+    vi.stubGlobal("window", dom.window);
+    vi.stubGlobal("document", dom.window.document);
+    vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
+    const win = dom.window as unknown as AnalyticsWindow;
+    win.ym = (...args) => {
+      if (args[1] === "reachGoal") sequence.push(`Goal ${args[2]}`);
+    };
+    installAnalytics(win, analyticsConfig);
+    let root: Root | undefined;
+    try {
+      await act(async () => {
+        root = hydrateRoot(dom.window.document, tree);
+      });
+      await act(async () => {
+        dom.window.document.querySelectorAll("a")[0].click();
+      });
+      expect(sequence).toEqual(["React cancelled"]);
+      await act(async () => {
+        dom.window.document.querySelector("button")!.click();
+      });
+      await act(async () => {
+        dom.window.document.querySelectorAll("a")[1].click();
+      });
+      expect(sequence).toEqual([
+        "React cancelled",
+        "React button",
+        "Goal button_click",
+        "React navigation",
+        "Goal navigation_click",
+      ]);
+    } finally {
+      await act(async () => root?.unmount());
       vi.unstubAllGlobals();
       dom.window.close();
     }

@@ -69,6 +69,8 @@ export function installAnalytics(win: AnalyticsWindow, config: AnalyticsConfig) 
     return url.href;
   }
 
+  const initialReferrer = doc.referrer ? (sanitize(doc.referrer) ?? "") : "";
+
   function counter() {
     const site = findAnalyticsSite(config, win.location.href);
     if (!site?.counterId) return;
@@ -98,7 +100,7 @@ export function installAnalytics(win: AnalyticsWindow, config: AnalyticsConfig) 
         accurateTrackBounce: false,
         sendTitle: false,
         url: sanitize(win.location.href),
-        referrer: sanitize(doc.referrer || config.origin),
+        referrer: initialReferrer,
       });
     }
     return site;
@@ -109,7 +111,7 @@ export function installAnalytics(win: AnalyticsWindow, config: AnalyticsConfig) 
     const site = counter();
     if (site && page) {
       win.ym!(site.counterId, "hit", page, {
-        referer: previousPage || sanitize(doc.referrer || config.origin),
+        referer: previousPage || initialReferrer,
         params: { website: site.key },
       });
     }
@@ -237,8 +239,9 @@ export function installAnalytics(win: AnalyticsWindow, config: AnalyticsConfig) 
   }
   for (const type of ["click", "auxclick"] as const) {
     doc.addEventListener(type, captureInteraction, true);
-    // App target handlers and React's root handler have completed before document bubble.
-    doc.addEventListener(type, reportInteraction);
+    // React Router hydrates at document and may register its dispatcher after us.
+    // Window bubble always follows document handlers, including their cancellation.
+    win.addEventListener(type, reportInteraction);
   }
   pageview();
 }

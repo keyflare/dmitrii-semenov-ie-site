@@ -62,7 +62,8 @@ Create the same six JavaScript-event goals on all website counters:
 | `button_click`      | Button or element with `role="button"`                        |
 
 Classification is mutually exclusive in that priority order. Delegation snapshots source metadata
-in document capture and reports in document bubble, after target and React handlers. Do not report
+in document capture and reports in window bubble, after target and React document handlers. React Router hydrates at
+`document`; reporting on that same node can run before its dispatcher when analytics loads first. Do not report
 from a capture microtask: trusted browser events can flush it before those handlers run. A store link sends its store goal,
 not a second outbound goal. Delegation handles nested targets, keyboard-generated clicks,
 Ctrl/Meta/new-tab links and middle clicks. Disabled, inert and cancelled actions are excluded.
@@ -81,6 +82,7 @@ and `screenshot-next`. Do not put user data in these attributes or in accessible
 ## Data Boundaries And Disclosures
 
 Page, referrer and destination URLs omit fragments, credentials and arbitrary query parameters.
+Direct/bookmarked entries keep an empty referrer; never substitute the Studio root as a referral.
 The acquisition allowlist is `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`
 and `utm_id`, with a 128-character value limit. Campaign values must contain campaign metadata,
 never personal information. Google Play destinations may retain the validated package `id`.
