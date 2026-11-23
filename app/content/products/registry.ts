@@ -109,10 +109,9 @@ export const products: Product[] = [
     type: "software",
     shortDescription: "Bring your own WireGuard or AmneziaWG VPN profile to Apple TV.",
     platforms: ["tvos"],
-    releaseStage: "in-development",
     supportEmail: "support@keyflare.studio",
     lastUpdated: "2026-11-13",
-    storeLinks: {},
+    storeLinks: { tvos: "https://apps.apple.com/app/id6835040683" },
     staticSite: { hasTerms: true },
     privacyProfile: {
       usesAdMob: false,

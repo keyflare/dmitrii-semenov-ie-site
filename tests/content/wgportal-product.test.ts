@@ -1,4 +1,9 @@
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { MemoryRouter } from "react-router";
 import { expect, test } from "vitest";
+import { ProductCard } from "../../app/components/ProductCard";
+import { ProductLinks } from "../../app/components/ProductLinks";
 import { findPublishedProduct, getPublicPaths } from "../../app/content/products/registry";
 import { productSiteSources } from "../../scripts/product-site-sources";
 
@@ -6,7 +11,7 @@ test("publishes the WG Portal website and its App Store documents from the tagge
   expect(findPublishedProduct("wgportal")).toMatchObject({
     status: "published",
     platforms: ["tvos"],
-    releaseStage: "in-development",
+    storeLinks: { tvos: "https://apps.apple.com/app/id6835040683" },
     staticSite: { hasTerms: true },
     privacyProfile: { usesSubscriptions: false },
   });
@@ -24,4 +29,19 @@ test("publishes the WG Portal website and its App Store documents from the tagge
     commit: expect.stringMatching(/^[0-9a-f]{40}$/),
     directory: "site/public",
   });
+});
+
+test("offers the released WG Portal app from the studio catalog", () => {
+  const product = findPublishedProduct("wgportal");
+  if (!product) {
+    throw new Error("Missing published WG Portal product");
+  }
+  for (const component of [ProductCard, ProductLinks]) {
+    const html = renderToStaticMarkup(
+      createElement(MemoryRouter, null, createElement(component, { product })),
+    );
+    expect(html).toContain('href="https://apps.apple.com/app/id6835040683"');
+    expect(html).not.toContain("In development");
+    expect(html).not.toContain("coming soon");
+  }
 });
