@@ -92,6 +92,19 @@ before extracting the tree to the generated `.product-sites/` directory. Dev and
 this step. The studio build validates the expected HTML and copies the export into its product
 directory. Studio links into an imported site use document navigation.
 
+An imported site can declare product-owned pages such as a blog with
+`staticSite.additionalPages: ["blog", "blog/article-slug"]`. Paths are relative to the product
+root, use lowercase kebab-case segments, and have no leading or trailing slash. Reserved document
+and asset roots, traversal, query strings, fragments, and duplicate paths are rejected. Each
+declaration requires a matching `index.html` in the export. These pages join `getPublicPaths()`,
+the sitemap, route-output checks, and the shared analytics installation; they are not prerendered
+by the studio. Draft and fixture products remain excluded.
+
+Keep review-only article examples out of search and leave the selected production release unchanged
+while their layout and content are being approved. On publication, select the tagged product export
+and declare all public blog and article paths in the same studio change. Remove temporary `noindex`
+metadata only when the example is approved as real published content.
+
 Ratebench is maintained in `keyflare/exchange` under `site/public/`. After the changes are on
 Exchange's `main`, run `node site/release.mjs site-v1.0.1` (use the next version) and push the tag.
 Select the tag and its Exchange commit in `product-sites.json`. When upgrading from the original

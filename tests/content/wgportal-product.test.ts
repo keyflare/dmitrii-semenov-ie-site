@@ -7,7 +7,7 @@ import { ProductLinks } from "../../app/components/ProductLinks";
 import { findPublishedProduct, getPublicPaths } from "../../app/content/products/registry";
 import { productSiteSources } from "../../scripts/product-site-sources";
 
-test("publishes the WG Portal website and its App Store documents from the tagged export", () => {
+test("publishes the WG Portal website, blog, and App Store documents from the tagged export", () => {
   expect(findPublishedProduct("wgportal")).toMatchObject({
     status: "published",
     platforms: ["tvos"],
@@ -22,6 +22,8 @@ test("publishes the WG Portal website and its App Store documents from the tagge
     "/products/wgportal/privacy",
     "/products/wgportal/support",
     "/products/wgportal/terms",
+    "/products/wgportal/blog",
+    "/products/wgportal/blog/bring-your-own-vpn-to-apple-tv",
   ]);
   expect(productSiteSources.wgportal).toMatchObject({
     repository: "keyflare/WGPortal",
