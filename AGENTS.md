@@ -17,6 +17,7 @@ Long-lived guidance for agents lives in `.ai/`:
   compliance-facing constraints.
 - `.ai/PRODUCT_PAGES.md`: product registry rules, publication guards, customization modes, MDX, and
   product privacy/support behavior.
+- `.ai/ANALYTICS.md`: website counter ownership, shared runtime, publication checks, and reporting.
 - `.ai/DESIGN.md`: visual direction, typography, layout principles, document mode, and product
   theming.
 

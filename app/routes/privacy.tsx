@@ -1,5 +1,5 @@
 import type { MetaFunction } from "react-router";
-import { Link } from "react-router";
+import { SiteLink as Link } from "~/components/SiteLink";
 import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";
 import { PageIcon } from "~/components/PageIcon";
@@ -25,10 +25,7 @@ export default function PrivacyRoute() {
       <DocumentPage>
         <section>
           <h2>Website Privacy</h2>
-          <p>
-            This website does not require user registration and does not intentionally collect
-            personal information.
-          </p>
+          <p>This website does not require registration.</p>
           <p>
             This website is a static product and legal information hub for Keyflare Studio, operated
             by Dmitrii Semenov, IE.
@@ -36,10 +33,30 @@ export default function PrivacyRoute() {
         </section>
 
         <section>
-          <h2>No Analytics or Tracking</h2>
+          <h2>Website Analytics</h2>
           <p>
-            This website does not use analytics, advertising trackers, account systems, or contact
-            forms.
+            This website uses Yandex Metrica to measure page visits and interactions with
+            navigation, store, support, and other controls. Studio and product websites use separate
+            counters. Website analytics is separate from analytics inside the apps.
+          </p>
+          <p>
+            Yandex may process cookie identifiers, IP address, browser and device information,
+            referrers, approved campaign tags, and page and interaction data. Session Replay, click
+            maps, automatic outbound-link tracking, and tag management are disabled. We do not send
+            form values, email message contents, or arbitrary URL query strings and fragments in our
+            analytics events.
+          </p>
+          <p>
+            We use these statistics to understand website usage and improve product information.
+            Yandex processes data according to its{" "}
+            <a href="https://yandex.com/legal/confidential/">Privacy Policy</a>, which also
+            describes retention and international processing. You can block analytics in your
+            browser or use the{" "}
+            <a href="https://yandex.com/support/metrica/en/general/opt-out.html">
+              Yandex Metrica opt-out
+            </a>
+            . For privacy requests, contact{" "}
+            <a href={`mailto:${siteConfig.businessEmail}`}>{siteConfig.businessEmail}</a>.
           </p>
         </section>
 
@@ -71,7 +88,7 @@ export default function PrivacyRoute() {
           </ul>
         </section>
 
-        <footer>Last updated: July 2026</footer>
+        <footer>Last updated: November 23, 2026</footer>
       </DocumentPage>
     </>
   );

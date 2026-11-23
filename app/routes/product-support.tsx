@@ -1,5 +1,5 @@
 import { createElement } from "react";
-import { Link } from "react-router";
+import { SiteLink as Link } from "~/components/SiteLink";
 import type { Route } from "./+types/product-support";
 import { DocumentPage } from "~/components/DocumentPage";
 import { PageHeader } from "~/components/PageHeader";

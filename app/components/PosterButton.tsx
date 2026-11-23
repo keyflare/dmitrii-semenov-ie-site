@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router";
+import { SiteLink as Link } from "~/components/SiteLink";
 import styles from "./PosterButton.module.css";
 
 type PosterButtonProps = {

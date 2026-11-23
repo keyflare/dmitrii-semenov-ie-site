@@ -5,6 +5,7 @@ import "@fontsource/syne/700.css";
 import "@fontsource/syne/800.css";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { LinksFunction } from "react-router";
+import { analyticsScriptPath } from "~/analytics/config";
 import { GenericErrorPage } from "~/components/GenericErrorPage";
 import { NotFoundPage } from "~/components/NotFoundPage";
 import { SiteShell } from "~/components/SiteShell";
@@ -27,6 +28,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <script defer src={analyticsScriptPath} data-site-analytics="shared" />
         <ScrollRestoration />
         <Scripts />
       </body>

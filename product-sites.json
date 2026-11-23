@@ -1,14 +1,14 @@
 {
   "ratebench": {
     "repository": "keyflare/exchange",
-    "tag": "site-v1.0.3",
-    "commit": "04dc8e39f020db0409c9b30334cf2b7577d2efce",
+    "tag": "site-v1.0.4",
+    "commit": "b8cec1413ac0a20a19ff0a89c9f8c239fa39a58e",
     "directory": "site/public"
   },
   "wgportal": {
     "repository": "keyflare/WGPortal",
-    "tag": "site-v1.0.3",
-    "commit": "793df11bb41bf9769b78707f6f8c4860a30ded21",
+    "tag": "site-v1.0.4",
+    "commit": "21d4097dc63840ade6a9b77599ec4287c695f108",
     "directory": "site/public"
   }
 }
