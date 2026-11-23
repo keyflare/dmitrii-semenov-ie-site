@@ -80,6 +80,11 @@ Do not rely on SPA fallback behavior for product privacy, support, legal, or dat
 Future localization may add routes such as `/ru/...`, but English remains the default canonical
 content until localization is explicitly implemented.
 
+## Website Analytics
+
+See `.ai/ANALYTICS.md` for counter ownership, shared runtime installation, navigation, event goals,
+reporting and website disclosure rules. Website counters are independent from in-app AppMetrica.
+
 ## Metadata And Static Output
 
 `robots.txt` and `sitemap.xml` are generated from site config and the complete public path list.

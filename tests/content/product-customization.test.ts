@@ -206,11 +206,13 @@ describe("product customization", () => {
     );
 
     expect(html).toMatch(/<article class="[^"]*document[^"]*">/);
-    expect(html).toContain("July 8, 2026");
-    expect(html).toContain("<footer>Last updated: July 8, 2026</footer>");
+    expect(html).toContain("November 23, 2026");
+    expect(html).toContain("Product Website Analytics");
+    expect(html).toContain("Yandex Metrica");
+    expect(html).toContain("<footer>Last updated: November 23, 2026</footer>");
     expect(html).not.toContain("<strong>Last updated:</strong>");
     expect(html).toContain("support@keyflare.studio");
-    expect(html.match(/href="mailto:support@keyflare\.studio"/g)).toHaveLength(3);
+    expect(html.match(/href="mailto:support@keyflare\.studio"/g)).toHaveLength(4);
     expect(html).toContain("Gameplay and app usage data");
     expect(html).toContain("AppMetrica");
     expect(html).toContain("Google User Messaging Platform");

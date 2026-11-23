@@ -1,5 +1,5 @@
 import { lstatSync } from "node:fs";
-import { cp, lstat, readdir } from "node:fs/promises";
+import { cp, lstat, readdir, readFile, writeFile } from "node:fs/promises";
 import { join, posix } from "node:path";
 import { pathToFileURL } from "node:url";
 import {
@@ -8,6 +8,7 @@ import {
   products,
 } from "../app/content/products/registry";
 import type { Product, StaticProduct } from "../app/content/products/types";
+import { assertNoIndependentAnalytics, installAnalyticsMarkup } from "./analytics-publication";
 import { getProductSiteDirectory, productSiteCache } from "./product-site-sources";
 
 async function listFiles(root: string, directory = ""): Promise<string[]> {
@@ -46,10 +47,17 @@ async function validateExport(product: StaticProduct, source: string) {
   }
 
   for (const file of files) {
+    if (/\.(?:m?js|cjs)$/i.test(file)) {
+      assertNoIndependentAnalytics(
+        await readFile(join(source, file), "utf8"),
+        `${product.slug}/${file}`,
+      );
+    }
     if (/\.html?$/i.test(file) && !expectedPages.includes(file)) {
       throw new Error(`Static export for ${product.slug} contains an undeclared page: ${file}`);
     }
   }
+  return expectedPages;
 }
 
 export async function stageProductSites(
@@ -61,12 +69,24 @@ export async function stageProductSites(
     const source = getProductSiteDirectory(sourceRoot, product.slug);
     const destination = join(buildRoot, "products", product.slug);
 
-    await validateExport(product, source);
+    const pages = await validateExport(product, source);
+    const installedPages = await Promise.all(
+      pages.map(async (page) => ({
+        page,
+        html: installAnalyticsMarkup(
+          await readFile(join(source, page), "utf8"),
+          `${product.slug}/${page}`,
+        ),
+      })),
+    );
     if (lstatSync(destination, { throwIfNoEntry: false })) {
       throw new Error(`Static export for ${product.slug} overlaps existing output: ${destination}`);
     }
 
     await cp(source, destination, { recursive: true, errorOnExist: true, force: false });
+    await Promise.all(
+      installedPages.map(({ page, html }) => writeFile(join(destination, page), html)),
+    );
   }
 }
 

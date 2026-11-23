@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { SiteLink as Link } from "~/components/SiteLink";
 import { siteConfig } from "~/content/site";
 import { StudioLogo } from "./StudioLogo";
 import styles from "./SiteShell.module.css";

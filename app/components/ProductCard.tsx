@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { SiteLink as Link } from "~/components/SiteLink";
 import { hasProductTerms, type Product, type ProductPlatform } from "~/content/products/types";
 import { PosterButton } from "./PosterButton";
 import styles from "./ProductCard.module.css";

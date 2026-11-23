@@ -39,7 +39,7 @@ describe("static product exports", () => {
 
     await expect(
       readFile(join(output, "products/ratebench/privacy/index.html"), "utf8"),
-    ).resolves.toBe("privacy/index.html");
+    ).resolves.toContain('data-site-analytics="shared"');
     await expect(
       readFile(join(output, "products/ratebench/assets/styles.css"), "utf8"),
     ).resolves.toBe("assets/styles.css");

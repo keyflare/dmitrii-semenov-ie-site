@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npm run sync:product-sites && react-router dev",
-    "build": "npm run validate:content && npm run sync:product-sites && npm run generate:static && react-router build && tsx scripts/generate-404-page.ts && tsx scripts/stage-product-sites.ts",
+    "dev": "npm run sync:product-sites && npm run generate:analytics && react-router dev",
+    "build": "npm run validate:content && npm run sync:product-sites && npm run generate:static && npm run generate:analytics && react-router build && tsx scripts/generate-404-page.ts && tsx scripts/stage-product-sites.ts",
     "preview": "serve build/client",
     "typecheck": "react-router typegen && tsc --noEmit",
     "lint": "eslint .",
@@ -12,6 +12,7 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "validate:content": "tsx scripts/validate-content.ts",
+    "generate:analytics": "tsx scripts/generate-analytics.ts",
     "generate:static": "tsx scripts/generate-static-metadata.ts",
     "check:routes": "tsx scripts/check-routes.ts",
     "check": "npm run check:code && npm run build && npm run check:routes",

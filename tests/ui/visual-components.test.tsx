@@ -418,10 +418,10 @@ describe("visual components", () => {
 
     expect(html).toContain('data-page-icon="privacy"');
     expect(html).toContain("Website Privacy Policy");
-    expect(html).toContain(
-      "This website does not require user registration and does not intentionally collect personal information.",
-    );
-    expect(html).toContain("This website does not use analytics");
+    expect(html).toContain("This website does not require registration.");
+    expect(html).toContain("Yandex Metrica");
+    expect(html).toContain("Website analytics is separate from analytics inside the apps.");
+    expect(html).not.toContain("This website does not use analytics");
     expect(html).toContain("If you contact Keyflare Studio by email");
     expect(html).toContain("Product Privacy Policies");
 
@@ -435,6 +435,6 @@ describe("visual components", () => {
       expect(html).toContain(`${publishedProduct.name} Privacy Policy`);
     }
 
-    expect(html).toContain("Last updated: July 2026");
+    expect(html).toContain("Last updated: November 23, 2026");
   });
 });

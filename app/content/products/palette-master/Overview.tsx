@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import { Link } from "react-router";
+import { SiteLink as Link } from "~/components/SiteLink";
 import type { CustomProductOverviewProps } from "../customOverviewPages";
 import styles from "./Overview.module.css";
 
@@ -233,6 +233,7 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
             <button
               type="button"
               aria-label="Previous screenshot"
+              data-analytics-id="screenshot-previous"
               onClick={() => handleCarouselControl(activeScreenshot - 1)}
             >
               Prev
@@ -243,6 +244,7 @@ export function PaletteMasterOverview({ product }: CustomProductOverviewProps) {
             <button
               type="button"
               aria-label="Next screenshot"
+              data-analytics-id="screenshot-next"
               onClick={() => handleCarouselControl(activeScreenshot + 1)}
             >
               Next

@@ -38,7 +38,7 @@ export const products: Product[] = [
       "An offline color puzzle game about rebuilding broken gradients tile by tile.",
     platforms: ["android", "ios"],
     supportEmail: "support@keyflare.studio",
-    lastUpdated: "2026-07-08",
+    lastUpdated: "2026-11-23",
     storeLinks: {
       android: "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&hl=en",
       ios: "https://apps.apple.com/app/id6785084110",

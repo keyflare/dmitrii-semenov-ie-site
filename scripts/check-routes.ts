@@ -1,42 +1,41 @@
-import { access } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { getPublicPaths } from "../app/content/products/registry";
+import { assertAnalyticsInstallation } from "./analytics-publication";
 
-function routeToBuildFile(route: string) {
-  if (route === "/") {
-    return "build/client/index.html";
-  }
-
-  return `build/client/${route.replace(/^\/+|\/+$/g, "")}/index.html`;
+export async function checkRouteOutput(buildRoot: string) {
+  const pages = getPublicPaths().map((route) => join(buildRoot, route, "index.html"));
+  const requiredFiles = [
+    ...pages,
+    ...["404.html", "CNAME", "app-ads.txt", "robots.txt", "sitemap.xml", "site-analytics.js"].map(
+      (file) => join(buildRoot, file),
+    ),
+  ];
+  const errors: string[] = [];
+  await Promise.all(
+    requiredFiles.map(async (file) => {
+      try {
+        await access(file);
+        if (pages.includes(file)) assertAnalyticsInstallation(await readFile(file, "utf8"), file);
+      } catch (error) {
+        errors.push(
+          (error as NodeJS.ErrnoException).code === "ENOENT"
+            ? `Missing required route output: ${file}`
+            : (error as Error).message,
+        );
+      }
+    }),
+  );
+  return errors.sort();
 }
 
-const requiredFiles = [
-  ...getPublicPaths().map(routeToBuildFile),
-  "build/client/404.html",
-  "build/client/CNAME",
-  "build/client/app-ads.txt",
-  "build/client/robots.txt",
-  "build/client/sitemap.xml",
-];
-
-const missingFiles: string[] = [];
-
-await Promise.all(
-  requiredFiles.map(async (file) => {
-    try {
-      await access(file);
-    } catch {
-      missingFiles.push(file);
-    }
-  }),
-);
-
-if (missingFiles.length > 0) {
-  console.error("Missing required route output files:");
-  for (const file of [...missingFiles].sort()) {
-    console.error(`- ${file}`);
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const errors = await checkRouteOutput("build/client");
+  if (errors.length) {
+    console.error(errors.join("\n"));
+    process.exitCode = 1;
+  } else {
+    console.log("Route output check passed (one shared analytics installation per public page).");
   }
-
-  process.exit(1);
 }
-
-console.log("Route output check passed.");
