@@ -10,6 +10,8 @@ const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const lastUpdatedPattern = /^\d{4}-\d{2}-\d{2}$/;
 const hexColorPattern = /^#[0-9a-fA-F]{6}$/;
 const gradientPattern = /^(repeating-)?(linear|radial|conic)-gradient\((.+)\)$/;
+const staticPagePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/;
+const reservedStaticPageRoots = new Set(["privacy", "support", "terms", "data-deletion", "assets"]);
 
 export function validateProducts(products: Product[]): string[] {
   const errors: string[] = [];
@@ -82,12 +84,42 @@ export function validateProducts(products: Product[]): string[] {
     }
 
     validateProductTheme(product, errors);
-    if (!product.staticSite) {
+    if (product.staticSite) {
+      validateAdditionalPages(product, errors);
+    } else {
       validatePresentation(product, errors);
     }
   }
 
   return errors;
+}
+
+function validateAdditionalPages(product: Product, errors: string[]) {
+  const pages = product.staticSite?.additionalPages;
+  if (pages === undefined) {
+    return;
+  }
+
+  if (!Array.isArray(pages)) {
+    errors.push(`${product.slug} staticSite.additionalPages must be an array of paths.`);
+    return;
+  }
+
+  const seen = new Set<string>();
+  for (const path of pages) {
+    if (
+      typeof path !== "string" ||
+      !staticPagePattern.test(path) ||
+      reservedStaticPageRoots.has(path.split("/")[0])
+    ) {
+      errors.push(
+        `${product.slug} staticSite.additionalPages contains an invalid or reserved path: ${String(path)}`,
+      );
+    } else if (seen.has(path)) {
+      errors.push(`${product.slug} staticSite.additionalPages contains a duplicate path: ${path}`);
+    }
+    seen.add(path);
+  }
 }
 
 function validateProductTheme(product: Product, errors: string[]) {

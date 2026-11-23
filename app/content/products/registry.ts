@@ -168,6 +168,10 @@ export function getProductPaths(product: Product): string[] {
     paths.push(`${base}/data-deletion`);
   }
 
+  if (product.staticSite?.additionalPages) {
+    paths.push(...product.staticSite.additionalPages.map((path) => `${base}/${path}`));
+  }
+
   return paths;
 }
 

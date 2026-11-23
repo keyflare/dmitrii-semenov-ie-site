@@ -2,13 +2,13 @@ import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { afterEach, describe, expect, test } from "vitest";
-import { products } from "../../app/content/products/registry";
+import { getPublishedStaticProducts } from "../../app/content/products/registry";
 import { getProductSiteDirectory } from "../../scripts/product-site-sources";
 import { stageProductSites } from "../../scripts/stage-product-sites";
 
 const tempDirectories: string[] = [];
 const pages = ["index.html", "privacy/index.html", "support/index.html", "terms/index.html"];
-const ratebench = products.find((product) => product.slug === "ratebench")!;
+const ratebench = getPublishedStaticProducts().find((product) => product.slug === "ratebench")!;
 
 afterEach(async () => {
   await Promise.all(
@@ -80,6 +80,35 @@ describe("static product exports", () => {
 
     await expect(stageProductSites([ratebench], source, output)).rejects.toThrow(
       "data-deletion/index.html",
+    );
+  });
+
+  test("stages declared nested product pages and installs the shared analytics", async () => {
+    const extraPages = ["blog/index.html", "blog/first-post/index.html"];
+    const { source, output } = await prepareExport([...pages, ...extraPages]);
+    const product = {
+      ...ratebench,
+      staticSite: { hasTerms: true, additionalPages: ["blog", "blog/first-post"] },
+    };
+
+    await stageProductSites([product], source, output);
+
+    for (const page of extraPages) {
+      await expect(readFile(join(output, "products/ratebench", page), "utf8")).resolves.toContain(
+        'data-site-analytics="shared"',
+      );
+    }
+  });
+
+  test("rejects an export missing a declared blog article", async () => {
+    const { source, output } = await prepareExport([...pages, "blog/index.html"]);
+    const product = {
+      ...ratebench,
+      staticSite: { hasTerms: true, additionalPages: ["blog", "blog/first-post"] },
+    };
+
+    await expect(stageProductSites([product], source, output)).rejects.toThrow(
+      "missing blog/first-post/index.html",
     );
   });
 });

@@ -94,6 +94,7 @@ export type LocalProduct = ProductMetadata & {
 export type StaticProduct = ProductMetadata & {
   staticSite: {
     hasTerms?: boolean;
+    additionalPages?: string[];
   };
   presentation?: never;
 };
