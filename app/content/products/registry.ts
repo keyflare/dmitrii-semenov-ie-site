@@ -114,7 +114,12 @@ export const products: Product[] = [
     storeLinks: { tvos: "https://apps.apple.com/app/id6835040683" },
     staticSite: {
       hasTerms: true,
-      additionalPages: ["blog", "blog/bring-your-own-vpn-to-apple-tv"],
+      additionalPages: [
+        "blog",
+        "blog/bring-your-own-vpn-to-apple-tv",
+        "blog/amneziawg-vs-wireguard",
+        "blog/amneziawg-vs-wireguard/ru",
+      ],
     },
     privacyProfile: {
       usesAdMob: false,

@@ -24,6 +24,8 @@ test("publishes the WG Portal website, blog, and App Store documents from the ta
     "/products/wgportal/terms",
     "/products/wgportal/blog",
     "/products/wgportal/blog/bring-your-own-vpn-to-apple-tv",
+    "/products/wgportal/blog/amneziawg-vs-wireguard",
+    "/products/wgportal/blog/amneziawg-vs-wireguard/ru",
   ]);
   expect(productSiteSources.wgportal).toMatchObject({
     repository: "keyflare/WGPortal",
