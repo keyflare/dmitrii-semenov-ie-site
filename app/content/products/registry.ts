@@ -1,3 +1,4 @@
+import { wgportalAdditionalPages } from "./wgportal-pages";
 import { hasProductTerms, type LocalProduct, type Product, type StaticProduct } from "./types";
 
 const staticPrerenderPaths = ["/", "/products", "/contact", "/privacy", "/legal"];
@@ -114,12 +115,7 @@ export const products: Product[] = [
     storeLinks: { tvos: "https://apps.apple.com/app/id6835040683" },
     staticSite: {
       hasTerms: true,
-      additionalPages: [
-        "blog",
-        "blog/bring-your-own-vpn-to-apple-tv",
-        "blog/amneziawg-vs-wireguard",
-        "blog/amneziawg-vs-wireguard/ru",
-      ],
+      additionalPages: wgportalAdditionalPages,
     },
     privacyProfile: {
       usesAdMob: false,

@@ -10,7 +10,7 @@ const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const lastUpdatedPattern = /^\d{4}-\d{2}-\d{2}$/;
 const hexColorPattern = /^#[0-9a-fA-F]{6}$/;
 const gradientPattern = /^(repeating-)?(linear|radial|conic)-gradient\((.+)\)$/;
-const staticPagePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/;
+const localePrefixPattern = /^[a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-(?:[A-Z]{2}|[0-9]{3}))?$/;
 const reservedStaticPageRoots = new Set(["privacy", "support", "terms", "data-deletion", "assets"]);
 
 export function validateProducts(products: Product[]): string[] {
@@ -109,7 +109,12 @@ function validateAdditionalPages(product: Product, errors: string[]) {
   for (const path of pages) {
     if (
       typeof path !== "string" ||
-      !staticPagePattern.test(path) ||
+      !path
+        .split("/")
+        .every(
+          (segment, index) =>
+            slugPattern.test(segment) || (index === 0 && localePrefixPattern.test(segment)),
+        ) ||
       reservedStaticPageRoots.has(path.split("/")[0])
     ) {
       errors.push(
