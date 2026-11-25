@@ -17,16 +17,18 @@ test("publishes the WG Portal website, blog, and App Store documents from the ta
   });
 
   const paths = getPublicPaths().filter((path) => path.startsWith("/products/wgportal"));
-  expect(paths).toEqual([
-    "/products/wgportal",
-    "/products/wgportal/privacy",
-    "/products/wgportal/support",
-    "/products/wgportal/terms",
-    "/products/wgportal/blog",
-    "/products/wgportal/blog/bring-your-own-vpn-to-apple-tv",
-    "/products/wgportal/blog/amneziawg-vs-wireguard",
-    "/products/wgportal/blog/amneziawg-vs-wireguard/ru",
-  ]);
+  expect(paths).toEqual(
+    expect.arrayContaining([
+      "/products/wgportal",
+      "/products/wgportal/privacy",
+      "/products/wgportal/support",
+      "/products/wgportal/terms",
+      "/products/wgportal/blog",
+      "/products/wgportal/blog/bring-your-own-vpn-to-apple-tv",
+      "/products/wgportal/blog/amneziawg-vs-wireguard",
+      "/products/wgportal/blog/amneziawg-vs-wireguard/ru",
+    ]),
+  );
   expect(productSiteSources.wgportal).toMatchObject({
     repository: "keyflare/WGPortal",
     tag: expect.stringMatching(/^site-v/),

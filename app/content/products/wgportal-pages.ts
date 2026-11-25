@@ -1,0 +1,43 @@
+// Routes in the pinned WG Portal export. Staging rejects missing or undeclared HTML.
+const locales = [
+  "ar",
+  "cs",
+  "da",
+  "de",
+  "el",
+  "es",
+  "es-419",
+  "fr",
+  "fr-CA",
+  "it",
+  "ja",
+  "ko",
+  "ms",
+  "nb",
+  "nl",
+  "pl",
+  "pt-BR",
+  "pt-PT",
+  "ru",
+  "sv",
+  "tr",
+  "vi",
+  "zh-Hant",
+];
+const pages = [
+  "",
+  "privacy",
+  "terms",
+  "support",
+  "blog",
+  "blog/amneziawg-vs-wireguard",
+  "blog/bring-your-own-vpn-to-apple-tv",
+];
+
+export const wgportalAdditionalPages = [
+  "blog",
+  "blog/bring-your-own-vpn-to-apple-tv",
+  "blog/amneziawg-vs-wireguard",
+  "blog/amneziawg-vs-wireguard/ru",
+  ...locales.flatMap((locale) => pages.map((page) => `${locale}${page ? `/${page}` : ""}`)),
+];

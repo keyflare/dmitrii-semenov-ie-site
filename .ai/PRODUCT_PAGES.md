@@ -94,7 +94,9 @@ directory. Studio links into an imported site use document navigation.
 
 An imported site can declare product-owned pages such as a blog with
 `staticSite.additionalPages: ["blog", "blog/article-slug"]`. Paths are relative to the product
-root, use lowercase kebab-case segments, and have no leading or trailing slash. Reserved document
+root, use lowercase kebab-case segments, and have no leading or trailing slash. A leading
+language tag may preserve its canonical script/region case, such as `fr-CA`, `pt-BR`, or
+`zh-Hant`; ordinary segments remain lowercase. Reserved document
 and asset roots, traversal, query strings, fragments, and duplicate paths are rejected. Each
 declaration requires a matching `index.html` in the export. These pages join `getPublicPaths()`,
 the sitemap, route-output checks, and the shared analytics installation; they are not prerendered
