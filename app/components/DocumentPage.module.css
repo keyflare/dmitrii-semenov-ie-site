@@ -2,10 +2,11 @@
   position: relative;
   max-width: var(--layout-readable);
   padding: var(--space-8);
-  border: 1px solid var(--color-border-soft);
-  border-left: 0.55rem solid var(--color-document-rail);
+  border: 1px solid var(--color-ink);
+  border-left: 0.25rem solid var(--color-document-rail);
   border-radius: var(--radius-md);
-  background: var(--color-document-bg);
+  margin-top: var(--space-8);
+  background: #fffdf699;
   box-shadow: var(--shadow-soft);
 }
 
@@ -69,7 +70,7 @@
   margin-top: var(--space-8);
   padding-top: var(--space-4);
   border-top: 1px solid var(--color-border-soft);
-  color: var(--color-ink-muted);
+  color: var(--color-muted);
   font-size: 0.95rem;
 }
 

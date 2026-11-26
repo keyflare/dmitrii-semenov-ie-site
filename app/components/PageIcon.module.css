@@ -1,5 +1,18 @@
 .icon {
-  width: 0.86em;
-  height: 0.86em;
+  width: 1em;
+  height: 1em;
   flex: 0 0 auto;
+  color: var(--page-icon-accent);
+}
+
+.contact {
+  --page-icon-accent: var(--color-accent-red);
+}
+
+.legal {
+  --page-icon-accent: var(--color-accent-amber);
+}
+
+.privacy {
+  --page-icon-accent: var(--color-accent-green);
 }

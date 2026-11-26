@@ -1,4 +1,5 @@
 import {
+  productCardMediaKinds,
   productCustomOverviewKeys,
   productMdxContentKeys,
   productPageSurfaces,
@@ -84,6 +85,7 @@ export function validateProducts(products: Product[]): string[] {
     }
 
     validateProductTheme(product, errors);
+    validateCardImages(product, errors);
     if (product.staticSite) {
       validateAdditionalPages(product, errors);
     } else {
@@ -92,6 +94,33 @@ export function validateProducts(products: Product[]): string[] {
   }
 
   return errors;
+}
+
+function validateCardImages(product: Product, errors: string[]) {
+  for (const field of ["cardIcon", "cardMedia"] as const) {
+    const image = product[field];
+    if (!image) continue;
+
+    if (!/^\/media\/cards\/[a-z0-9][a-z0-9/-]*\.(png|webp|avif)$/.test(image.src)) {
+      errors.push(`${product.slug} ${field}.src must be a local image in /media/cards/.`);
+    }
+    if (
+      !Number.isInteger(image.width) ||
+      image.width <= 0 ||
+      !Number.isInteger(image.height) ||
+      image.height <= 0
+    ) {
+      errors.push(`${product.slug} ${field} dimensions must be positive integers.`);
+    }
+  }
+
+  if (!product.cardMedia) return;
+  if (!productCardMediaKinds.includes(product.cardMedia.kind)) {
+    errors.push(`${product.slug} cardMedia.kind must be a supported media treatment.`);
+  }
+  if (!product.cardMedia.alt.trim()) {
+    errors.push(`${product.slug} cardMedia.alt must describe the image.`);
+  }
 }
 
 function validateAdditionalPages(product: Product, errors: string[]) {

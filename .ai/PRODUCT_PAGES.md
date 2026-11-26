@@ -22,6 +22,10 @@ download is available.
 
 Published products must be complete and pass validation.
 
+Homepage and catalog cards follow [PRODUCT_CARDS.md](./PRODUCT_CARDS.md). Their type labels,
+development banners and download controls are computed from the registry, including partial
+platform releases. Do not maintain card-specific release state in individual route components.
+
 ## Product Statuses
 
 Product statuses:
