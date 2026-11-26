@@ -1,0 +1,59 @@
+.artwork {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: clip;
+  opacity: 0.24;
+  mask-mode: alpha;
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  pointer-events: none;
+}
+.ink {
+  position: absolute;
+  inset: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+@media (forced-colors: none) {
+  .artwork[data-outline-ready] {
+    opacity: 1;
+  }
+  .artwork[data-outline-ready] + .ink {
+    display: block;
+  }
+}
+@media (forced-colors: active) {
+  .artwork {
+    display: none;
+  }
+}
+.device {
+  position: absolute;
+  right: -9cqw;
+  bottom: -40cqw;
+  width: 52cqw;
+  padding: clamp(4px, 1.25cqw, 9px);
+  border: var(--line-weight) solid var(--color-ink);
+  border-radius: 13% / 6%;
+  background: var(--color-accent-amber);
+  box-shadow: var(--shadow-poster);
+  transform: rotate(-10deg);
+}
+.screen {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: var(--line-weight) solid var(--color-ink);
+  border-radius: 11% / 5%;
+}
+.illustration {
+  position: absolute;
+  right: -8cqw;
+  bottom: -7cqw;
+  display: block;
+  width: 82cqw;
+  height: auto;
+}

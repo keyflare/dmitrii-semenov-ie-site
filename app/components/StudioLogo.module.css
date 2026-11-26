@@ -30,3 +30,17 @@
   height: 100%;
   object-fit: contain;
 }
+
+.wordmark,
+.wordmarkDark {
+  width: var(--studio-wordmark-width, 12rem);
+  height: auto;
+}
+
+.wordmark {
+  aspect-ratio: 147 / 33;
+}
+
+.wordmarkDark {
+  aspect-ratio: 145 / 39;
+}

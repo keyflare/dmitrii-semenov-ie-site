@@ -7,6 +7,7 @@ type PosterButtonProps = {
   children: ReactNode;
   className?: string;
   href?: string;
+  raised?: boolean;
   reloadDocument?: boolean;
   rel?: string;
   size?: "compact" | "hero";
@@ -20,6 +21,7 @@ export function PosterButton({
   children,
   className,
   href,
+  raised = false,
   reloadDocument,
   rel,
   size = "compact",
@@ -33,6 +35,7 @@ export function PosterButton({
     styles[size],
     styles[tone],
     isInteractive ? styles.interactive : undefined,
+    isInteractive && raised ? styles.raised : undefined,
     className,
   ]
     .filter(Boolean)

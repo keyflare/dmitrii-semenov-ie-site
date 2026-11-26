@@ -1,151 +1,76 @@
 import { SiteLink as Link } from "~/components/SiteLink";
-import { hasProductTerms, type Product, type ProductPlatform } from "~/content/products/types";
+import { getProductCardModel } from "~/content/products/card";
+import type { Product } from "~/content/products/types";
 import { PosterButton } from "./PosterButton";
+import { ProductCardMedia } from "./ProductCardMedia";
+import { StoreIcon } from "./StoreIcon";
 import styles from "./ProductCard.module.css";
 
-const platformLabels: Record<ProductPlatform, string> = {
-  android: "Android",
-  ios: "iOS",
-  tvos: "Apple TV",
-  macos: "macOS",
-  windows: "Windows",
-  linux: "Linux",
-  web: "Web",
-};
-
-const productPreviews: Partial<Record<Product["slug"], { alt: string; src: string }>> = {
-  "palette-master": {
-    src: "/products/palette-master/screenshots/palette-master-03.png",
-    alt: "Palette Master gameplay preview",
-  },
-};
-
-const productStoreIcons: Partial<
-  Record<Product["slug"], Partial<Record<ProductPlatform, string>>>
-> = {
-  "palette-master": {
-    android: "/products/palette-master/store-icons/google-play.svg",
-    ios: "/products/palette-master/store-icons/app-store.svg",
-  },
-};
-
-export function ProductCard({ product }: { product: Product }) {
-  const preview = productPreviews[product.slug];
-  const storeIcons = productStoreIcons[product.slug] ?? {};
-  const feedbackUrl = `mailto:${product.supportEmail}?subject=${encodeURIComponent(
-    `${product.name} feedback`,
-  )}`;
+export function ProductCard({
+  product,
+  headingLevel: Heading = "h2",
+}: {
+  product: Product;
+  headingLevel?: "h2" | "h3";
+}) {
+  const { typeLabel, downloads, hasUnreleasedPlatforms } = getProductCardModel(product);
   const reloadDocument = Boolean(product.staticSite);
-  const isInDevelopment = product.releaseStage === "in-development";
-  const storeLinks = isInDevelopment
-    ? []
-    : Object.entries(product.storeLinks)
-        .filter((entry): entry is [ProductPlatform, string] => {
-          const href = entry[1];
-
-          return typeof href === "string" && href.trim() !== "";
-        })
-        .map(([platform, href]) => [platform, href.trim()] as const);
-  const linkedPlatforms = new Set(storeLinks.map(([platform]) => platform));
-  const comingSoonPlatforms = isInDevelopment
-    ? []
-    : product.platforms.filter((platform) => !linkedPlatforms.has(platform));
-  const renderPlatformActionLabel = (platform: ProductPlatform, suffix = "") => {
-    const iconSrc = storeIcons[platform];
-
-    return (
-      <>
-        {iconSrc ? <img src={iconSrc} alt="" loading="lazy" /> : null}
-        {platformLabels[platform]}
-        {suffix}
-      </>
-    );
-  };
 
   return (
-    <article className={styles.cardShell}>
+    <article
+      className={styles.cardShell}
+      data-product-card={product.slug}
+      data-product-kind={product.type}
+    >
       <Link
         reloadDocument={reloadDocument}
         className={styles.overviewLink}
         to={`/products/${product.slug}/`}
         aria-label={`Open ${product.name}`}
       />
-      <div className={`${styles.card} ${preview ? "" : styles.cardWithoutPreview}`}>
+      <div className={styles.card}>
+        <ProductCardMedia media={product.cardMedia} productType={product.type} />
         <div className={styles.copy}>
-          <div className={styles.marker}>{product.type}</div>
-          <h2 className={styles.title}>{product.name}</h2>
-          <p className={styles.description}>{product.shortDescription}</p>
-          <div className={styles.meta}>{product.platforms.join(" / ")}</div>
-          <nav className={styles.actions} aria-label={`${product.name} quick links`}>
-            <PosterButton href={feedbackUrl} size="compact" tone="primary">
-              Send feedback
-            </PosterButton>
-            <PosterButton
-              reloadDocument={reloadDocument}
-              to={`/products/${product.slug}/privacy/`}
-              size="compact"
-            >
-              Privacy
-            </PosterButton>
-            {hasProductTerms(product) ? (
-              <PosterButton
-                reloadDocument={reloadDocument}
-                to={`/products/${product.slug}/terms/`}
-                size="compact"
-              >
-                Terms
-              </PosterButton>
-            ) : null}
-            <PosterButton
-              reloadDocument={reloadDocument}
-              to={`/products/${product.slug}/support/`}
-              size="compact"
-            >
-              Support
-            </PosterButton>
-            {product.privacyProfile.requiresDataDeletionPage ? (
-              <PosterButton
-                reloadDocument={reloadDocument}
-                to={`/products/${product.slug}/data-deletion/`}
-                size="compact"
-              >
-                Data deletion
-              </PosterButton>
-            ) : null}
-            {storeLinks.map(([platform, href]) => (
+          <div className={styles.marker}>{typeLabel}</div>
+          <Heading className={styles.title}>
+            <span className={styles.titleText} data-card-outline-copy="">
+              {product.name}
+            </span>
+            {product.cardIcon && (
+              <img
+                className={styles.titleIcon}
+                src={product.cardIcon.src}
+                width={product.cardIcon.width}
+                height={product.cardIcon.height}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+          </Heading>
+          <p className={styles.description} data-card-outline-copy="">
+            {product.shortDescription}
+          </p>
+          {hasUnreleasedPlatforms ? <div className={styles.status}>In development</div> : null}
+          <nav className={styles.actions} aria-label={`${product.name} downloads`}>
+            {downloads.map(({ platform, label, href }) => (
               <PosterButton
                 key={platform}
-                className={storeIcons[platform] ? styles.storeAction : undefined}
                 href={href}
                 size="compact"
-                target="_blank"
+                target={href ? "_blank" : undefined}
+                tone={href ? "default" : "disabled"}
+                ariaLabel={href ? `${label} for ${product.name}` : undefined}
               >
-                {renderPlatformActionLabel(platform)}
-              </PosterButton>
-            ))}
-            {isInDevelopment ? (
-              <PosterButton size="compact" tone="disabled">
-                In development ·{" "}
-                {product.platforms.map((platform) => platformLabels[platform]).join(" / ")}
-              </PosterButton>
-            ) : null}
-            {comingSoonPlatforms.map((platform) => (
-              <PosterButton
-                key={platform}
-                className={storeIcons[platform] ? styles.storeAction : undefined}
-                size="compact"
-                tone="disabled"
-              >
-                {renderPlatformActionLabel(platform, " coming soon")}
+                <StoreIcon platform={platform} />
+                <span className={styles.storeLabel}>
+                  <span>{label}</span>
+                  {href ? null : <span className={styles.comingSoon}>Coming Soon</span>}
+                </span>
               </PosterButton>
             ))}
           </nav>
         </div>
-        {preview ? (
-          <div className={styles.preview} aria-hidden="true">
-            <img src={preview.src} alt={preview.alt} loading="lazy" />
-          </div>
-        ) : null}
       </div>
     </article>
   );

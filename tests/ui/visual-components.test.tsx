@@ -74,20 +74,19 @@ describe("visual components", () => {
     expect(html).toContain("Contact</span></h1>");
   });
 
-  test("PageIcon uses the supplied filled SVG artwork", async () => {
+  test("PageIcon renders decorative filled artwork without external assets", async () => {
     const { PageIcon } = await import("../../app/components/PageIcon");
     const contactHtml = renderToStaticMarkup(createElement(PageIcon, { name: "contact" }));
     const legalHtml = renderToStaticMarkup(createElement(PageIcon, { name: "legal" }));
     const privacyHtml = renderToStaticMarkup(createElement(PageIcon, { name: "privacy" }));
 
     for (const html of [contactHtml, legalHtml, privacyHtml]) {
-      expect(html).toContain('viewBox="0 -960 960 960"');
+      expect(html).toContain('viewBox="0 0 256 256"');
       expect(html).toContain('fill="currentColor"');
-      expect(html).not.toContain("stroke=");
+      expect(html).toContain('aria-hidden="true"');
+      expect(html).toContain('focusable="false"');
+      expect(html).not.toContain("<image");
     }
-    expect(contactHtml).toContain('d="M480-480Zm0-40 320-200H160l320 200Z');
-    expect(legalHtml).toContain('d="M160-120v-80h480v80H160Z');
-    expect(privacyHtml).toContain('d="M480-80q-139-35-229.5-159.5T160-516');
   });
 
   test("PageHeader keeps headings icon-free by default", async () => {
@@ -138,7 +137,7 @@ describe("visual components", () => {
       createElement(SiteShell, null, createElement("p", null, "Shell content")),
     );
 
-    expect(html).toContain('src="/brand/keyflare-studio-logo.svg"');
+    expect(html).toContain('src="/brand/keyflare-studio-wordmark.svg"');
     expect(html).toContain('alt=""');
     expect(html).toContain(">Keyflare Studio</span>");
     expect(html).toContain('href="/privacy/"');
@@ -199,23 +198,31 @@ describe("visual components", () => {
     expect(html).toContain("iOS coming soon");
   });
 
-  test("ProductCard includes product metadata and shared product links", async () => {
+  test("ProductCard renders the shared anatomy with download actions and an overview link", async () => {
     const { ProductCard } = await import("../../app/components/ProductCard");
     const html = renderWithRouter(createElement(ProductCard, { product }));
 
     expect(html).toContain("posterButton");
     expect(html).toContain("compact");
     expect(html).toContain("Visual Test Product");
-    expect(html).toContain("mobile-app");
-    expect(html).toContain("ios / android");
+    expect(html).toContain(">MOBILE APP</div>");
+    expect(html).not.toContain("ios / android");
     expect(html).toContain('href="/products/visual-test-product/"');
-    expect(html).toContain("Send feedback");
-    expect(html).toContain("/products/visual-test-product/privacy/");
-    expect(html).toContain("/products/visual-test-product/support/");
+    expect(html).toContain("Google Play");
+    expect(html).toContain("App Store");
+    expect(html).toContain("Coming Soon");
+    expect(html).toContain("In development");
+    expect(html).toContain('href="https://apps.apple.com/example"');
+    expect(html).toContain('aria-label="App Store for Visual Test Product"');
+    expect(html).not.toMatch(/<span[^>]+aria-label=/);
+    expect(html.match(/<a /g)).toHaveLength(2);
+    expect(html).not.toContain("Send feedback");
+    expect(html).not.toContain("/products/visual-test-product/privacy/");
+    expect(html).not.toContain("/products/visual-test-product/support/");
     expect(html).not.toContain(">Overview<");
   });
 
-  test("ProductCard makes Palette Master card clickable and shows a product preview", async () => {
+  test("ProductCard shows the selected real iOS screenshot in an iPhone frame", async () => {
     const { ProductCard } = await import("../../app/components/ProductCard");
     const paletteMaster = products.find((entry) => entry.slug === "palette-master");
 
@@ -226,83 +233,63 @@ describe("visual components", () => {
     const html = renderWithRouter(createElement(ProductCard, { product: paletteMaster }));
 
     expect(html).toContain('href="/products/palette-master/"');
-    expect(html).toContain("mailto:support@keyflare.studio?subject=Palette%20Master%20feedback");
-    expect(html).toContain("/products/palette-master/privacy/");
-    expect(html).toContain("/products/palette-master/support/");
+    expect(html).toContain(">MOBILE GAME</div>");
+    expect(html).not.toContain("mailto:");
     expect(html).toContain(
       "https://play.google.com/store/apps/details?id=com.keyflare.palettemaster&amp;hl=en",
     );
     expect(html).toContain("https://apps.apple.com/app/id6785084110");
-    expect(html).toContain("/products/palette-master/store-icons/google-play.svg");
-    expect(html).toContain("/products/palette-master/store-icons/app-store.svg");
-    expect(html).not.toContain("iOS coming soon");
+    expect(html).toContain('data-store-icon="google-play"');
+    expect(html).toContain('data-store-icon="app-store"');
+    expect(html).not.toContain("Coming Soon");
+    expect(html).not.toContain("In development");
     expect(html).not.toContain(">Overview<");
-    expect(html).toContain("/products/palette-master/screenshots/palette-master-03.png");
-    expect(html).toContain("Palette Master gameplay preview");
+    expect(html).toContain('data-product-media="iphone"');
+    expect(html).toContain('src="/media/cards/palette-master-gameplay.png"');
+    expect(html).toContain('alt="Palette Master gameplay showing a scrambled color grid."');
+    expect(html).toContain('width="1320" height="2868"');
+    expect(html).not.toContain('data-product-placeholder="true"');
   });
 
-  test("Home route shows published products on the launch board", async () => {
+  test("Home route preserves copy and published-only links in the new poster composition", async () => {
     const { default: HomeRoute } = await import("../../app/routes/home");
     const Stub = createRoutesStub([{ path: "/", Component: HomeRoute }]);
     const html = renderToStaticMarkup(createElement(Stub));
 
-    expect(html).toContain("posterButton");
-    expect(html).toContain("hero");
-    expect(html).toContain("primary");
-    expect(html).toContain('src="/brand/keyflare-studio-logo-rect.svg"');
-    expect(html).toContain("home-title-keyflare-line");
-    expect(html).toContain("home-title-keyflare-stem");
-    expect(html).toContain("home-title-keyflare-tail");
-    expect(html).toContain("home-title-second-line");
-    expect(html).toContain("home-title-studio-word");
-    expect(html).toContain("home-title-logo");
-    expect(html).toContain("titleLockup");
-    expect(html).toContain("titleAllowWrap");
-    expect(html).toContain("eyebrowEnd");
+    expect(html).toContain('aria-label="Tiny apps, loud ideas."');
     expect(html).toContain("BY DMITRII SEMENOV");
-    expect(html).not.toContain("Independent software studio");
-    expect(html).toContain("home-poster-title-token");
-    expect(html).toContain("Apps /</span>");
-    expect(html).toContain("Games /</span>");
-    expect(html).not.toContain("home-title-studio-line");
-    expect(html).not.toContain("home-title-lockup");
-    expect(html).not.toContain("home-studio-logo");
+    expect(html).toContain("Software for mobile, desktop, TV, and whatever comes next.");
+    expect(html).toContain("View products");
+    expect(html).toContain("Contact studio");
+    expect(html).not.toContain('aria-label="Studio product signals"');
+    expect(html).not.toContain("Apps / Games / Tools");
     expect(html).toContain("Launch board");
-    expect(html).toContain("Palette Master");
-    expect(html).toContain('href="/products/palette-master/"');
-    expect(html).not.toContain("Published products appear here with store-safe links.");
+    const published = products.filter((entry) => entry.status === "published");
+    expect(html.match(/data-product-placeholder="true"/g) ?? []).toHaveLength(
+      published.filter((entry) => !entry.cardMedia).length,
+    );
+    expect(html.match(/data-product-media="/g) ?? []).toHaveLength(
+      published.filter((entry) => entry.cardMedia).length,
+    );
+    for (const entry of published) {
+      expect(html).toContain(`href="/products/${entry.slug}/"`);
+      expect(html).toContain(entry.shortDescription);
+    }
+    expect(html).not.toContain("Fixture Product");
+    expect(html).not.toContain("/screenshots/");
   });
 
-  test("Home title logo behaves like a baseline-aligned inline symbol", () => {
-    const globalCss = readFileSync("app/styles/global.css", "utf8");
-    const pageHeaderCss = readFileSync("app/components/PageHeader.module.css", "utf8");
-
-    expect(globalCss).toContain("vertical-align: baseline;");
-    expect(globalCss).toContain("--home-title-font-size: clamp(2.4rem, 6.25vw, 5rem);");
-    expect(globalCss).toContain("--page-header-eyebrow-drop: var(--home-title-font-size);");
-    expect(globalCss).toContain("font-size: var(--home-title-font-size);");
-    expect(globalCss).toContain("gap: calc(var(--space-8) / 3);");
-    expect(globalCss).toContain("@media (min-width: 1400px)");
-    expect(globalCss).toContain("grid-template-columns: minmax(0, 0.735fr) minmax(26rem, 0.58fr);");
-    expect(globalCss).toContain("align-items: flex-end;");
-    expect(globalCss).toContain("gap: 0;");
-    expect(globalCss).toContain("justify-content: space-between;");
-    expect(globalCss).toContain("overflow-wrap: anywhere;");
-    expect(globalCss).toContain("font-size: clamp(1.7rem, 4.25vw, 3.4rem);");
-    expect(globalCss).toContain(".home-poster-title-token");
-    expect(globalCss).toContain("white-space: nowrap;");
-    expect(globalCss).toContain("@media (max-width: 1100px)");
-    expect(globalCss).toContain("row-gap: var(--space-8);");
-    expect(globalCss).toContain("--home-title-font-size: clamp(1.7rem, 9vw, 2.4rem);");
-    expect(globalCss).not.toContain("--page-header-eyebrow-drop: 0.875rem;");
-    expect(globalCss).not.toContain("drop-shadow(0.3rem 0.3rem 0 rgb(21 17 28 / 14%))");
-    expect(pageHeaderCss).toContain("gap: var(--space-1);");
-    expect(pageHeaderCss).toContain(".titleLockup");
-    expect(pageHeaderCss).toContain("width: max-content;");
-    expect(pageHeaderCss).toContain("max-width: 100%;");
-    expect(pageHeaderCss).toContain("transform: translateY(var(--page-header-eyebrow-drop, 0));");
-    expect(pageHeaderCss).toContain(".poster .description");
-    expect(pageHeaderCss).toContain("margin-top: var(--space-1);");
+  test("Studio hero keeps its composition decorative and its main actions usable without JavaScript", async () => {
+    const { StudioHero } = await import("../../app/components/StudioHero");
+    const html = renderWithRouter(createElement(StudioHero));
+    expect(html).toContain('aria-label="Tiny apps, loud ideas."');
+    expect(html.match(/<h1/g)).toHaveLength(1);
+    expect(html).toContain('data-hero-glass="true"');
+    expect(html).toContain('href="/products/"');
+    expect(html).toContain('href="/contact/"');
+    expect(html.match(/class="[^"]+raised[^"]*"/g) ?? []).toHaveLength(2);
+    expect(html).not.toContain("<canvas");
+    expect(html).not.toContain("<img");
   });
 
   test("Document page headings stay within the readable column", () => {
@@ -333,41 +320,88 @@ describe("visual components", () => {
     );
   });
 
-  test("Product grids stack before cards become cramped and keep launch board spacing", () => {
-    const globalCss = readFileSync("app/styles/global.css", "utf8");
-    const productCardCss = readFileSync("app/components/ProductCard.module.css", "utf8");
-
-    expect(globalCss).toMatch(/\.home-products-grid\s*{[^}]*gap:\s*var\(--space-6\);/s);
-    expect(globalCss).toMatch(
-      /@media \(max-width: 1050px\)\s*{\s*\.catalog-grid\s*{[^}]*grid-template-columns:\s*1fr;/s,
-    );
-    expect(productCardCss).toMatch(
-      /@media \(max-width: 860px\)\s*{\s*\.card\s*{[^}]*grid-template-columns:\s*1fr;/s,
-    );
-    expect(productCardCss).toMatch(/\.cardWithoutPreview\s*{[^}]*grid-template-columns:\s*1fr;/s);
+  test("Product card heading levels follow the page hierarchy", async () => {
+    const { ProductCard } = await import("../../app/components/ProductCard");
+    const catalogCard = renderWithRouter(createElement(ProductCard, { product }));
+    const homeCard = renderWithRouter(createElement(ProductCard, { product, headingLevel: "h3" }));
+    expect(catalogCard).toMatch(/<h2[^>]*>.*?Visual Test Product.*?<\/h2>/s);
+    expect(homeCard).toMatch(/<h3[^>]*>.*?Visual Test Product.*?<\/h3>/s);
   });
 
-  test("SiteShell header brand is mixed case, larger, and unframed", () => {
-    const siteShellCss = readFileSync("app/components/SiteShell.module.css", "utf8");
+  test.each([
+    ["palette-master", "palette-master-ios-icon.png"],
+    ["ratebench", "ratebench-ios-icon.png"],
+    ["wgportal", "wg-portal-tvos-icon.png"],
+  ])("includes the local %s app icon in the card heading", async (slug, filename) => {
+    const { ProductCard } = await import("../../app/components/ProductCard");
+    const entry = products.find((item) => item.slug === slug)!;
+    const html = renderWithRouter(createElement(ProductCard, { product: entry }));
+    const heading = html.match(/<h2[^>]*>.*?<\/h2>/)?.[0];
 
-    expect(siteShellCss).toMatch(/\.shell\s*{[^}]*overflow-x:\s*clip;/s);
-    expect(siteShellCss).toContain(".brandName");
-    expect(siteShellCss).toContain("--studio-logo-size: 2.3rem;");
-    expect(siteShellCss).toContain("transform: translateY(-0.12rem);");
-    expect(siteShellCss).toContain("font-size: 1.275rem;");
-    expect(siteShellCss).toMatch(/\.footerContent\s*{[^}]*align-items: center;/);
-    expect(siteShellCss).not.toContain("text-transform: uppercase;");
+    expect(heading).toContain(`src="/media/cards/${filename}"`);
+    expect(heading).toContain('alt=""');
+    expect(heading).toContain(`data-card-outline-copy="">${entry.name}</span>`);
   });
 
-  test("PosterButton provides the shared pressed hover treatment", () => {
-    const posterButtonCss = readFileSync("app/components/PosterButton.module.css", "utf8");
+  test("The Ratebench card shows one released store and one upcoming store", async () => {
+    const { ProductCard } = await import("../../app/components/ProductCard");
+    const ratebench = products.find((entry) => entry.slug === "ratebench")!;
+    const html = renderWithRouter(createElement(ProductCard, { product: ratebench }));
+    expect(html).toContain("In development");
+    expect(html).not.toContain("Android / iOS");
+    expect(html).toContain("Google Play");
+    expect(html).toContain("App Store");
+    expect(html.match(/>Coming Soon</g)).toHaveLength(1);
+    expect(html.match(/<a /g)).toHaveLength(2);
+    expect(html).not.toContain("/products/ratebench/terms/");
+    expect(html).toContain('data-product-media="iphone"');
+    expect(html).toContain('src="/media/cards/ratebench-converter.png"');
+    expect(html).not.toContain("apps.apple.com");
+    expect(html).toContain(
+      "https://play.google.com/store/apps/details?id=com.keyflare.exchange.android",
+    );
+  });
 
-    expect(posterButtonCss).toContain(".posterButton");
-    expect(posterButtonCss).toContain(".hero");
-    expect(posterButtonCss).toContain(".compact");
-    expect(posterButtonCss).toContain(".interactive:hover");
-    expect(posterButtonCss).toContain("transform: translate(0.08rem, 0.08rem);");
-    expect(posterButtonCss).toContain("box-shadow: var(--poster-button-hover-shadow);");
+  test("WG Portal uses its ring illustration with the shared outline", async () => {
+    const { ProductCard } = await import("../../app/components/ProductCard");
+    const wgPortal = products.find((entry) => entry.slug === "wgportal")!;
+    const html = renderWithRouter(createElement(ProductCard, { product: wgPortal }));
+    expect(html).toContain('data-product-media="illustration"');
+    expect(html).toContain('src="/media/cards/wg-portal-ring.webp"');
+    expect(html).toContain('alt="WG Portal’s luminous violet ring."');
+    expect(html).not.toContain('data-product-placeholder="true"');
+    expect(html.match(/data-card-outline-copy=""/g)).toHaveLength(2);
+    expect(html).toContain("<canvas");
+    expect(html).toContain('href="https://apps.apple.com/app/id6835040683"');
+    expect(html).toContain('data-store-icon="app-store"');
+  });
+
+  test("Cards with placeholder artwork still use the shared outline", async () => {
+    const { ProductCard } = await import("../../app/components/ProductCard");
+    const html = renderWithRouter(createElement(ProductCard, { product }));
+    expect(html).toContain('data-product-placeholder="true"');
+    expect(html).not.toContain("data-product-media");
+    expect(html.match(/data-card-outline-copy=""/g)).toHaveLength(2);
+    expect(html).toContain("<canvas");
+  });
+
+  test("SiteShell supplies a keyboard skip link and the approved complete wordmark", async () => {
+    const { SiteShell } = await import("../../app/components/SiteShell");
+    const html = renderWithRouter(createElement(SiteShell, null, "Content"));
+    expect(html).toContain('href="#main-content"');
+    expect(html).toContain('id="main-content"');
+    expect(html).toContain('aria-label="Keyflare Studio home"');
+    expect(html).toContain("/brand/keyflare-studio-wordmark.svg");
+  });
+
+  test("PosterButton keeps disabled statuses out of the keyboard tab order", async () => {
+    const { PosterButton } = await import("../../app/components/PosterButton");
+    const html = renderWithRouter(
+      createElement(PosterButton, { tone: "disabled", children: "In development" }),
+    );
+    expect(html).toContain("<span");
+    expect(html).not.toContain("href=");
+    expect(html).not.toContain("tabindex=");
   });
 
   test("DocumentPage renders a calm document wrapper", () => {

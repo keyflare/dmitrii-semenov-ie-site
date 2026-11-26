@@ -1,144 +1,202 @@
 .cardShell {
   position: relative;
   display: block;
+  min-width: 0;
+  container-type: inline-size;
 }
-
 .overviewLink {
   position: absolute;
   inset: 0;
   z-index: 1;
-  border-radius: var(--radius-md);
 }
-
 .overviewLink:focus-visible {
-  outline: 0.2rem solid var(--color-accent-blue);
-  outline-offset: 0.2rem;
+  outline: 3px solid var(--color-accent-blue);
+  outline-offset: 5px;
 }
-
 .card {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(8rem, 11rem);
-  gap: var(--space-4);
-  min-height: 17rem;
-  padding: var(--space-6);
-  overflow: hidden;
-  border: 2px solid var(--color-ink);
-  border-radius: var(--radius-md);
+  width: 100%;
+  border: var(--line-weight) solid var(--color-ink);
+  background: transparent;
   color: var(--color-ink);
-  background: var(--color-paper-soft);
-  box-shadow: var(--shadow-poster);
-  transition:
-    background 140ms ease,
-    box-shadow 140ms ease,
-    transform 140ms ease;
   pointer-events: none;
+  transition:
+    background var(--motion-fast),
+    box-shadow var(--motion-fast),
+    transform var(--motion-fast) var(--motion-ease);
 }
-
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 0.85rem;
-  background: var(--gradient-chromatic);
-}
-
-.cardWithoutPreview {
-  grid-template-columns: 1fr;
-}
-
-.card:hover,
-.cardShell:has(.overviewLink:hover) .card,
-.cardShell:has(.overviewLink:focus-visible) .card {
-  color: var(--color-ink);
-  background: color-mix(in srgb, var(--color-paper-soft) 86%, var(--color-accent-amber));
-  box-shadow: 0.45rem 0.45rem 0 var(--color-ink);
-  transform: translate(-0.08rem, -0.08rem);
-}
-
 .copy {
   position: relative;
   z-index: 1;
-  display: grid;
-  gap: var(--space-4);
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  /* A square minimum, rather than a fixed aspect, lets enlarged copy grow the frame. */
+  min-height: max(calc(100cqw - var(--line-weight) * 2), var(--card-min-height, 0px));
+  padding: 5.5% 5.5% 0;
 }
-
-.marker,
-.meta {
-  color: var(--color-ink-soft);
-  font-size: 0.82rem;
+.marker {
+  font-size: clamp(0.7rem, 2.7cqw, 0.85rem);
   font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  margin-bottom: 5%;
 }
-
 .title {
-  margin: var(--space-4) 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  align-items: start;
+  column-gap: 0.25em;
+  margin: 0 0 4%;
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 3.2rem);
-  line-height: 0.9;
-  text-transform: uppercase;
+  font-size: clamp(1.85rem, 10.5cqw, 3.9rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.055em;
 }
-
+.titleText {
+  min-width: 0;
+  max-width: min(9ch, 100%);
+  overflow-wrap: anywhere;
+}
+.titleIcon {
+  display: block;
+  width: auto;
+  height: min(1.04em, 15cqw);
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 0.23em;
+}
 .description {
-  margin: 0;
-  color: var(--color-muted);
-  line-height: 1.6;
+  max-width: 75%;
+  margin: 0 0 4%;
+  font-size: clamp(1rem, 4.4cqw, 1.35rem);
+  line-height: 1.3;
 }
-
+@media (forced-colors: none) {
+  .card:has(> [data-outline-ready]) [data-card-outline-copy] {
+    color: transparent;
+  }
+}
+.status {
+  align-self: flex-start;
+  margin-top: auto;
+  margin-bottom: 4%;
+  padding: 0.5rem 0.65rem;
+  background: var(--color-accent-amber);
+  color: var(--color-ink);
+  font-size: clamp(0.75rem, 2.8cqw, 1rem);
+  font-weight: 800;
+}
+.status + .actions {
+  margin-top: 0;
+}
 .actions {
   position: relative;
   z-index: 3;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+  container-type: inline-size;
+  align-items: stretch;
+  margin-top: auto;
+  margin-inline: -6.18%;
+  border-top: 1px solid var(--color-ink);
   pointer-events: auto;
 }
-
-.storeAction {
-  padding-inline: 0.62rem 0.82rem !important;
+.actions > * {
+  min-width: 0;
+  min-height: 4rem;
+  gap: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  border: 0;
+  font-size: 0.875rem;
+  white-space: normal;
 }
-
-.preview {
-  position: relative;
-  z-index: 1;
-  align-self: center;
-  justify-self: end;
-  width: min(100%, 10.5rem);
-  transform: rotate(2.5deg);
+.actions > * + * {
+  border-left: 1px solid var(--color-ink);
 }
-
-.preview::before {
-  content: "";
-  position: absolute;
-  inset: 0.85rem -0.65rem -0.55rem 0.65rem;
-  z-index: -1;
-  border: 2px solid var(--color-ink);
-  border-radius: var(--radius-md);
-  background: var(--gradient-chromatic);
+.actions > :global(a) {
+  color: var(--color-ink);
+  background: transparent;
 }
-
-.preview img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 9 / 16;
-  object-fit: cover;
-  object-position: center top;
-  border: 2px solid var(--color-ink);
-  border-radius: var(--radius-md);
+.actions > :global(span) {
+  color: var(--color-muted);
+  background: transparent;
+}
+.actions > :global(a:hover) {
+  background: var(--color-accent-amber);
+  box-shadow: none;
+  transform: none;
+}
+.actions > :global(a:active) {
   background: var(--color-ink);
-  box-shadow: 0.28rem 0.28rem 0 var(--color-ink);
+  color: var(--color-paper);
+  box-shadow: inset 0 3px 0 var(--color-accent-red);
+}
+.actions > :global(a:focus-visible) {
+  z-index: 1;
+  outline-offset: -4px;
+}
+.actions svg {
+  flex: 0 0 auto;
+  width: 1.4em;
+  height: 1.4em;
+}
+.storeLabel {
+  display: grid;
+  min-width: 0;
+  gap: 0.2rem;
+  text-align: left;
+}
+.comingSoon {
+  font-size: 0.8em;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+}
+@container (width < 16rem) {
+  .actions > * + * {
+    border-left: 0;
+    border-top: 1px solid var(--color-ink);
+  }
+}
+@media (hover: hover) {
+  .cardShell:has(.overviewLink:hover) .card {
+    background: #fff9e980;
+    box-shadow: 5px 5px 0 var(--color-ink);
+    transform: translate(-2px, -2px);
+  }
+}
+.cardShell:has(.overviewLink:active) .card {
+  box-shadow: 0 0 0 transparent;
+  transform: translate(1px, 1px);
+}
+@media (max-width: 420px) {
+  .cardShell {
+    --card-min-height: calc(22rem - var(--line-weight) * 2);
+  }
+  .title {
+    font-size: 1.85rem;
+  }
+  .description {
+    max-width: 86%;
+    font-size: 0.95rem;
+  }
+  .marker {
+    font-size: 0.7rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  .cardShell:has(.overviewLink:hover) .card,
+  .cardShell:has(.overviewLink:active) .card {
+    transform: none;
+  }
 }
 
-@media (max-width: 860px) {
-  .card {
-    grid-template-columns: 1fr;
-  }
-
-  .preview {
-    justify-self: start;
-    width: min(52vw, 10rem);
-  }
+.cardShell[data-product-kind="software"] .titleText {
+  max-width: min(6ch, 100%);
 }

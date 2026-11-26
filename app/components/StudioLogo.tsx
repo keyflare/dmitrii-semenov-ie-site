@@ -1,7 +1,7 @@
 import styles from "./StudioLogo.module.css";
 
 type StudioLogoProps = {
-  asset?: "square" | "rectangular";
+  asset?: "square" | "rectangular" | "wordmark" | "wordmarkDark";
   className?: string;
   label?: string;
   loading?: "eager" | "lazy";
@@ -9,6 +9,8 @@ type StudioLogoProps = {
 };
 
 const logoSources = {
+  wordmark: "/brand/keyflare-studio-wordmark.svg",
+  wordmarkDark: "/brand/keyflare-studio-wordmark-dark.svg",
   square: "/brand/keyflare-studio-logo.svg",
   rectangular: "/brand/keyflare-studio-logo-rect.svg",
 } as const;

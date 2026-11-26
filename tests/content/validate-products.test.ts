@@ -34,6 +34,68 @@ describe("validateProducts", () => {
     expect(validateProducts([baseProduct])).toEqual([]);
   });
 
+  test.each(["iphone", "illustration"] as const)(
+    "accepts local %s card media with intrinsic dimensions and a description",
+    (kind) => {
+      expect(
+        validateProducts([
+          {
+            ...baseProduct,
+            cardMedia: {
+              kind,
+              src: "/media/cards/example.webp",
+              alt: "Approved product artwork.",
+              width: 1024,
+              height: 960,
+            },
+          },
+        ]),
+      ).toEqual([]);
+    },
+  );
+
+  test("rejects card media without a meaningful image description or dimensions", () => {
+    const errors = validateProducts([
+      {
+        ...baseProduct,
+        cardMedia: {
+          kind: "iphone",
+          src: "/media/cards/example.png",
+          alt: "  ",
+          width: 0,
+          height: -1,
+        },
+      },
+    ]);
+    expect(errors).toContain("sample cardMedia.alt must describe the image.");
+    expect(errors).toContain("sample cardMedia dimensions must be positive integers.");
+  });
+
+  test("rejects remote or traversing card image paths", () => {
+    for (const src of ["https://example.com/screen.png", "/media/cards/../private.png"]) {
+      expect(
+        validateProducts([
+          {
+            ...baseProduct,
+            cardMedia: { kind: "iphone", src, alt: "App screen.", width: 1206, height: 2622 },
+          },
+        ]),
+      ).toContain("sample cardMedia.src must be a local image in /media/cards/.");
+    }
+  });
+
+  test("rejects external app icons and invalid intrinsic icon dimensions", () => {
+    const errors = validateProducts([
+      {
+        ...baseProduct,
+        cardIcon: { src: "https://example.com/app-icon.png", width: 0, height: 180 },
+      },
+    ]);
+
+    expect(errors).toContain("sample cardIcon.src must be a local image in /media/cards/.");
+    expect(errors).toContain("sample cardIcon dimensions must be positive integers.");
+  });
+
   test("accepts published mobile games with standard presentation", () => {
     const mobileGame: Product = {
       ...baseProduct,

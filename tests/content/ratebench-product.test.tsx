@@ -11,6 +11,9 @@ import { getProductSupportProduct } from "../../app/routes/product-support";
 import { getProductTermsProduct } from "../../app/routes/product-terms";
 import { productSiteSources } from "../../scripts/product-site-sources";
 
+const androidStoreUrl =
+  "https://play.google.com/store/apps/details?id=com.keyflare.exchange.android";
+
 function getRatebench() {
   const ratebench = findPublishedProduct("ratebench");
   if (!ratebench?.staticSite) {
@@ -30,9 +33,8 @@ describe("Ratebench product", () => {
       name: "Ratebench",
       type: "mobile-app",
       platforms: ["android", "ios"],
-      releaseStage: "in-development",
       supportEmail: "support@keyflare.studio",
-      storeLinks: {},
+      storeLinks: { android: androidStoreUrl },
       staticSite: {
         hasTerms: true,
       },
@@ -66,21 +68,33 @@ describe("Ratebench product", () => {
     expect(() => getProduct("ratebench")).toThrow(expect.objectContaining({ status: 404 }));
   });
 
-  test("links to the hosted documents from the catalog", () => {
-    for (const component of [ProductCard, ProductLinks]) {
-      const html = renderWithRouter(createElement(component, { product: getRatebench() }));
-      for (const page of ["privacy", "terms", "support"]) {
-        expect(html).toContain(`href="/products/ratebench/${page}/"`);
-      }
-      expect(html).toContain("In development");
-      expect(html).not.toContain("Android coming soon");
-      expect(html).not.toContain("iOS coming soon");
+  test("retains hosted document links in the product navigation", () => {
+    const html = renderWithRouter(createElement(ProductLinks, { product: getRatebench() }));
+    for (const page of ["privacy", "terms", "support"]) {
+      expect(html).toContain(`href="/products/ratebench/${page}/"`);
     }
+    expect(html).toContain(`href="${androidStoreUrl}"`);
+    expect(html).toContain("iOS coming soon");
+  });
+
+  test("offers the live Android download and the planned iOS release in its catalog card", () => {
+    const html = renderWithRouter(createElement(ProductCard, { product: getRatebench() }));
+    expect(html).toContain('href="/products/ratebench/"');
+    expect(html).toContain("In development");
+    expect(html).toContain(`href="${androidStoreUrl}"`);
+    expect(html).toContain('aria-label="Google Play for Ratebench"');
+    expect(html).toContain("App Store");
+    expect(html.match(/>Coming Soon</g)).toHaveLength(1);
+    expect(html.match(/<a /g)).toHaveLength(2);
   });
 
   test("hides store links for an in-development product", () => {
     const storeUrl = "https://apps.apple.com/app/ratebench/id123456789";
-    const product = { ...getRatebench(), storeLinks: { ios: storeUrl } };
+    const product = {
+      ...getRatebench(),
+      releaseStage: "in-development" as const,
+      storeLinks: { ios: storeUrl },
+    };
     for (const component of [ProductCard, ProductLinks]) {
       const html = renderWithRouter(createElement(component, { product }));
       expect(html).not.toContain(storeUrl);

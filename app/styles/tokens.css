@@ -1,7 +1,14 @@
 :root {
   --color-paper: #fff4d7;
+  --surface-studio:
+    radial-gradient(ellipse at 28% 24%, #fff9e9b3, transparent 72%), var(--color-paper);
+  --page-gutter: clamp(1rem, 4.2vw, 3.5rem);
+  --header-height: clamp(4.5rem, 9vw, 6.75rem);
+  --line-weight: 2px;
+  --motion-fast: 160ms;
+  --motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --color-paper-soft: #fffaf0;
-  --color-ink: #15111c;
+  --color-ink: #100d15;
   --color-ink-soft: #3e3448;
   --color-text: var(--color-ink);
   --color-muted: #665d70;
@@ -25,10 +32,10 @@
     var(--color-accent-blue)
   );
   --gradient-product: linear-gradient(135deg, #ff4f64 0%, #ffb000 38%, #19d3a2 68%, #2563ff 100%);
-  --font-display: "Syne", "Arial Black", system-ui, sans-serif;
+  --font-display: "Unbounded Variable", "Arial Black", system-ui, sans-serif;
   --font-sans:
-    "Space Grotesk", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+    "DM Sans Variable", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -40,12 +47,18 @@
   --space-12: 3rem;
   --space-16: 4rem;
   --space-20: 5rem;
-  --radius-xs: 0.25rem;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
   --layout-max: 74rem;
   --layout-wide: 88rem;
   --layout-readable: 46rem;
-  --shadow-poster: 0.55rem 0.55rem 0 var(--color-ink);
-  --shadow-soft: 0 1.5rem 4rem rgb(21 17 28 / 14%);
+  --shadow-poster: 0.25rem 0.25rem 0 var(--color-ink);
+  --shadow-soft: none;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --header-height: clamp(3.375rem, 6.75vw, 5.0625rem);
+  }
 }

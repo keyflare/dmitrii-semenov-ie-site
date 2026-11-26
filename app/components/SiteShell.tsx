@@ -1,16 +1,21 @@
+import { useLocation } from "react-router";
 import { SiteLink as Link } from "~/components/SiteLink";
 import { siteConfig } from "~/content/site";
 import { StudioLogo } from "./StudioLogo";
 import styles from "./SiteShell.module.css";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
+  const isHome = useLocation().pathname === "/";
   return (
-    <div className={styles.shell}>
+    <div className={`${styles.shell} ${isHome ? styles.homeShell : ""}`}>
+      <a className={styles.skipLink} href="#main-content">
+        Skip to content
+      </a>
       <header className={styles.header}>
         <div className={`${styles.inner} ${styles.nav}`}>
           <Link className={styles.brand} to="/" aria-label={`${siteConfig.brandName} home`}>
-            <StudioLogo className={styles.brandLogo} />
-            <span className={styles.brandName}>{siteConfig.brandName}</span>
+            <StudioLogo asset="wordmark" className={styles.brandLogo} />
+            <span className="sr-only">{siteConfig.brandName}</span>
           </Link>
           <nav className={styles.links} aria-label="Main navigation">
             <Link to="/products/">Products</Link>
@@ -20,7 +25,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
       </header>
-      <main className={styles.content}>{children}</main>
+      <main id="main-content" tabIndex={-1} className={styles.content}>
+        {children}
+      </main>
       <footer className={styles.footer}>
         <div className={`${styles.inner} ${styles.footerContent}`}>
           <div>

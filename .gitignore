@@ -10,3 +10,6 @@ npm-debug.log*
 .product-sites/
 
 /public/site-analytics.js
+
+# Generated visual explorations and local review artifacts.
+/work/

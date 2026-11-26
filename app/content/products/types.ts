@@ -71,6 +71,19 @@ export type ProductTheme = {
   pageSurface?: ProductPageSurface;
 };
 
+export const productCardMediaKinds = ["iphone", "illustration"] as const;
+
+export type ProductCardImage = {
+  src: string;
+  width: number;
+  height: number;
+};
+
+export type ProductCardMedia = ProductCardImage & {
+  kind: (typeof productCardMediaKinds)[number];
+  alt: string;
+};
+
 type ProductMetadata = {
   status: ProductStatus;
   slug: string;
@@ -82,6 +95,8 @@ type ProductMetadata = {
   supportEmail: string;
   lastUpdated: string;
   storeLinks: Partial<Record<ProductPlatform, string>>;
+  cardIcon?: ProductCardImage;
+  cardMedia?: ProductCardMedia;
   theme?: ProductTheme;
   privacyProfile: PrivacyProfile;
 };

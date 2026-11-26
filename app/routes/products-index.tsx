@@ -15,7 +15,6 @@ export default function ProductsIndexRoute() {
   return (
     <div className="catalog-layout">
       <PageHeader
-        eyebrow="Launch board"
         title="Products"
         description={`Mobile apps, desktop apps, and software products from ${siteConfig.brandName}.`}
       />
