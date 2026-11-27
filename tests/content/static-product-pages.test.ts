@@ -121,13 +121,15 @@ describe("additional product-owned static pages", () => {
       "blog",
       "blog/amneziawg-vs-wireguard",
       "blog/bring-your-own-vpn-to-apple-tv",
+      "blog/vpn-around-the-world",
+      "blog/what-is-a-vpn",
     ];
     const expected = locales.flatMap((locale) =>
       pages.map((page) => `/products/wgportal/${locale}${page ? `/${page}` : ""}`),
     );
     const paths = getProductPaths(wgportal);
-    expect(paths).toHaveLength(169);
-    expect(new Set(paths).size).toBe(169);
+    expect(paths).toHaveLength(217);
+    expect(new Set(paths).size).toBe(217);
     expect(paths).toEqual(expect.arrayContaining(expected));
     expect(validateProducts([wgportal])).toEqual([]);
     const publicPaths = getPublicPaths();

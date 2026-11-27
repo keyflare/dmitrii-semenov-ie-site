@@ -27,6 +27,8 @@ test("publishes the WG Portal website, blog, and App Store documents from the ta
       "/products/wgportal/blog/bring-your-own-vpn-to-apple-tv",
       "/products/wgportal/blog/amneziawg-vs-wireguard",
       "/products/wgportal/blog/amneziawg-vs-wireguard/ru",
+      "/products/wgportal/blog/vpn-around-the-world",
+      "/products/wgportal/blog/what-is-a-vpn",
     ]),
   );
   expect(productSiteSources.wgportal).toMatchObject({
