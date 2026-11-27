@@ -32,6 +32,8 @@ const pages = [
   "blog",
   "blog/amneziawg-vs-wireguard",
   "blog/bring-your-own-vpn-to-apple-tv",
+  "blog/vpn-around-the-world",
+  "blog/what-is-a-vpn",
 ];
 
 export const wgportalAdditionalPages = [
@@ -39,5 +41,7 @@ export const wgportalAdditionalPages = [
   "blog/bring-your-own-vpn-to-apple-tv",
   "blog/amneziawg-vs-wireguard",
   "blog/amneziawg-vs-wireguard/ru",
+  "blog/vpn-around-the-world",
+  "blog/what-is-a-vpn",
   ...locales.flatMap((locale) => pages.map((page) => `${locale}${page ? `/${page}` : ""}`)),
 ];
