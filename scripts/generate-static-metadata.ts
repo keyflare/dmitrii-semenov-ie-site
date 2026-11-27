@@ -4,6 +4,9 @@ import { siteConfig } from "../app/content/site";
 import { getPublicPaths } from "../app/content/products/registry";
 
 const publicDir = new URL("../public/", import.meta.url);
+// The legacy Russian article remains reachable and declares the locale-prefixed
+// URL as canonical. Keep the alias out of the sitemap.
+const sitemapAliases = new Set(["/products/wgportal/blog/amneziawg-vs-wireguard/ru/"]);
 
 function normalizeOrigin(origin: string) {
   return origin.replace(/\/+$/, "");
@@ -29,9 +32,10 @@ export function buildSitemapXml(origin: string, paths: string[]) {
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
-    ...paths.map(
-      (path) => `  <url><loc>${canonicalOrigin}${normalizeSitemapPath(path)}</loc></url>`,
-    ),
+    ...paths
+      .map(normalizeSitemapPath)
+      .filter((path) => !sitemapAliases.has(path))
+      .map((path) => `  <url><loc>${canonicalOrigin}${path}</loc></url>`),
     `</urlset>`,
     "",
   ].join("\n");

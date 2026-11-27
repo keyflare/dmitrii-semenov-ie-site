@@ -7,8 +7,8 @@
   },
   "wgportal": {
     "repository": "keyflare/WGPortal",
-    "tag": "site-v1.0.9",
-    "commit": "05a416d471b1047a75d7249cc817aeca892d60a5",
+    "tag": "site-v1.0.10",
+    "commit": "6fe649804bc0a29d30f4c7dda5d8837198a3ef6b",
     "directory": "site/public"
   }
 }
