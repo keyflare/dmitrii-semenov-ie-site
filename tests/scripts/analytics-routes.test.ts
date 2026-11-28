@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { describe, expect, test } from "vitest";
@@ -10,16 +10,14 @@ describe("public analytics output", () => {
   test("requires one shared installation on every public HTML page and preserves root files", async () => {
     const dir = await mkdtemp(join(tmpdir(), "keyflare-route-output-"));
     try {
+      const validPage = installAnalyticsMarkup(
+        "<!doctype html><html><head></head><body>Page</body></html>",
+        "fixture.html",
+      );
       for (const route of getPublicPaths()) {
         const file = join(dir, route, "index.html");
         await mkdir(dirname(file), { recursive: true });
-        await writeFile(
-          file,
-          installAnalyticsMarkup(
-            "<!doctype html><html><head></head><body>Page</body></html>",
-            route,
-          ),
-        );
+        await writeFile(file, validPage);
       }
       for (const file of [
         "404.html",
@@ -36,21 +34,22 @@ describe("public analytics output", () => {
         product,
         "<!doctype html><html><head></head><body>No analytics</body></html>",
       );
-      expect(await checkRouteOutput(dir)).toEqual([expect.stringContaining("analytics")]);
       const home = join(dir, "index.html");
       await writeFile(
         home,
-        (await readFile(home, "utf8")).replace(
+        validPage.replace(
           "</body>",
           '<script data-site-analytics="shared" src="/site-analytics.js" defer></script></body>',
         ),
       );
-      expect(await checkRouteOutput(dir)).toHaveLength(2);
       await rm(join(dir, "CNAME"));
       await rm(join(dir, "app-ads.txt"));
       const errors = await checkRouteOutput(dir);
+      expect(errors).toHaveLength(4);
       expect(errors).toEqual(
         expect.arrayContaining([
+          expect.stringContaining(`analytics in ${product}`),
+          expect.stringContaining(`analytics in ${home}`),
           expect.stringContaining("CNAME"),
           expect.stringContaining("app-ads.txt"),
         ]),
