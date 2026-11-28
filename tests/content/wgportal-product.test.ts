@@ -28,6 +28,8 @@ test("publishes the WG Portal website, blog, and App Store documents from the ta
       "/products/wgportal/blog/amneziawg-vs-wireguard",
       "/products/wgportal/blog/amneziawg-vs-wireguard/ru",
       "/products/wgportal/blog/vpn-around-the-world",
+      "/products/wgportal/blog/amnezia-premium-apple-tv",
+      "/products/wgportal/blog/amnezia-vpn-apple-tv",
       "/products/wgportal/blog/what-is-a-vpn",
     ]),
   );
